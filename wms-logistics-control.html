@@ -1,0 +1,1056 @@
+<div id="jlt-wms-board" class="jlt-wms" aria-label="JLT WMS 통합 물류 관제 대시보드">
+  <style>
+    @import url("https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500&display=swap");
+
+    #jlt-wms-board {
+      --wms-blue: #0b63f6;
+      --wms-green: #0ea75a;
+      --wms-orange: #f59e0b;
+      --wms-red: #ef4444;
+      --wms-ink: #0f172a;
+      --wms-soft: #f4f8ff;
+      --wms-line: #dce6f6;
+      --wms-panel: rgba(255, 255, 255, 0.92);
+      --wms-shadow: 0 18px 42px rgba(11, 41, 83, 0.12);
+      color: var(--wms-ink);
+      font-family: "Noto Sans KR", system-ui, sans-serif;
+      font-size: var(--font-size-base, 14px);
+      width: 100%;
+      aspect-ratio: 16 / 9;
+      overflow: scroll;
+      scrollbar-gutter: stable both-edges;
+    }
+
+    #jlt-wms-board * {
+      box-sizing: border-box;
+    }
+
+    #jlt-wms-board .shell {
+      display: grid;
+      grid-template-columns: 280px minmax(0, 1fr);
+      gap: 14px;
+      width: 1920px;
+      min-height: 1080px;
+      height: auto;
+      padding: 14px;
+      border: 1px solid rgba(168, 190, 224, 0.35);
+      border-radius: 18px;
+      background:
+        radial-gradient(circle at 52% 20%, rgba(22, 101, 216, 0.1), transparent 31%),
+        linear-gradient(135deg, #f8fbff 0%, #eef5ff 46%, #ffffff 100%);
+      overflow: visible;
+    }
+
+    #jlt-wms-board .sidebar {
+      display: flex;
+      flex-direction: column;
+      gap: 22px;
+      min-width: 0;
+      padding: 22px 18px;
+      border-right: 1px solid rgba(221, 229, 241, 0.8);
+      background: rgba(255, 255, 255, 0.82);
+    }
+
+    #jlt-wms-board .logo {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 72px;
+      padding: 4px 8px 16px;
+    }
+
+    #jlt-wms-board .logo img {
+      width: 128px;
+      height: auto;
+      object-fit: contain;
+      display: block;
+    }
+
+    #jlt-wms-board .nav {
+      display: grid;
+      gap: 8px;
+      align-content: start;
+    }
+
+    #jlt-wms-board .nav button {
+      display: flex;
+      align-items: center;
+      width: 100%;
+      min-height: 42px;
+      padding: 10px 26px;
+      border: 0;
+      border-radius: 9px;
+      color: #334b6f;
+      background: transparent;
+      font: inherit;
+      text-align: left;
+      font-weight: 500;
+      cursor: pointer;
+    }
+
+    #jlt-wms-board .nav button.active {
+      color: #fff;
+      background: linear-gradient(135deg, #1d75ff, #0b63f6);
+      box-shadow: 0 10px 22px rgba(11, 99, 246, 0.22);
+    }
+
+    #jlt-wms-board .nav .sub {
+      width: calc(100% - 40px);
+      min-height: 36px;
+      margin-left: 40px;
+      padding: 8px 14px;
+      justify-content: center;
+      border-radius: 9px;
+      background: rgba(230, 241, 255, 0.78);
+      color: #0b63f6;
+      font-size: 0.92em;
+    }
+
+    #jlt-wms-board .nav .section {
+      margin-top: 16px;
+      min-height: 48px;
+      padding: 12px 26px;
+      font-size: 1.08em;
+    }
+
+    #jlt-wms-board .nav .section.is-linked {
+      color: #fff;
+      background: linear-gradient(135deg, #1d75ff, #0b63f6);
+      box-shadow: 0 10px 22px rgba(11, 99, 246, 0.22);
+    }
+
+    #jlt-wms-board .nav .section-spacer {
+      margin-top: 34px;
+    }
+
+    #jlt-wms-board .factory-tag {
+      margin-top: auto;
+      display: grid;
+      grid-template-columns: 36px 1fr;
+      gap: 10px;
+      align-items: center;
+      padding: 12px;
+      border: 1px solid var(--wms-line);
+      border-radius: 10px;
+      background: rgba(255, 255, 255, 0.72);
+    }
+
+    #jlt-wms-board .main {
+      min-width: 0;
+      display: grid;
+      gap: 12px;
+    }
+
+    #jlt-wms-board .topbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 12px;
+      min-width: 0;
+    }
+
+    #jlt-wms-board h1 {
+      margin: 0;
+      font-size: 1.6em;
+      font-weight: 500;
+      letter-spacing: 0;
+    }
+
+    #jlt-wms-board .subtitle,
+    #jlt-wms-board .muted {
+      color: #52627a;
+    }
+
+    #jlt-wms-board .subtitle {
+      margin-top: 4px;
+    }
+
+    #jlt-wms-board .operator {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      white-space: nowrap;
+      color: #24324a;
+    }
+
+    #jlt-wms-board .grid-kpi {
+      display: grid;
+      grid-template-columns: repeat(6, minmax(130px, 1fr));
+      gap: 10px;
+    }
+
+    #jlt-wms-board .panel {
+      min-width: 0;
+      padding: 12px;
+      border: 1px solid rgba(178, 196, 226, 0.8);
+      border-radius: 12px;
+      background: var(--wms-panel);
+      box-shadow: 0 8px 24px rgba(34, 67, 111, 0.06);
+    }
+
+    #jlt-wms-board .kpi {
+      display: grid;
+      gap: 8px;
+      min-height: 126px;
+    }
+
+    #jlt-wms-board .kpi-head,
+    #jlt-wms-board .panel-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      font-weight: 500;
+    }
+
+    #jlt-wms-board .big {
+      font-size: 1.75em;
+      font-weight: 500;
+      letter-spacing: 0;
+    }
+
+    #jlt-wms-board .unit {
+      font-size: 0.58em;
+      margin-left: 3px;
+    }
+
+    #jlt-wms-board .status-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      padding: 4px 8px;
+      border-radius: 999px;
+      color: #087345;
+      background: rgba(14, 167, 90, 0.13);
+      font-size: 0.85em;
+      font-weight: 500;
+    }
+
+    #jlt-wms-board .bar {
+      height: 8px;
+      border-radius: 999px;
+      background: #e4ecfa;
+      overflow: hidden;
+    }
+
+    #jlt-wms-board .bar span {
+      display: block;
+      height: 100%;
+      width: var(--w, 50%);
+      border-radius: inherit;
+      background: linear-gradient(90deg, #0b63f6, #28a0ff);
+      transition: width 500ms ease;
+    }
+
+    #jlt-wms-board .spark {
+      width: 100%;
+      height: 36px;
+    }
+
+    #jlt-wms-board .content {
+      display: grid;
+      grid-template-columns: minmax(180px, 280px) minmax(410px, 1fr) minmax(210px, 320px);
+      gap: 10px;
+      align-items: stretch;
+    }
+
+    #jlt-wms-board .left-stack,
+    #jlt-wms-board .right-stack {
+      display: grid;
+      gap: 10px;
+      align-content: stretch;
+    }
+
+    #jlt-wms-board .line-row {
+      display: grid;
+      grid-template-columns: 1fr 44px;
+      gap: 8px;
+      align-items: center;
+      padding: 8px 0;
+      border-bottom: 1px solid #edf2fa;
+    }
+
+    #jlt-wms-board .line-row:last-child {
+      border-bottom: 0;
+    }
+
+    #jlt-wms-board .line-title {
+      display: flex;
+      justify-content: space-between;
+      gap: 8px;
+      align-items: center;
+    }
+
+    #jlt-wms-board .mini-donut,
+    #jlt-wms-board .donut {
+      width: 42px;
+      height: 42px;
+      transform: rotate(-90deg);
+    }
+
+    #jlt-wms-board .donut {
+      width: 116px;
+      height: 116px;
+    }
+
+    #jlt-wms-board .donut-wrap {
+      display: grid;
+      place-items: center;
+      position: relative;
+    }
+
+    #jlt-wms-board .donut-label {
+      position: absolute;
+      display: grid;
+      place-items: center;
+      text-align: center;
+      font-weight: 500;
+    }
+
+    #jlt-wms-board .state-list {
+      display: grid;
+      gap: 8px;
+    }
+
+    #jlt-wms-board .state-item {
+      display: grid;
+      grid-template-columns: 10px 1fr auto;
+      align-items: center;
+      gap: 8px;
+    }
+
+    #jlt-wms-board .dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--dot, var(--wms-blue));
+    }
+
+    #jlt-wms-board .map-panel {
+      min-height: 410px;
+      padding: 10px;
+      background:
+        linear-gradient(180deg, rgba(255,255,255,0.95), rgba(239,246,255,0.86)),
+        repeating-linear-gradient(90deg, rgba(11,99,246,0.05) 0 1px, transparent 1px 48px);
+      overflow: hidden;
+    }
+
+    #jlt-wms-board .map-title {
+      padding: 0 4px 6px;
+    }
+
+    #jlt-wms-board .map-wrap {
+      position: relative;
+      min-height: 360px;
+      border-radius: 10px;
+      background: linear-gradient(180deg, #eef4fb, #f9fbfe);
+      box-shadow: inset 0 0 0 1px rgba(153, 174, 208, 0.55);
+      overflow: hidden;
+    }
+
+    #jlt-wms-board .floor {
+      width: 100%;
+      height: auto;
+      display: block;
+    }
+
+    #jlt-wms-board .zone {
+      fill: url(#zoneGrad);
+      stroke: #aebbd0;
+      stroke-width: 1.2;
+      filter: drop-shadow(0 8px 10px rgba(45, 72, 110, 0.12));
+    }
+
+    #jlt-wms-board .rack {
+      fill: #c8d5e8;
+      stroke: #7183a2;
+      stroke-width: 0.7;
+    }
+
+    #jlt-wms-board .machine {
+      fill: #ffffff;
+      stroke: #8ca1bf;
+      stroke-width: 0.8;
+    }
+
+    #jlt-wms-board .arm {
+      fill: #f5b041;
+      stroke: #905f03;
+      stroke-width: 0.8;
+    }
+
+    #jlt-wms-board .road-a,
+    #jlt-wms-board .road-b,
+    #jlt-wms-board .road-c {
+      fill: none;
+      stroke-width: 3.5;
+      stroke-linecap: round;
+      stroke-dasharray: 10 9;
+    }
+
+    #jlt-wms-board .road-a { stroke: var(--wms-green); }
+    #jlt-wms-board .road-b { stroke: var(--wms-blue); }
+    #jlt-wms-board .road-c { stroke: var(--wms-orange); }
+
+    #jlt-wms-board .flow {
+      fill: currentColor;
+      filter: drop-shadow(0 0 8px currentColor);
+    }
+
+    #jlt-wms-board .flow-a { color: var(--wms-green); }
+    #jlt-wms-board .flow-b { color: var(--wms-blue); }
+    #jlt-wms-board .flow-c { color: var(--wms-orange); }
+
+    #jlt-wms-board .vehicle {
+      transition: transform 900ms ease;
+      filter: drop-shadow(0 6px 7px rgba(20, 44, 78, 0.22));
+    }
+
+    #jlt-wms-board .veh-body {
+      fill: #f8fbff;
+      stroke: #1d4ed8;
+      stroke-width: 1.5;
+    }
+
+    #jlt-wms-board .veh-load {
+      fill: #ffd166;
+      stroke: #a16207;
+    }
+
+    #jlt-wms-board .zone-label {
+      fill: #fff;
+      font-weight: 500;
+      font-size: 12px;
+    }
+
+    #jlt-wms-board .label-box {
+      fill: #0b63f6;
+      rx: 4;
+    }
+
+    #jlt-wms-board .legend {
+      position: absolute;
+      right: 10px;
+      bottom: 10px;
+      display: grid;
+      gap: 6px;
+      width: min(170px, 42%);
+      padding: 10px;
+      border: 1px solid rgba(151, 170, 205, 0.65);
+      border-radius: 10px;
+      background: rgba(255,255,255,0.84);
+      backdrop-filter: blur(8px);
+    }
+
+    #jlt-wms-board .event {
+      display: grid;
+      grid-template-columns: 18px 1fr auto;
+      gap: 8px;
+      align-items: center;
+      padding: 8px 0;
+      border-bottom: 1px solid #edf2fa;
+    }
+
+    #jlt-wms-board .event:last-child {
+      border-bottom: 0;
+    }
+
+    #jlt-wms-board .fleet {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 8px;
+    }
+
+    #jlt-wms-board .fleet-card {
+      padding: 10px 8px;
+      border: 1px solid #dbe7f8;
+      border-radius: 10px;
+      background: rgba(247, 251, 255, 0.8);
+      text-align: center;
+    }
+
+    #jlt-wms-board .tray-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 8px;
+    }
+
+    #jlt-wms-board .tray {
+      padding: 9px 8px;
+      border-radius: 10px;
+      border: 1px solid #dbe7f8;
+      background: rgba(255,255,255,0.76);
+    }
+
+    #jlt-wms-board .bottom {
+      display: grid;
+      grid-template-columns: minmax(220px, 1fr) minmax(230px, 1.1fr) minmax(320px, 1.7fr) minmax(220px, 1fr);
+      gap: 10px;
+    }
+
+    #jlt-wms-board .chart {
+      width: 100%;
+      height: 138px;
+    }
+
+    #jlt-wms-board .axis {
+      stroke: #c9d5e8;
+      stroke-width: 1;
+    }
+
+    #jlt-wms-board .gridline {
+      stroke: #e7eef8;
+      stroke-width: 1;
+    }
+
+    #jlt-wms-board .line-in {
+      fill: none;
+      stroke: var(--wms-blue);
+      stroke-width: 2.4;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+      transition: d 600ms ease;
+    }
+
+    #jlt-wms-board .line-out {
+      fill: none;
+      stroke: var(--wms-green);
+      stroke-width: 2.4;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+      transition: d 600ms ease;
+    }
+
+    #jlt-wms-board .table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.86em;
+    }
+
+    #jlt-wms-board th,
+    #jlt-wms-board td {
+      padding: 6px 5px;
+      border-bottom: 1px solid #edf2fa;
+      text-align: left;
+      white-space: nowrap;
+    }
+
+    #jlt-wms-board th {
+      color: #52627a;
+      font-weight: 500;
+    }
+
+    #jlt-wms-board .progress {
+      display: inline-grid;
+      grid-template-columns: 70px 32px;
+      gap: 6px;
+      align-items: center;
+    }
+
+    #jlt-wms-board .sla-box {
+      padding: 10px;
+      border: 1px solid #dbe7f8;
+      border-radius: 10px;
+      background: rgba(247, 251, 255, 0.8);
+    }
+
+    #jlt-wms-board .zoom-tools {
+      position: absolute;
+      left: 50%;
+      bottom: 10px;
+      transform: translateX(-50%);
+      display: flex;
+      gap: 3px;
+      padding: 4px;
+      border: 1px solid #d5e0f1;
+      border-radius: 10px;
+      background: rgba(255,255,255,0.86);
+    }
+
+    #jlt-wms-board .zoom-tools button {
+      width: 30px;
+      height: 28px;
+      border: 0;
+      border-radius: 7px;
+      background: transparent;
+      color: #314461;
+    }
+
+    @keyframes dashMove {
+      to { stroke-dashoffset: -38; }
+    }
+
+    @keyframes flowPulse {
+      0% { opacity: 0.35; r: 3; }
+      50% { opacity: 1; r: 5.5; }
+      100% { opacity: 0.35; r: 3; }
+    }
+
+    @media (prefers-reduced-motion: no-preference) {
+      #jlt-wms-board .road-a,
+      #jlt-wms-board .road-b,
+      #jlt-wms-board .road-c {
+        animation: dashMove 1.4s linear infinite;
+      }
+      #jlt-wms-board .flow {
+        animation: flowPulse 1.8s ease-in-out infinite;
+      }
+    }
+
+  </style>
+
+  <div class="shell">
+    <aside class="sidebar" aria-label="통합관제 메뉴">
+      <div class="logo"><img src="jlt-logo.png" alt="JLT"></div>
+      <nav class="nav" aria-label="플랫폼 메뉴">
+        <button type="button" data-tab="dashboard">통합 대시보드</button>
+        <button type="button" data-tab="work">작업·자재·미션 관리</button>
+        <button class="sub" type="button" data-tab="work-order">작업지시 관리</button>
+        <button type="button" data-tab="trace">자재 추적 관리</button>
+        <button type="button" data-tab="mission">미션 오케스트레이션</button>
+        <button type="button" data-tab="resource">설비·자원 관리</button>
+        <button type="button" data-tab="amr">AMR·로봇 관리</button>
+        <button class="section section-spacer" type="button" data-tab="quality">품질 관리</button>
+        <button class="section is-linked" type="button" data-tab="logistics" aria-current="page">물류 관리</button>
+        <button class="section" type="button" data-tab="alarm">알람 관리</button>
+        <button class="section" type="button" data-tab="robot-control">로봇 관제</button>
+      </nav>
+    </aside>
+
+    <main class="main">
+      <section class="topbar" aria-label="헤더">
+        <div>
+          <h1>JLT WMS 통합 물류 관제 대시보드</h1>
+          <div class="subtitle">디스플레이 공장 물류자동화 운영 현황을 한 화면에서 모니터링</div>
+        </div>
+        <div class="operator">
+          <span><i data-lucide="clock-3" aria-hidden="true"></i> <span id="wms-clock">2026.07.14 (화) 10:24:30</span></span>
+          <span><i data-lucide="sun" aria-hidden="true"></i></span>
+          <span><i data-lucide="bell" aria-hidden="true"></i></span>
+          <span><strong>관리자</strong><br><span class="muted">JLT Admin</span></span>
+        </div>
+      </section>
+
+      <section class="grid-kpi" aria-label="핵심 물류 지표">
+        <article class="panel kpi">
+          <div class="kpi-head"><span>물류 처리율</span><span class="status-pill">정상 운영 중</span></div>
+          <div class="donut-wrap">
+            <svg class="donut" viewBox="0 0 44 44" aria-label="물류 처리율">
+              <circle cx="22" cy="22" r="17" fill="none" stroke="#e5edf8" stroke-width="5"></circle>
+              <circle id="rate-donut" cx="22" cy="22" r="17" fill="none" stroke="#0ea75a" stroke-width="5" stroke-linecap="round" stroke-dasharray="106.8" stroke-dashoffset="4"></circle>
+            </svg>
+            <div class="donut-label"><span class="big" id="rate">96</span><span class="muted">오늘 기준</span></div>
+          </div>
+        </article>
+        <article class="panel kpi">
+          <div class="kpi-head"><span>입고 처리</span><i data-lucide="download" aria-hidden="true"></i></div>
+          <div><span class="big" id="inbound">1,248</span><span class="unit">LOT</span></div>
+          <div class="bar"><span id="inbound-bar"></span></div>
+          <span class="muted">목표 1,300 LOT</span>
+        </article>
+        <article class="panel kpi">
+          <div class="kpi-head"><span>출고 처리</span><i data-lucide="upload" aria-hidden="true"></i></div>
+          <div><span class="big" id="outbound">1,186</span><span class="unit">LOT</span></div>
+          <div class="bar"><span id="outbound-bar"></span></div>
+          <span class="muted">목표 1,200 LOT</span>
+        </article>
+        <article class="panel kpi">
+          <div class="kpi-head"><span>재고 정확도</span><i data-lucide="target" aria-hidden="true"></i></div>
+          <div><span class="big" id="accuracy">99.2</span><span class="unit">%</span></div>
+          <svg class="spark" viewBox="0 0 120 36" aria-label="재고 정확도 추이"><path id="accuracy-spark" fill="none" stroke="#0ea75a" stroke-width="2" d=""></path></svg>
+          <span class="muted">목표 99.0%</span>
+        </article>
+        <article class="panel kpi">
+          <div class="kpi-head"><span>라인 공급 지시</span><i data-lucide="clipboard-list" aria-hidden="true"></i></div>
+          <div><span class="big" id="orders">156</span><span class="unit">건</span></div>
+          <span class="muted">금일 신규 <span id="new-orders">42</span>건</span>
+          <span class="muted">전일 148건</span>
+        </article>
+        <article class="panel kpi">
+          <div class="kpi-head"><span>창고 점유율</span><i data-lucide="boxes" aria-hidden="true"></i></div>
+          <div><span class="big" id="occupancy">78.3</span><span class="unit">%</span></div>
+          <svg class="spark" viewBox="0 0 120 36" aria-label="창고 점유율 추이"><path id="occupancy-spark" fill="none" stroke="#0ea75a" stroke-width="2" d=""></path></svg>
+          <span class="muted">목표 85% 이하</span>
+        </article>
+      </section>
+
+      <section class="content">
+        <div class="left-stack">
+          <article class="panel">
+            <div class="panel-head"><span>라인 공급 현황</span><span class="muted">실시간</span></div>
+            <div id="line-supply"></div>
+          </article>
+          <article class="panel">
+            <div class="panel-head"><span>설비 / 물류 상태</span><span class="muted">172대</span></div>
+            <div style="display:grid;grid-template-columns:118px 1fr;gap:12px;align-items:center;margin-top:8px">
+              <div class="donut-wrap">
+                <svg class="donut" viewBox="0 0 44 44" aria-label="설비 상태 분포">
+                  <circle cx="22" cy="22" r="17" fill="none" stroke="#e5edf8" stroke-width="6"></circle>
+                  <circle id="equip-run" cx="22" cy="22" r="17" fill="none" stroke="#0ea75a" stroke-width="6" stroke-dasharray="106.8" stroke-dashoffset="37"></circle>
+                  <circle id="equip-idle" cx="22" cy="22" r="17" fill="none" stroke="#0b63f6" stroke-width="6" stroke-dasharray="106.8" stroke-dashoffset="80"></circle>
+                  <circle id="equip-alarm" cx="22" cy="22" r="17" fill="none" stroke="#f59e0b" stroke-width="6" stroke-dasharray="106.8" stroke-dashoffset="99"></circle>
+                </svg>
+                <div class="donut-label"><span class="big" id="equip-total">172</span><span class="muted">전체 설비</span></div>
+              </div>
+              <div class="state-list" id="equip-list"></div>
+            </div>
+          </article>
+        </div>
+
+        <article class="panel map-panel">
+          <div class="panel-head map-title"><span>공장 물류 레이아웃</span><span class="muted">실시간</span></div>
+          <div class="map-wrap">
+            <svg class="floor" viewBox="0 0 900 500" role="img" aria-labelledby="floor-title floor-desc">
+              <title id="floor-title">공장 물류 흐름 레이아웃</title>
+              <desc id="floor-desc">입고 도크에서 창고, 셀 라인, 모듈 라인, 검사 공정, 출하 도크까지의 물류 경로와 이동 설비를 나타낸다.</desc>
+              <defs>
+                <linearGradient id="zoneGrad" x1="0" x2="0" y1="0" y2="1">
+                  <stop offset="0%" stop-color="#ffffff"></stop>
+                  <stop offset="100%" stop-color="#dce8f8"></stop>
+                </linearGradient>
+              </defs>
+              <polygon class="zone" points="60,72 812,72 842,430 92,430"></polygon>
+              <rect class="zone" x="120" y="100" width="185" height="118"></rect>
+              <rect class="zone" x="340" y="98" width="180" height="124"></rect>
+              <rect class="zone" x="555" y="98" width="185" height="122"></rect>
+              <rect class="zone" x="178" y="254" width="214" height="112"></rect>
+              <rect class="zone" x="438" y="254" width="238" height="112"></rect>
+              <rect class="zone" x="315" y="388" width="258" height="42"></rect>
+              <rect x="18" y="168" width="58" height="190" rx="8" fill="#dbe6f4" stroke="#8fa2bd"></rect>
+              <rect x="807" y="178" width="58" height="176" rx="8" fill="#dbe6f4" stroke="#8fa2bd"></rect>
+
+              <g id="racks"></g>
+              <g id="machines"></g>
+
+              <path id="route-a" class="road-a" d="M76 220 C146 220 126 86 214 86 L740 86 C808 86 804 178 798 220 L706 220 C618 220 636 238 556 238 L260 238 C156 238 168 360 90 360"></path>
+              <path id="route-b" class="road-b" d="M76 305 L184 305 C258 305 250 245 332 245 L746 245 C810 245 796 345 724 345 L494 345 C418 345 418 305 338 305 L178 305"></path>
+              <path id="route-c" class="road-c" d="M90 376 C174 382 205 392 300 376 L680 376 C744 376 762 312 700 292 L468 292 C392 292 382 346 314 346 L164 346"></path>
+
+              <circle class="flow flow-a"><animateMotion dur="7s" repeatCount="indefinite" rotate="auto"><mpath href="#route-a"></mpath></animateMotion></circle>
+              <circle class="flow flow-b"><animateMotion dur="6.5s" repeatCount="indefinite" rotate="auto"><mpath href="#route-b"></mpath></animateMotion></circle>
+              <circle class="flow flow-c"><animateMotion dur="8s" repeatCount="indefinite" rotate="auto"><mpath href="#route-c"></mpath></animateMotion></circle>
+
+              <g id="veh-amr" class="vehicle" transform="translate(160 238)">
+                <rect class="veh-body" x="-12" y="-9" width="24" height="18" rx="4"></rect>
+                <rect class="veh-load" x="-7" y="-15" width="14" height="8" rx="2"></rect>
+                <circle cx="-7" cy="9" r="2.4" fill="#17345d"></circle><circle cx="7" cy="9" r="2.4" fill="#17345d"></circle>
+              </g>
+              <g id="veh-oht" class="vehicle" transform="translate(565 86)">
+                <rect class="veh-body" x="-15" y="-7" width="30" height="14" rx="3"></rect>
+                <path d="M-9 -7 L-3 -17 H8 L14 -7" fill="#93c5fd" stroke="#1d4ed8" stroke-width="1"></path>
+              </g>
+              <g id="veh-agv" class="vehicle" transform="translate(612 346)">
+                <rect class="veh-load" x="-14" y="-12" width="28" height="13" rx="2"></rect>
+                <rect class="veh-body" x="-16" y="0" width="32" height="13" rx="4"></rect>
+                <circle cx="-9" cy="13" r="2.4" fill="#17345d"></circle><circle cx="9" cy="13" r="2.4" fill="#17345d"></circle>
+              </g>
+
+              <g>
+                <rect class="label-box" x="142" y="72" width="82" height="24"></rect><text class="zone-label" x="183" y="89" text-anchor="middle">원자재 창고</text>
+                <rect class="label-box" x="432" y="70" width="68" height="24"></rect><text class="zone-label" x="466" y="87" text-anchor="middle">스토커</text>
+                <rect class="label-box" x="616" y="72" width="82" height="24"></rect><text class="zone-label" x="657" y="89" text-anchor="middle">검사공정</text>
+                <rect class="label-box" x="26" y="180" width="76" height="24"></rect><text class="zone-label" x="64" y="197" text-anchor="middle">입고 도크</text>
+                <rect class="label-box" x="784" y="190" width="76" height="24"></rect><text class="zone-label" x="822" y="207" text-anchor="middle">출하 도크</text>
+                <rect fill="#0ea75a" rx="4" x="394" y="222" width="88" height="24"></rect><text class="zone-label" x="438" y="239" text-anchor="middle">Cell Line</text>
+                <rect fill="#0b63f6" rx="4" x="520" y="286" width="82" height="24"></rect><text class="zone-label" x="561" y="303" text-anchor="middle">Route B</text>
+                <rect fill="#f59e0b" rx="4" x="525" y="354" width="82" height="24"></rect><text class="zone-label" x="566" y="371" text-anchor="middle">Route C</text>
+                <rect fill="#0ea75a" rx="4" x="358" y="354" width="102" height="24"></rect><text class="zone-label" x="409" y="371" text-anchor="middle">Module Line</text>
+                <rect fill="#0b63f6" rx="4" x="372" y="392" width="92" height="24"></rect><text class="zone-label" x="418" y="409" text-anchor="middle">완제품 창고</text>
+              </g>
+            </svg>
+            <div class="legend">
+              <strong>범례</strong>
+              <span><span class="dot" style="--dot:#0ea75a"></span> Route A 정상 공급</span>
+              <span><span class="dot" style="--dot:#0b63f6"></span> Route B 생산 연계</span>
+              <span><span class="dot" style="--dot:#f59e0b"></span> Route C 우회 공급</span>
+            </div>
+            <div class="zoom-tools" aria-label="지도 도구">
+              <button type="button" aria-label="확대"><i data-lucide="zoom-in" aria-hidden="true"></i></button>
+              <button type="button" aria-label="축소"><i data-lucide="zoom-out" aria-hidden="true"></i></button>
+              <button type="button" aria-label="새로고침"><i data-lucide="rotate-cw" aria-hidden="true"></i></button>
+              <button type="button" aria-label="전체화면"><i data-lucide="maximize" aria-hidden="true"></i></button>
+            </div>
+          </div>
+        </article>
+
+        <div class="right-stack">
+          <article class="panel">
+            <div class="panel-head"><span>알람 / 이벤트</span><span class="muted">최근</span></div>
+            <div id="events"></div>
+          </article>
+          <article class="panel">
+            <div class="panel-head"><span>AMR / OHT / AGV 현황</span><span class="muted">실시간</span></div>
+            <div class="fleet" id="fleet"></div>
+          </article>
+          <article class="panel">
+            <div class="panel-head"><span>랙 / 카세트 / 트레이 현황</span><span class="muted">실시간</span></div>
+            <div class="tray-grid" id="tray"></div>
+          </article>
+        </div>
+      </section>
+
+      <section class="bottom">
+        <article class="panel">
+          <div class="panel-head"><span>물류 처리량 추이</span><span class="muted">오늘</span></div>
+          <svg class="chart" id="chart-flow" viewBox="0 0 260 138" aria-label="물류 처리량 추이"></svg>
+        </article>
+        <article class="panel">
+          <div class="panel-head"><span>재고 정확도 / 공급 SLA</span><span class="muted">금일</span></div>
+          <div style="display:grid;grid-template-columns:116px 1fr;gap:14px;align-items:center;margin-top:10px">
+            <div class="donut-wrap">
+              <svg class="donut" viewBox="0 0 44 44" aria-label="재고 정확도">
+                <circle cx="22" cy="22" r="17" fill="none" stroke="#e5edf8" stroke-width="6"></circle>
+                <circle id="sla-donut" cx="22" cy="22" r="17" fill="none" stroke="#0ea75a" stroke-width="6" stroke-linecap="round" stroke-dasharray="106.8" stroke-dashoffset="1"></circle>
+              </svg>
+              <div class="donut-label"><span class="big" id="sla-acc">99.2</span><span class="muted">정확도</span></div>
+            </div>
+            <div>
+              <div class="sla-box">
+                <span class="muted">공급 SLA</span><br><span class="big" id="sla">98.6</span><span class="unit">%</span>
+              </div>
+              <div class="state-list" style="margin-top:8px">
+                <span><span class="dot" style="--dot:#0ea75a"></span> 정확 <span id="ok-ratio">99.2%</span></span>
+                <span><span class="dot" style="--dot:#f59e0b"></span> 오차 0.6%</span>
+                <span><span class="dot" style="--dot:#ef4444"></span> 미스 0.2%</span>
+              </div>
+            </div>
+          </div>
+        </article>
+        <article class="panel">
+          <div class="panel-head"><span>작업지시 / 출하 일정</span><span class="muted">더보기</span></div>
+          <table class="table" aria-label="작업지시 목록">
+            <thead><tr><th>작업지시 No.</th><th>품목명</th><th>계획 수량</th><th>진행률</th><th>ETA</th></tr></thead>
+            <tbody id="work-table"></tbody>
+          </table>
+        </article>
+        <article class="panel">
+          <div class="panel-head"><span>입고 / 출고 추이</span><span class="muted">오늘</span></div>
+          <svg class="chart" id="chart-io" viewBox="0 0 260 138" aria-label="입고 출고 추이"></svg>
+        </article>
+      </section>
+    </main>
+  </div>
+
+  <script>
+    (() => {
+      const root = document.getElementById("jlt-wms-board");
+      const $ = (id) => root.querySelector("#" + id);
+      const fmt = new Intl.NumberFormat("ko-KR");
+      let tick = 0;
+
+      root.querySelectorAll(".nav button").forEach((button) => {
+        button.addEventListener("click", () => {
+          root.querySelectorAll(".nav button").forEach((item) => {
+            item.classList.remove("active", "is-linked");
+            item.removeAttribute("aria-current");
+          });
+          if (button.dataset.tab === "logistics") {
+            button.classList.add("is-linked");
+            button.setAttribute("aria-current", "page");
+          } else {
+            button.classList.add("active");
+          }
+        });
+      });
+
+      const state = {
+        inbound: 1248,
+        outbound: 1186,
+        rate: 96,
+        accuracy: 99.2,
+        occupancy: 78.3,
+        orders: 156,
+        newOrders: 42,
+        sla: 98.6,
+        flowIn: [220, 610, 760, 1010, 1120, 1230, 1320, 1500, 1680, 1780],
+        flowOut: [80, 390, 570, 700, 820, 960, 1010, 1140, 1280, 1450],
+        accuracyTrend: [98.7, 98.9, 98.8, 99.0, 98.9, 99.1, 99.0, 99.2, 99.1, 99.3],
+        occupancyTrend: [75, 76.2, 75.6, 77, 76.4, 78, 77.2, 78.5, 79, 78.3]
+      };
+
+      const lines = [
+        { name: "Line A (Panel)", status: "정상 공급", need: 620, supplied: 607, pct: 98, color: "#0ea75a" },
+        { name: "Line B (Cell)", status: "공급 지연", need: 540, supplied: 445, pct: 82, color: "#f59e0b" },
+        { name: "Line C (Module)", status: "정상 공급", need: 480, supplied: 455, pct: 95, color: "#0ea75a" },
+        { name: "Module Line", status: "정상 공급", need: 320, supplied: 298, pct: 93, color: "#0b63f6" }
+      ];
+
+      const fleet = [
+        { type: "AMR", total: 48, run: 32, check: 10, wait: 6, icon: "bot" },
+        { type: "OHT", total: 36, run: 26, check: 4, wait: 6, icon: "tram-front" },
+        { type: "AGV", total: 14, run: 9, check: 3, wait: 2, icon: "forklift" }
+      ];
+
+      const trays = [
+        { label: "Empty", value: 1256, sub: "EA (18%)", color: "#0b63f6" },
+        { label: "In Use", value: 4352, sub: "EA (62%)", color: "#0ea75a" },
+        { label: "Full", value: 1412, sub: "EA (20%)", color: "#ef4444" }
+      ];
+
+      const works = [
+        ["WO-250714-001", "65” Panel (Open Cell)", 1200, 87, "12:00"],
+        ["WO-250714-002", "55” Module (LCM)", 900, 82, "14:00"],
+        ["WO-250714-003", "42” Panel (a-Si)", 800, 86, "16:00"],
+        ["WO-250714-004", "TFT Glass (Gen8.6)", 600, 85, "18:00"],
+        ["WO-250714-005", "Polarizer Film", 400, 78, "20:00"]
+      ];
+
+      const eventTexts = [
+        ["triangle-alert", "AMR 배차 지연 (AMR-07)", "#ef4444"],
+        ["triangle-alert", "스토커 #2 적재량 경고 (95%)", "#f59e0b"],
+        ["circle-alert", "Line B 자재공급 지연 (Glass)", "#f59e0b"],
+        ["circle-alert", "OHT 경로 혼잡 (Route B)", "#f59e0b"],
+        ["info", "입고 도크 스캔 오류 (Dock 2)", "#0b63f6"]
+      ];
+
+      function pathFrom(values, w, h, pad = 12) {
+        const min = Math.min(...values);
+        const max = Math.max(...values);
+        return values.map((v, i) => {
+          const x = pad + (i * (w - pad * 2)) / (values.length - 1);
+          const y = h - pad - ((v - min) / Math.max(1, max - min)) * (h - pad * 2);
+          return `${i ? "L" : "M"}${x.toFixed(1)} ${y.toFixed(1)}`;
+        }).join(" ");
+      }
+
+      function setDonut(id, pct) {
+        const c = $(id);
+        if (c) c.style.strokeDashoffset = String(106.8 * (1 - pct / 100));
+      }
+
+      function renderMiniDonut(pct, color) {
+        const off = 106.8 * (1 - pct / 100);
+        return `<svg class="mini-donut" viewBox="0 0 44 44" aria-label="${pct}%"><circle cx="22" cy="22" r="17" fill="none" stroke="#e5edf8" stroke-width="4"></circle><circle cx="22" cy="22" r="17" fill="none" stroke="${color}" stroke-width="4" stroke-linecap="round" stroke-dasharray="106.8" stroke-dashoffset="${off}"></circle><text x="-22" y="25" transform="rotate(90)" text-anchor="middle" font-size="9" font-weight="500" fill="#0f172a">${pct}%</text></svg>`;
+      }
+
+      function drawChart(id, inData, outData) {
+        const svg = $(id);
+        const w = 260, h = 138, pad = 24;
+        const max = Math.max(...inData, ...outData) * 1.1;
+        const scaleY = (v) => h - pad - (v / max) * (h - pad * 2);
+        const scaleX = (i) => pad + (i * (w - pad * 2)) / (inData.length - 1);
+        const makePath = (arr) => arr.map((v, i) => `${i ? "L" : "M"}${scaleX(i).toFixed(1)} ${scaleY(v).toFixed(1)}`).join(" ");
+        let grid = "";
+        for (let i = 0; i < 4; i++) {
+          const y = pad + i * 28;
+          grid += `<line class="gridline" x1="${pad}" x2="${w - 8}" y1="${y}" y2="${y}"></line>`;
+        }
+        svg.innerHTML = `${grid}<line class="axis" x1="${pad}" x2="${w - 8}" y1="${h - pad}" y2="${h - pad}"></line><path class="line-in" d="${makePath(inData)}"></path><path class="line-out" d="${makePath(outData)}"></path><g fill="#0b63f6">${inData.map((v,i)=>`<circle cx="${scaleX(i)}" cy="${scaleY(v)}" r="2.6"></circle>`).join("")}</g><g fill="#0ea75a">${outData.map((v,i)=>`<circle cx="${scaleX(i)}" cy="${scaleY(v)}" r="2.6"></circle>`).join("")}</g><text x="${pad}" y="14" fill="#52627a" font-size="10">입고 LOT</text><text x="92" y="14" fill="#52627a" font-size="10">출고 LOT</text><text x="${w - 76}" y="24" fill="#0b63f6" font-size="10">금일 ${fmt.format(inData.at(-1))} LOT</text>`;
+      }
+
+      function buildStatic() {
+        const rackG = $("racks");
+        const machineG = $("machines");
+        let racks = "";
+        for (let x = 142; x < 284; x += 26) {
+          for (let y = 116; y < 204; y += 20) racks += `<rect class="rack" x="${x}" y="${y}" width="18" height="14" rx="1"></rect>`;
+        }
+        for (let x = 328; x < 520; x += 40) {
+          for (let y = 118; y < 206; y += 28) racks += `<rect class="rack" x="${x}" y="${y}" width="28" height="18" rx="1"></rect>`;
+        }
+        for (let x = 592; x < 720; x += 32) {
+          for (let y = 120; y < 200; y += 24) racks += `<rect class="rack" x="${x}" y="${y}" width="22" height="16" rx="1"></rect>`;
+        }
+        rackG.innerHTML = racks;
+        let machines = "";
+        for (let x = 198; x < 382; x += 46) machines += `<rect class="machine" x="${x}" y="278" width="34" height="28" rx="3"></rect><circle class="arm" cx="${x + 17}" cy="270" r="8"></circle>`;
+        for (let x = 462; x < 654; x += 44) machines += `<rect class="machine" x="${x}" y="280" width="32" height="28" rx="3"></rect><path class="arm" d="M${x + 10} 270 l16 -16 l10 8 l-16 16z"></path>`;
+        machines += `<rect class="machine" x="386" y="132" width="54" height="74" rx="4"></rect><rect class="arm" x="405" y="106" width="18" height="96" rx="3"></rect>`;
+        machineG.innerHTML = machines;
+
+        $("line-supply").innerHTML = lines.map(l => `
+          <div class="line-row">
+            <div>
+              <div class="line-title"><strong>${l.name}</strong><span class="muted">공급률</span></div>
+              <div><span style="color:${l.color};font-weight:500">${l.status}</span> <span class="muted">필요 ${l.need} / 공급 ${l.supplied} LOT</span></div>
+            </div>
+            ${renderMiniDonut(l.pct, l.color)}
+          </div>`).join("");
+
+        $("fleet").innerHTML = fleet.map(f => `
+          <div class="fleet-card">
+            <strong style="color:#0b63f6">${f.type}</strong><br>
+            <i data-lucide="${f.icon}" aria-hidden="true"></i>
+            <div class="big">${f.total}</div>
+            <div class="muted">운영 ${f.run} · 점검 ${f.check} · 대기 ${f.wait}</div>
+          </div>`).join("");
+
+        $("tray").innerHTML = trays.map(t => `
+          <div class="tray">
+            <strong style="color:${t.color}">${t.label}</strong>
+            <div><span class="big">${fmt.format(t.value)}</span><span class="unit">EA</span></div>
+            <span class="muted">${t.sub}</span>
+          </div>`).join("");
+
+        $("work-table").innerHTML = works.map(w => `
+          <tr>
+            <td style="color:#0b63f6">${w[0]}</td><td>${w[1]}</td><td>${fmt.format(w[2])} LOT</td>
+            <td><span class="progress"><span class="bar"><span style="--w:${w[3]}%"></span></span>${w[3]}%</span></td><td>${w[4]}</td>
+          </tr>`).join("");
+
+        if (window.lucide) window.lucide.createIcons({ attrs: { width: 16, height: 16 } });
+      }
+
+      function updateEvents() {
+        const now = new Date();
+        $("events").innerHTML = eventTexts.map((e, i) => {
+          const d = new Date(now.getTime() - (i * 140 + tick * 7) * 1000);
+          const time = d.toTimeString().slice(0, 8);
+          return `<div class="event"><i data-lucide="${e[0]}" aria-hidden="true" style="color:${e[2]}"></i><span>${e[1]}</span><span class="muted">${time}</span></div>`;
+        }).join("");
+        if (window.lucide) window.lucide.createIcons({ attrs: { width: 16, height: 16 } });
+      }
+
+      function step() {
+        tick += 1;
+        const wave = Math.sin(tick / 3);
+        state.inbound += Math.round(7 + wave * 4);
+        state.outbound += Math.round(6 + Math.cos(tick / 4) * 3);
+        state.rate = Math.max(93, Math.min(98, 95.8 + wave * 1.2));
+        state.accuracy = Math.max(98.8, Math.min(99.5, 99.15 + Math.cos(tick / 5) * 0.18));
+        state.occupancy = Math.max(75, Math.min(83, 78.3 + Math.sin(tick / 4) * 1.7));
+        state.orders += tick % 3 === 0 ? 1 : 0;
+        state.newOrders += tick % 4 === 0 ? 1 : 0;
+        state.sla = Math.max(97.4, Math.min(99.1, 98.4 + Math.sin(tick / 6) * 0.35));
+
+        state.flowIn = state.flowIn.slice(1).concat(state.inbound);
+        state.flowOut = state.flowOut.slice(1).concat(state.outbound);
+        state.accuracyTrend = state.accuracyTrend.slice(1).concat(state.accuracy);
+        state.occupancyTrend = state.occupancyTrend.slice(1).concat(state.occupancy);
+
+        $("rate").textContent = state.rate.toFixed(0);
+        $("inbound").textContent = fmt.format(state.inbound);
+        $("outbound").textContent = fmt.format(state.outbound);
+        $("accuracy").textContent = state.accuracy.toFixed(1);
+        $("occupancy").textContent = state.occupancy.toFixed(1);
+        $("orders").textContent = fmt.format(state.orders);
+        $("new-orders").textContent = fmt.format(state.newOrders);
+        $("sla").textContent = state.sla.toFixed(1);
+        $("sla-acc").textContent = state.accuracy.toFixed(1);
+        $("ok-ratio").textContent = `${state.accuracy.toFixed(1)}%`;
+        $("inbound-bar").style.setProperty("--w", `${Math.min(100, state.inbound / 1300 * 100)}%`);
+        $("outbound-bar").style.setProperty("--w", `${Math.min(100, state.outbound / 1200 * 100)}%`);
+        $("accuracy-spark").setAttribute("d", pathFrom(state.accuracyTrend, 120, 36, 5));
+        $("occupancy-spark").setAttribute("d", pathFrom(state.occupancyTrend, 120, 36, 5));
+        setDonut("rate-donut", state.rate);
+        setDonut("sla-donut", state.accuracy);
+
+        $("veh-amr").setAttribute("transform", `translate(${160 + (tick % 7) * 34} ${238 + Math.sin(tick) * 8})`);
+        $("veh-oht").setAttribute("transform", `translate(${565 + Math.sin(tick / 2) * 140} 86)`);
+        $("veh-agv").setAttribute("transform", `translate(${612 - (tick % 6) * 42} ${346 + Math.cos(tick) * 6})`);
+
+        drawChart("chart-flow", state.flowIn, state.flowOut);
+        drawChart("chart-io", state.flowIn.map(v => v * 1.03), state.flowOut.map(v => v * 0.98));
+        updateEvents();
+
+        const now = new Date();
+        const day = ["일", "월", "화", "수", "목", "금", "토"][now.getDay()];
+        $("wms-clock").textContent = `${now.getFullYear()}.${String(now.getMonth() + 1).padStart(2, "0")}.${String(now.getDate()).padStart(2, "0")} (${day}) ${now.toTimeString().slice(0, 8)}`;
+      }
+
+      buildStatic();
+      step();
+      setInterval(step, 2600);
+    })();
+  </script>
+</div>

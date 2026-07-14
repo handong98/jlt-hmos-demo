@@ -1,0 +1,1159 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>AMR / Humanoid 관제센터</title>
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <style>
+    html,
+    body {
+      margin: 0;
+      width: 100%;
+      min-height: 100%;
+      background: #e8eef6;
+      overflow-x: auto;
+      overflow-y: auto;
+    }
+
+    body {
+      padding: clamp(10px, 1.6vw, 24px);
+      box-sizing: border-box;
+    }
+  </style>
+</head>
+<body>
+<div id="robot-control-page" class="robot-page" aria-label="AMR 휴머노이드 로봇 관제 인터랙티브 페이지">
+  <style>
+    @import url("https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500&display=swap");
+
+    #robot-control-page {
+      --bg: #eef3f8;
+      --panel: #ffffff;
+      --panel-2: #f6f9fd;
+      --ink: #132033;
+      --muted: #68778a;
+      --line: #d9e2ee;
+      --blue: #1274f4;
+      --cyan: #18b7d7;
+      --green: #15b86f;
+      --orange: #f59e0b;
+      --red: #ef4444;
+      --violet: #7367f0;
+      --shadow: 0 14px 34px rgba(32, 62, 104, .12);
+      font-family: "Noto Sans KR", system-ui, sans-serif;
+      color: var(--ink);
+      width: 100%;
+      max-width: 1600px;
+      min-width: 320px;
+      min-height: 0;
+      margin: 0 auto;
+      background:
+        radial-gradient(circle at 82% 16%, rgba(24,183,215,.13), transparent 24%),
+        linear-gradient(135deg, #f8fbff 0%, var(--bg) 100%);
+      overflow: visible;
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      box-shadow: var(--shadow);
+    }
+
+    #robot-control-page * { box-sizing: border-box; }
+    #robot-control-page button, #robot-control-page select, #robot-control-page input {
+      font: inherit;
+    }
+
+    #robot-control-page .shell {
+      display: grid;
+      grid-template-columns: 220px 1fr;
+      min-height: 0;
+    }
+
+    #robot-control-page .sidebar {
+      background: rgba(255,255,255,.86);
+      border-right: 1px solid var(--line);
+      padding: 22px 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 24px;
+    }
+
+    #robot-control-page .logo {
+      height: 54px;
+      display: flex;
+      align-items: center;
+    }
+
+    #robot-control-page .logo img {
+      width: 126px;
+      height: auto;
+      display: block;
+    }
+
+    #robot-control-page .nav {
+      display: grid;
+      gap: 8px;
+    }
+
+    #robot-control-page .nav button {
+      border: 0;
+      background: transparent;
+      color: var(--muted);
+      padding: 12px 14px;
+      border-radius: 10px;
+      text-align: left;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      cursor: pointer;
+    }
+
+    #robot-control-page .nav button.active {
+      background: linear-gradient(135deg, #1479f6, #075de0);
+      color: #fff;
+      box-shadow: 0 12px 22px rgba(18,116,244,.28);
+    }
+
+    #robot-control-page .side-status {
+      margin-top: auto;
+      padding: 14px;
+      border-radius: 12px;
+      background: var(--panel-2);
+      border: 1px solid var(--line);
+      display: grid;
+      gap: 8px;
+    }
+
+    #robot-control-page .main {
+      display: grid;
+      grid-template-rows: auto auto auto;
+      min-width: 0;
+    }
+
+    #robot-control-page .topbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0 22px;
+      background: rgba(255,255,255,.74);
+      border-bottom: 1px solid var(--line);
+      backdrop-filter: blur(10px);
+    }
+
+    #robot-control-page h1 {
+      margin: 0;
+      font-size: 23px;
+      font-weight: 500;
+      letter-spacing: 0;
+    }
+
+    #robot-control-page .top-actions {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    #robot-control-page .icon-btn {
+      width: 34px;
+      height: 34px;
+      border: 1px solid var(--line);
+      border-radius: 9px;
+      background: var(--panel);
+      color: var(--ink);
+      display: grid;
+      place-items: center;
+      cursor: pointer;
+    }
+
+    #robot-control-page .kpis {
+      display: grid;
+      grid-template-columns: repeat(6, 1fr);
+      gap: 10px;
+      padding: 12px 22px;
+    }
+
+    #robot-control-page .kpi {
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      padding: 12px 14px;
+      display: grid;
+      grid-template-columns: 42px 1fr;
+      gap: 10px;
+      align-items: center;
+      min-width: 0;
+    }
+
+    #robot-control-page .kpi i {
+      width: 42px;
+      height: 42px;
+      border-radius: 50%;
+      display: grid;
+      place-items: center;
+      background: rgba(18,116,244,.1);
+      color: var(--blue);
+    }
+
+    #robot-control-page .kpi:nth-child(2) i { background: rgba(21,184,111,.1); color: var(--green); }
+    #robot-control-page .kpi:nth-child(3) i { background: rgba(245,158,11,.12); color: var(--orange); }
+    #robot-control-page .kpi:nth-child(4) i { background: rgba(239,68,68,.1); color: var(--red); }
+    #robot-control-page .kpi:nth-child(5) i { background: rgba(24,183,215,.1); color: var(--cyan); }
+    #robot-control-page .kpi:nth-child(6) i { background: rgba(115,103,240,.1); color: var(--violet); }
+
+    #robot-control-page .kpi strong {
+      display: block;
+      font-size: 23px;
+      font-weight: 500;
+      line-height: 1.1;
+    }
+
+    #robot-control-page .kpi span, #robot-control-page .small {
+      color: var(--muted);
+      font-size: 12px;
+    }
+
+    #robot-control-page .workspace {
+      display: grid;
+      grid-template-columns: minmax(500px, 1.35fr) minmax(320px, .85fr) minmax(280px, .7fr);
+      grid-template-rows: auto auto;
+      gap: 10px;
+      padding: 0 22px 18px;
+      min-height: 0;
+      align-content: start;
+    }
+
+    #robot-control-page .panel {
+      background: rgba(255,255,255,.94);
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      padding: 14px;
+      min-height: 0;
+      overflow: visible;
+    }
+
+    #robot-control-page .panel-title {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 10px;
+    }
+
+    #robot-control-page h2 {
+      margin: 0;
+      font-size: 15px;
+      font-weight: 500;
+    }
+
+    #robot-control-page .seg {
+      display: inline-flex;
+      background: var(--panel-2);
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      padding: 3px;
+      gap: 2px;
+    }
+
+    #robot-control-page .seg button {
+      border: 0;
+      background: transparent;
+      color: var(--muted);
+      border-radius: 7px;
+      padding: 6px 10px;
+      cursor: pointer;
+      font-size: 12px;
+    }
+
+    #robot-control-page .seg button.active {
+      background: var(--blue);
+      color: #fff;
+    }
+
+    #robot-control-page .map-panel {
+      grid-row: span 1;
+    }
+
+  #robot-control-page .factory-map {
+      height: 430px;
+      min-height: 430px;
+      position: relative;
+      border-radius: 12px;
+      background:
+        radial-gradient(circle at 20% 18%, rgba(18,116,244,.12), transparent 26%),
+        linear-gradient(150deg, #f9fcff 0%, #eef6ff 55%, #e7eff8 100%);
+      overflow: hidden;
+      border: 1px solid var(--line);
+      perspective: 1000px;
+    }
+
+    #robot-control-page .plant-3d {
+      position: absolute;
+      left: 7%;
+      right: 6%;
+      top: 10%;
+      bottom: 9%;
+      transform: rotateX(58deg) rotateZ(-38deg);
+      transform-style: preserve-3d;
+    }
+
+    #robot-control-page .floor-plate {
+      position: absolute;
+      inset: 0;
+      border-radius: 28px;
+      background:
+        linear-gradient(90deg, rgba(18,116,244,.16) 1px, transparent 1px),
+        linear-gradient(rgba(18,116,244,.12) 1px, transparent 1px),
+        linear-gradient(135deg, rgba(255,255,255,.95), rgba(223,235,249,.92));
+      background-size: 40px 40px;
+      box-shadow: 20px 24px 0 rgba(55, 82, 120, .16), 0 20px 36px rgba(31, 70, 119, .18);
+      border: 1px solid rgba(18,116,244,.18);
+    }
+
+    #robot-control-page .route {
+      position: absolute;
+      left: 7%;
+      top: 11%;
+      width: 86%;
+      height: 76%;
+      overflow: visible;
+      transform: translateZ(16px);
+    }
+
+    #robot-control-page .route path {
+      fill: none;
+      stroke: rgba(18,116,244,.58);
+      stroke-width: 7;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+      stroke-dasharray: 14 13;
+      animation: robotDash 5s linear infinite;
+      filter: drop-shadow(0 3px 2px rgba(18,116,244,.2));
+    }
+
+    @keyframes robotDash {
+      to { stroke-dashoffset: -54; }
+    }
+
+    #robot-control-page .zone {
+      position: absolute;
+      transform-style: preserve-3d;
+      border-radius: 10px;
+      background: linear-gradient(145deg, rgba(255,255,255,.82), rgba(212,226,242,.88));
+      border: 1px solid rgba(104,119,138,.24);
+      box-shadow: 8px 10px 0 rgba(74,99,129,.14);
+      display: grid;
+      place-items: center;
+      color: rgba(19,32,51,.58);
+      font-size: 12px;
+      font-weight: 500;
+      padding: 8px;
+    }
+
+    #robot-control-page .zone::after {
+      content: "";
+      position: absolute;
+      left: 10px;
+      right: 10px;
+      bottom: -11px;
+      height: 11px;
+      transform: skewX(42deg);
+      transform-origin: top;
+      background: rgba(78, 105, 136, .2);
+      border-radius: 0 0 8px 8px;
+    }
+
+    #robot-control-page .zone.tall {
+      transform: translateZ(28px);
+      box-shadow: 12px 16px 0 rgba(74,99,129,.18);
+    }
+
+    #robot-control-page .conveyor {
+      position: absolute;
+      height: 18px;
+      border-radius: 99px;
+      background:
+        repeating-linear-gradient(90deg, rgba(18,116,244,.42) 0 12px, rgba(255,255,255,.65) 12px 24px),
+        rgba(18,116,244,.2);
+      box-shadow: 0 10px 0 rgba(25,55,95,.18);
+      transform: translateZ(34px);
+      animation: beltMove 1.1s linear infinite;
+    }
+
+    @keyframes beltMove {
+      to { background-position: 24px 0; }
+    }
+
+    #robot-control-page .dock {
+      position: absolute;
+      width: 12%;
+      height: 13%;
+      border-radius: 12px;
+      background: linear-gradient(135deg, rgba(21,184,111,.2), rgba(24,183,215,.14));
+      border: 2px solid rgba(21,184,111,.36);
+      box-shadow: 8px 12px 0 rgba(21,184,111,.14);
+      transform: translateZ(42px);
+    }
+
+    #robot-control-page .map-hud {
+      position: absolute;
+      left: 14px;
+      bottom: 12px;
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      z-index: 8;
+    }
+
+    #robot-control-page .map-hud span {
+      background: rgba(255,255,255,.86);
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      padding: 5px 8px;
+      font-size: 11px;
+      color: var(--muted);
+    }
+
+    #robot-control-page .marker {
+      position: absolute;
+      z-index: 9;
+      left: var(--x, 50%);
+      top: var(--y, 50%);
+      border: 0;
+      border-radius: 12px;
+      background: rgba(255,255,255,.96);
+      color: var(--ink);
+      box-shadow: 0 14px 28px rgba(25,55,95,.22);
+      display: grid;
+      grid-template-columns: 22px 1fr;
+      align-items: center;
+      gap: 7px;
+      min-width: 86px;
+      min-height: 42px;
+      padding: 7px 9px;
+      cursor: pointer;
+      font-size: 12px;
+      transform: translate(-50%, -50%);
+      transition: left .85s ease, top .85s ease, transform .18s ease, box-shadow .18s ease;
+    }
+
+    #robot-control-page .marker::before {
+      content: "";
+      position: absolute;
+      right: 7px;
+      top: 7px;
+      width: 9px;
+      height: 9px;
+      border-radius: 50%;
+      background: var(--green);
+      box-shadow: 0 0 0 4px rgba(21,184,111,.16), 0 0 18px rgba(21,184,111,.52);
+      animation: statusPulse 1.25s ease-in-out infinite;
+    }
+
+    @keyframes statusPulse {
+      50% { transform: scale(1.28); opacity: .72; }
+    }
+
+    #robot-control-page .unit-icon {
+      width: 22px;
+      height: 22px;
+      border-radius: 6px;
+      background: linear-gradient(145deg, #0f1b2d, #2e425b);
+      box-shadow: inset 0 0 0 2px rgba(255,255,255,.18);
+      position: relative;
+    }
+
+    #robot-control-page .unit-icon::after {
+      content: "";
+      position: absolute;
+      left: 5px;
+      right: 5px;
+      top: 7px;
+      height: 3px;
+      border-radius: 999px;
+      background: #38bdf8;
+      box-shadow: 0 0 8px #38bdf8;
+    }
+
+    #robot-control-page .marker.humanoid .unit-icon {
+      border-radius: 50% 50% 9px 9px;
+    }
+
+    #robot-control-page .marker.amr .unit-icon {
+      border-radius: 8px;
+    }
+
+    #robot-control-page .marker.work::before { background: var(--blue); box-shadow: 0 0 0 4px rgba(18,116,244,.16), 0 0 18px rgba(18,116,244,.54); }
+    #robot-control-page .marker.charge::before { background: var(--orange); box-shadow: 0 0 0 4px rgba(245,158,11,.18), 0 0 18px rgba(245,158,11,.55); }
+    #robot-control-page .marker.alert::before { background: var(--red); box-shadow: 0 0 0 4px rgba(239,68,68,.16), 0 0 18px rgba(239,68,68,.56); }
+    #robot-control-page .marker.active {
+      transform: translate(-50%, -58%) scale(1.07);
+      box-shadow: 0 20px 34px rgba(18,116,244,.3);
+      outline: 2px solid rgba(18,116,244,.45);
+    }
+
+    #robot-control-page .robot-panel {
+      display: grid;
+      grid-template-rows: auto 1fr auto;
+      gap: 8px;
+    }
+
+    #robot-control-page .robot-visual {
+      border-radius: 12px;
+      background:
+        linear-gradient(180deg, rgba(18,116,244,.06), rgba(24,183,215,.04)),
+        var(--panel-2);
+      display: grid;
+      grid-template-columns: 1fr 146px;
+      min-height: 178px;
+      overflow: hidden;
+      border: 1px solid var(--line);
+    }
+
+    #robot-control-page .robot-copy {
+      padding: 14px;
+      display: grid;
+      align-content: center;
+      gap: 9px;
+    }
+
+    #robot-control-page .robot-copy strong {
+      font-size: 24px;
+      font-weight: 500;
+    }
+
+    #robot-control-page .robot-img {
+      background-image: url("assets/humanoid-robots.png");
+      background-repeat: no-repeat;
+      background-size: 540px auto;
+      background-position: var(--robot-pos, 3% 47%);
+      filter: drop-shadow(0 16px 18px rgba(20,44,75,.18));
+    }
+
+    #robot-control-page .battery {
+      height: 10px;
+      border-radius: 99px;
+      background: #e5edf7;
+      overflow: hidden;
+    }
+
+    #robot-control-page .battery span {
+      display: block;
+      width: var(--battery, 86%);
+      height: 100%;
+      background: linear-gradient(90deg, var(--green), var(--cyan));
+      border-radius: inherit;
+      transition: width .18s ease;
+    }
+
+    #robot-control-page table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 12px;
+    }
+
+    #robot-control-page th {
+      color: var(--muted);
+      font-weight: 500;
+      text-align: left;
+      padding: 7px 6px;
+      border-bottom: 1px solid var(--line);
+    }
+
+    #robot-control-page td {
+      padding: 8px 6px;
+      border-bottom: 1px solid #edf2f8;
+      white-space: normal;
+      word-break: keep-all;
+    }
+
+    #robot-control-page tr.active-row {
+      background: rgba(18,116,244,.08);
+    }
+
+    #robot-control-page .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      padding: 4px 8px;
+      border-radius: 999px;
+      background: rgba(18,116,244,.1);
+      color: var(--blue);
+      font-size: 12px;
+    }
+
+    #robot-control-page .badge.green { background: rgba(21,184,111,.12); color: var(--green); }
+    #robot-control-page .badge.orange { background: rgba(245,158,11,.14); color: #a76500; }
+    #robot-control-page .badge.red { background: rgba(239,68,68,.11); color: var(--red); }
+
+  #robot-control-page .right-rail {
+      grid-row: span 2;
+      display: grid;
+      grid-template-rows: 1fr 1fr 1fr;
+      gap: 10px;
+      min-height: 0;
+    }
+
+    #robot-control-page .alert-item, #robot-control-page .request-item, #robot-control-page .control-item {
+      display: grid;
+      gap: 6px;
+      padding: 10px 0;
+      border-bottom: 1px solid #edf2f8;
+      font-size: 12px;
+    }
+
+    #robot-control-page .alert-line, #robot-control-page .request-head {
+      display: flex;
+      justify-content: space-between;
+      gap: 8px;
+      align-items: center;
+    }
+
+    #robot-control-page .request-actions {
+      display: flex;
+      gap: 6px;
+      justify-content: flex-end;
+    }
+
+    #robot-control-page .mini-btn {
+      border: 1px solid var(--line);
+      background: var(--panel);
+      color: var(--ink);
+      border-radius: 8px;
+      padding: 5px 8px;
+      cursor: pointer;
+      font-size: 12px;
+    }
+
+    #robot-control-page .mini-btn.primary {
+      background: var(--blue);
+      color: #fff;
+      border-color: var(--blue);
+  }
+
+  #robot-control-page .detail-panel {
+    display: grid;
+    grid-column: 1 / span 2;
+    grid-template-columns: 250px 1fr;
+    gap: 12px;
+    min-height: 270px;
+    align-items: stretch;
+  }
+
+  #robot-control-page .log-panel {
+    grid-column: 1 / span 2;
+  }
+
+    #robot-control-page .detail-card {
+      background: var(--panel-2);
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      padding: 12px;
+      display: grid;
+      gap: 8px;
+    }
+
+    #robot-control-page .metrics {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 8px;
+      margin-bottom: 10px;
+    }
+
+    #robot-control-page .metric {
+      background: var(--panel-2);
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      padding: 10px;
+    }
+
+    #robot-control-page .metric strong {
+      display: block;
+      color: var(--green);
+      font-size: 20px;
+      font-weight: 500;
+    }
+
+  #robot-control-page .chart {
+    width: 100%;
+    height: 160px;
+    overflow: visible;
+  }
+
+    #robot-control-page .chart text {
+      fill: var(--muted);
+      font-size: 10px;
+    }
+
+    #robot-control-page .switch {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 12px;
+      color: var(--muted);
+    }
+
+    #robot-control-page input[type="checkbox"] {
+      width: 34px;
+      height: 18px;
+      accent-color: var(--blue);
+    }
+
+    @media (max-width: 1320px) {
+      #robot-control-page {
+        min-height: 0;
+        aspect-ratio: auto;
+      }
+      #robot-control-page .shell {
+        grid-template-columns: 200px 1fr;
+        min-height: 0;
+      }
+      #robot-control-page .sidebar {
+        padding: 18px 14px;
+      }
+      #robot-control-page .nav button {
+        padding: 11px 10px;
+        font-size: 13px;
+      }
+      #robot-control-page .kpis {
+        grid-template-columns: repeat(3, 1fr);
+      }
+      #robot-control-page .workspace {
+        grid-template-columns: minmax(0, 1.2fr) minmax(300px, .8fr);
+        grid-template-rows: auto auto auto;
+      }
+      #robot-control-page .right-rail {
+        grid-column: 1 / -1;
+        grid-row: auto;
+        grid-template-columns: repeat(3, 1fr);
+        grid-template-rows: auto;
+      }
+      #robot-control-page .detail-panel {
+        grid-column: 1 / -1;
+      }
+      #robot-control-page .log-panel {
+        grid-column: 1 / -1;
+      }
+    }
+
+    @media (max-width: 980px) {
+      #robot-control-page {
+        aspect-ratio: auto;
+        min-height: 0;
+        overflow: visible;
+      }
+      #robot-control-page .shell {
+        grid-template-columns: 1fr;
+        min-height: 0;
+      }
+      #robot-control-page .sidebar {
+        flex-direction: row;
+        align-items: center;
+        padding: 14px;
+        gap: 12px;
+        border-right: 0;
+        border-bottom: 1px solid var(--line);
+        overflow: visible;
+      }
+      #robot-control-page .logo {
+        flex: 0 0 auto;
+      }
+      #robot-control-page .logo img {
+        width: 96px;
+      }
+      #robot-control-page .nav {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(150px, 1fr));
+        flex: 1 1 auto;
+        overflow: visible;
+      }
+      #robot-control-page .nav button {
+        justify-content: center;
+        text-align: center;
+        min-height: 42px;
+      }
+      #robot-control-page .side-status { display: none; }
+      #robot-control-page .main { grid-template-rows: auto auto auto; }
+      #robot-control-page .topbar {
+        padding: 14px;
+        align-items: flex-start;
+        gap: 10px;
+      }
+      #robot-control-page .kpis { grid-template-columns: repeat(2, 1fr); padding: 10px 14px; }
+      #robot-control-page .workspace {
+        grid-template-columns: 1fr;
+        grid-template-rows: auto;
+        padding: 0 14px 14px;
+      }
+      #robot-control-page .right-rail {
+        grid-row: auto;
+        grid-column: auto;
+        grid-template-columns: 1fr;
+        grid-template-rows: auto;
+      }
+    #robot-control-page .detail-panel {
+      grid-column: auto;
+      grid-template-columns: 1fr;
+      min-height: 0;
+    }
+    #robot-control-page .log-panel { grid-column: auto; }
+      #robot-control-page .metrics { grid-template-columns: repeat(2, 1fr); }
+    }
+
+    @media (max-width: 680px) {
+      #robot-control-page {
+        border-radius: 12px;
+      }
+      #robot-control-page .sidebar {
+        flex-direction: column;
+        align-items: stretch;
+      }
+      #robot-control-page .logo {
+        height: auto;
+        justify-content: center;
+      }
+      #robot-control-page .nav {
+        grid-template-columns: repeat(2, minmax(130px, 1fr));
+      }
+      #robot-control-page .topbar {
+        flex-direction: column;
+      }
+      #robot-control-page .top-actions {
+        flex-wrap: wrap;
+      }
+      #robot-control-page .kpis {
+        grid-template-columns: 1fr;
+      }
+      #robot-control-page .panel-title {
+        align-items: flex-start;
+        flex-direction: column;
+      }
+      #robot-control-page .seg {
+        flex-wrap: wrap;
+      }
+      #robot-control-page .factory-map {
+        min-height: 360px;
+      }
+      #robot-control-page .robot-visual {
+        grid-template-columns: 1fr;
+      }
+      #robot-control-page .robot-img {
+        min-height: 220px;
+        background-size: 620px auto;
+      }
+      #robot-control-page .metrics {
+        grid-template-columns: 1fr;
+      }
+      #robot-control-page table {
+        table-layout: fixed;
+      }
+    }
+  </style>
+
+  <div class="shell">
+    <aside class="sidebar" aria-label="통합관제 메뉴">
+      <div class="logo"><img src="assets/jlt-logo.png" alt="JLT"></div>
+      <nav class="nav">
+        <button type="button"><i data-lucide="layout-dashboard" aria-hidden="true"></i>통합 대시보드</button>
+        <button type="button"><i data-lucide="route" aria-hidden="true"></i>작업·자재·미션 관리</button>
+        <button type="button"><i data-lucide="shield-check" aria-hidden="true"></i>품질 관리</button>
+        <button type="button"><i data-lucide="package-check" aria-hidden="true"></i>물류 관리</button>
+        <button type="button"><i data-lucide="bell-ring" aria-hidden="true"></i>알람 관리</button>
+        <button class="active" type="button"><i data-lucide="bot" aria-hidden="true"></i>로봇 관제</button>
+      </nav>
+      <div class="side-status">
+        <span class="small">관제 네트워크</span>
+        <strong>정상 동기화</strong>
+        <span class="small">AMR 28 · Humanoid 8 · Latency 12ms</span>
+      </div>
+    </aside>
+
+    <main class="main">
+      <header class="topbar">
+        <h1>AMR / Humanoid 관제센터</h1>
+        <div class="top-actions">
+          <span>2026.07.14 10:24:30</span>
+          <button class="icon-btn" type="button" aria-label="알림"><i data-lucide="bell" aria-hidden="true"></i></button>
+          <span>관리자 · JLT</span>
+        </div>
+      </header>
+
+      <section class="kpis" aria-label="로봇 운영 지표">
+        <div class="kpi"><i data-lucide="bot" aria-hidden="true"></i><div><span>전체 자산 수</span><strong id="total-count">36</strong><span>AMR 28 / Humanoid 8</span></div></div>
+        <div class="kpi"><i data-lucide="gauge" aria-hidden="true"></i><div><span>가동 중</span><strong id="running-count">32</strong><span>가동률 88.9%</span></div></div>
+        <div class="kpi"><i data-lucide="briefcase-business" aria-hidden="true"></i><div><span>작업 중</span><strong id="working-count">24</strong><span>작업 완료율 96.2%</span></div></div>
+        <div class="kpi"><i data-lucide="triangle-alert" aria-hidden="true"></i><div><span>이상 발생</span><strong id="alert-count">2</strong><span>주의 1 / 경고 1</span></div></div>
+        <div class="kpi"><i data-lucide="battery-charging" aria-hidden="true"></i><div><span>충전 중</span><strong id="charge-count">4</strong><span>평균 배터리 72%</span></div></div>
+        <div class="kpi"><i data-lucide="clock-3" aria-hidden="true"></i><div><span>대기 중</span><strong>6</strong><span>주요 대기·자재 대응</span></div></div>
+      </section>
+
+      <section class="workspace">
+        <article class="panel map-panel">
+          <div class="panel-title">
+            <h2>실시간 공장 맵</h2>
+            <div class="seg" aria-label="층 선택">
+              <button type="button" class="active" data-floor="1F">A동 1F</button>
+              <button type="button" data-floor="2F">A동 2F</button>
+              <button type="button" data-floor="B1">B동 B1</button>
+            </div>
+          </div>
+          <div class="factory-map" aria-label="3D 공장 내 로봇 위치">
+            <div class="plant-3d" aria-hidden="true">
+              <div class="floor-plate"></div>
+              <div class="zone tall" style="left:5%;top:8%;width:21%;height:26%;">입고<br>게이트</div>
+              <div class="zone tall" style="left:35%;top:8%;width:25%;height:20%;">조립<br>라인 A</div>
+              <div class="zone" style="left:66%;top:10%;width:24%;height:22%;">비전<br>검사</div>
+              <div class="zone" style="left:9%;top:52%;width:23%;height:30%;">자재<br>버퍼</div>
+              <div class="zone tall" style="left:40%;top:57%;width:22%;height:25%;">Line 3<br>셀</div>
+              <div class="dock" style="left:73%;top:59%;"></div>
+              <div class="zone" style="left:70%;top:55%;width:23%;height:29%;">충전<br>스테이션</div>
+              <div class="conveyor" style="left:22%;top:41%;width:54%;"></div>
+              <div class="conveyor" style="left:36%;top:72%;width:31%;transform:translateZ(34px) rotate(90deg);"></div>
+              <svg class="route" viewBox="0 0 520 300" aria-hidden="true">
+                <path d="M35 70 H245 C290 70 310 95 310 125 H455 C490 125 500 150 480 170 L355 250 C330 266 300 255 292 226 L270 150 H105 C65 150 44 126 48 95 Z"></path>
+              </svg>
+            </div>
+            <div class="map-hud" aria-hidden="true">
+              <span>3D 설비 레이어</span><span>실시간 좌표 추적</span><span>상태등 자동 갱신</span>
+            </div>
+            <button class="marker humanoid work active" type="button" data-id="HMD-01" style="--x:17%;--y:55%;"><span class="unit-icon"></span><span>HMD-01</span></button>
+            <button class="marker humanoid alert" type="button" data-id="HMD-02" style="--x:73%;--y:53%;"><span class="unit-icon"></span><span>HMD-02</span></button>
+            <button class="marker amr charge" type="button" data-id="AMR-03" style="--x:42%;--y:39%;"><span class="unit-icon"></span><span>AMR-03</span></button>
+            <button class="marker humanoid" type="button" data-id="HMD-03" style="--x:58%;--y:72%;"><span class="unit-icon"></span><span>HMD-03</span></button>
+            <button class="marker amr work" type="button" data-id="AMR-12" style="--x:76%;--y:24%;"><span class="unit-icon"></span><span>AMR-12</span></button>
+          </div>
+        </article>
+
+        <article class="panel robot-panel">
+          <div class="panel-title">
+            <h2>휴머노이드 상태 요약</h2>
+            <span class="badge green" id="robot-state">작업 중</span>
+          </div>
+          <div class="robot-visual">
+            <div class="robot-copy">
+              <span class="small">선택 로봇</span>
+              <strong id="robot-id">HMD-01</strong>
+              <span id="robot-task">조립 작업 · Line 3</span>
+              <div class="battery" aria-label="배터리"><span id="battery-bar"></span></div>
+              <span class="small" id="robot-meta">배터리 86% · ETA 12분 · LiDAR 정상</span>
+            </div>
+            <div class="robot-img" id="robot-img" aria-hidden="true"></div>
+          </div>
+          <table aria-label="개체 상태 요약">
+            <thead><tr><th>개체 ID</th><th>유형</th><th>상태</th><th>배터리</th><th>위치</th></tr></thead>
+            <tbody id="robot-table"></tbody>
+          </table>
+        </article>
+
+        <aside class="right-rail">
+          <article class="panel">
+            <div class="panel-title"><h2>이상/알람 현황</h2><span class="badge red" id="alarm-pill">2건</span></div>
+            <div class="alert-item">
+              <div class="alert-line"><strong>AMR-05 · 경로 이탈</strong><span class="badge orange">주의</span></div>
+              <span class="small">A동 1F-04 · 자동 복귀 중</span>
+            </div>
+            <div class="alert-item">
+              <div class="alert-line"><strong>HMD-02 · 배터리 부족</strong><span class="badge red">경고</span></div>
+              <span class="small">A동 1F-08 · 충전 필요</span>
+            </div>
+          </article>
+
+          <article class="panel">
+            <div class="panel-title"><h2>의사결정 요청</h2><span class="badge">실시간</span></div>
+            <div class="request-item">
+              <div class="request-head"><strong>AMR-12 경로 재계획</strong><span class="small">10:24:10</span></div>
+              <span class="small">자재 경로 변경 요청</span>
+              <div class="request-actions"><button class="mini-btn primary" type="button">승인</button><button class="mini-btn" type="button">보류</button></div>
+            </div>
+            <div class="request-item">
+              <div class="request-head"><strong>HMD-01 작업 우선순위</strong><span class="small">10:23:30</span></div>
+              <span class="small">긴급 작업 발생(Line B)</span>
+              <div class="request-actions"><button class="mini-btn primary" type="button">승인</button><button class="mini-btn" type="button">상세</button></div>
+            </div>
+          </article>
+
+          <article class="panel">
+            <div class="panel-title"><h2>주요 의사결정 제어</h2></div>
+            <label class="switch"><input id="auto-mode" type="checkbox" checked> 자율 의사결정 적용</label>
+            <div class="control-item"><strong>작업 우선순위 조정</strong><span class="small">작업 처리 순서 변경</span></div>
+            <div class="control-item"><strong>경로 선택 옵션</strong><span class="small" id="auto-label">자동 최적 경로</span></div>
+            <div class="control-item"><strong>충전 임계 설정</strong><span class="small">배터리 임계 변경</span></div>
+          </article>
+        </aside>
+
+        <article class="panel detail-panel">
+          <div class="detail-card">
+            <div class="panel-title"><h2>개체 상세 정보</h2><span class="badge" id="detail-zone">A동 1F-07</span></div>
+            <table aria-label="선택 로봇 센서 정보">
+              <tbody>
+                <tr><th>유형</th><td id="detail-type">Humanoid</td></tr>
+                <tr><th>현재 작업</th><td id="detail-job">조립 작업</td></tr>
+                <tr><th>센서</th><td>LiDAR · 비전 · IMU</td></tr>
+                <tr><th>이상 작업</th><td id="detail-risk">없음</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <div>
+            <div class="metrics">
+              <div class="metric"><span class="small">생산성 향상</span><strong>+12.5%</strong><span class="small">전일 대비</span></div>
+              <div class="metric"><span class="small">지연 시간 감소</span><strong>-8.3분</strong><span class="small">전일 대비</span></div>
+              <div class="metric"><span class="small">에너지 절감</span><strong>+15.2%</strong><span class="small">전일 대비</span></div>
+              <div class="metric"><span class="small">안전성 개선</span><strong>+23.1%</strong><span class="small">전일 대비</span></div>
+            </div>
+            <svg class="chart" viewBox="0 0 640 150" role="img" aria-label="시간별 시스템 영향 선 그래프">
+              <line x1="34" y1="112" x2="610" y2="112" stroke="#d9e2ee"/>
+              <line x1="34" y1="76" x2="610" y2="76" stroke="#e7edf5"/>
+              <line x1="34" y1="40" x2="610" y2="40" stroke="#e7edf5"/>
+              <path d="M36 110 C90 72,115 48,160 62 S235 25,292 42 S376 81,430 59 S502 20,610 33" fill="none" stroke="#1274f4" stroke-width="3"/>
+              <path d="M36 116 C102 92,130 100,176 76 S260 76,312 58 S418 39,470 52 S548 92,610 66" fill="none" stroke="#15b86f" stroke-width="3"/>
+              <path d="M36 120 C116 128,150 102,216 108 S310 90,374 105 S492 76,610 96" fill="none" stroke="#f59e0b" stroke-width="3"/>
+              <text x="34" y="140">00:00</text><text x="184" y="140">08:00</text><text x="344" y="140">16:00</text><text x="548" y="140">24:00</text>
+            </svg>
+          </div>
+        </article>
+
+        <article class="panel log-panel">
+          <div class="panel-title"><h2>자율 의사결정 로그</h2><span class="small">최근 5건</span></div>
+          <table aria-label="자율 의사결정 로그">
+            <thead><tr><th>시간</th><th>개체</th><th>내용</th><th>결과</th></tr></thead>
+            <tbody>
+              <tr><td>10:23:45</td><td>AMR-05</td><td>경로 변경 결정</td><td><span class="badge green">성공</span></td></tr>
+              <tr><td>10:22:13</td><td>AMR-12</td><td>작업 순서 변경</td><td><span class="badge green">성공</span></td></tr>
+              <tr><td>10:21:33</td><td>AMR-01</td><td>속도 조절</td><td><span class="badge green">성공</span></td></tr>
+              <tr><td>10:20:15</td><td>HMD-01</td><td>작업 방법 변경</td><td><span class="badge green">성공</span></td></tr>
+            </tbody>
+          </table>
+        </article>
+      </section>
+    </main>
+  </div>
+
+  <script>
+    (function () {
+      const root = document.getElementById("robot-control-page");
+    const robots = [
+      { id: "HMD-01", type: "Humanoid", state: "작업 중", stateClass: "badge", battery: 86, job: "조립 작업 · Line 3", zone: "A동 1F-07", risk: "없음", img: "3% 47%" },
+      { id: "HMD-02", type: "Humanoid", state: "경고", stateClass: "badge red", battery: 22, job: "충전 복귀 · A동 1F-08", zone: "A동 1F-08", risk: "배터리 부족", img: "94% 47%" },
+      { id: "HMD-03", type: "Humanoid", state: "가동 중", stateClass: "badge green", battery: 90, job: "검수 · 품질 검사", zone: "A동 1F-09", risk: "없음", img: "50% 47%" },
+      { id: "AMR-03", type: "AMR", state: "충전 중", stateClass: "badge orange", battery: 45, job: "원료 스테이징", zone: "A동 1F-02", risk: "충전 대기", img: "50% 47%" },
+      { id: "AMR-12", type: "AMR", state: "작업 중", stateClass: "badge", battery: 74, job: "팔렛트 이동", zone: "A동 1F-03", risk: "없음", img: "3% 47%" }
+    ];
+    const livePaths = {
+      "HMD-01": [{ x: 17, y: 55 }, { x: 30, y: 48 }, { x: 45, y: 62 }, { x: 58, y: 70 }],
+      "HMD-02": [{ x: 73, y: 53 }, { x: 80, y: 61 }, { x: 84, y: 72 }, { x: 70, y: 76 }],
+      "HMD-03": [{ x: 58, y: 72 }, { x: 50, y: 60 }, { x: 63, y: 38 }, { x: 77, y: 31 }],
+      "AMR-03": [{ x: 42, y: 39 }, { x: 55, y: 40 }, { x: 66, y: 48 }, { x: 73, y: 62 }],
+      "AMR-12": [{ x: 76, y: 24 }, { x: 61, y: 26 }, { x: 43, y: 33 }, { x: 31, y: 45 }]
+    };
+    const liveStates = [
+      { state: "작업 중", stateClass: "badge", marker: "work" },
+      { state: "가동 중", stateClass: "badge green", marker: "" },
+      { state: "충전 중", stateClass: "badge orange", marker: "charge" },
+      { state: "경고", stateClass: "badge red", marker: "alert" }
+    ];
+    const pathIndex = Object.fromEntries(robots.map(robot => [robot.id, 0]));
+
+      const table = root.querySelector("#robot-table");
+      function drawRows(activeId) {
+        table.innerHTML = robots.map(robot => {
+          const tone = robot.state === "경고" ? "red" : robot.state === "충전 중" ? "orange" : robot.state === "가동 중" ? "green" : "";
+          return `<tr class="${robot.id === activeId ? "active-row" : ""}"><td>${robot.id}</td><td>${robot.type}</td><td><span class="badge ${tone}">${robot.state}</span></td><td>${robot.battery}%</td><td>${robot.zone}</td></tr>`;
+        }).join("");
+      }
+
+    function selectRobot(id) {
+      const robot = robots.find(item => item.id === id) || robots[0];
+        root.querySelectorAll(".marker").forEach(btn => btn.classList.toggle("active", btn.dataset.id === robot.id));
+        root.querySelector("#robot-id").textContent = robot.id;
+        root.querySelector("#robot-task").textContent = robot.job;
+        root.querySelector("#robot-state").className = robot.stateClass;
+        root.querySelector("#robot-state").textContent = robot.state;
+        root.querySelector("#battery-bar").style.setProperty("--battery", robot.battery + "%");
+        root.querySelector("#robot-meta").textContent = `배터리 ${robot.battery}% · ETA 12분 · LiDAR 정상`;
+        root.querySelector("#detail-type").textContent = robot.type;
+        root.querySelector("#detail-job").textContent = robot.job.split(" · ")[0];
+        root.querySelector("#detail-zone").textContent = robot.zone;
+        root.querySelector("#detail-risk").textContent = robot.risk;
+        root.querySelector("#robot-img").style.setProperty("--robot-pos", robot.img);
+      drawRows(robot.id);
+    }
+
+    function syncMarker(robot) {
+      const marker = root.querySelector(`.marker[data-id="${robot.id}"]`);
+      if (!marker) return;
+      const point = livePaths[robot.id][pathIndex[robot.id] % livePaths[robot.id].length];
+      marker.style.setProperty("--x", point.x + "%");
+      marker.style.setProperty("--y", point.y + "%");
+      marker.classList.remove("work", "charge", "alert");
+      const state = liveStates.find(item => item.state === robot.state);
+      if (state && state.marker) marker.classList.add(state.marker);
+    }
+
+    function tickLiveMap() {
+      robots.forEach((robot, index) => {
+        pathIndex[robot.id] += 1;
+        if (robot.id !== "HMD-02" || pathIndex[robot.id] % 4 !== 0) {
+          const state = liveStates[(pathIndex[robot.id] + index) % 3];
+          robot.state = state.state;
+          robot.stateClass = state.stateClass;
+          robot.risk = state.state === "충전 중" ? "충전 대기" : "없음";
+        } else {
+          robot.state = "경고";
+          robot.stateClass = "badge red";
+          robot.risk = "배터리 부족";
+        }
+        robot.battery = Math.max(18, Math.min(96, robot.battery + (robot.state === "충전 중" ? 3 : -1)));
+        syncMarker(robot);
+      });
+      const active = root.querySelector(".marker.active");
+      const activeId = active ? active.dataset.id : "HMD-01";
+      const activeRobot = robots.find(item => item.id === activeId);
+      if (activeRobot) selectRobot(activeRobot.id);
+      root.querySelector("#alert-count").textContent = String(robots.filter(item => item.state === "경고").length);
+      root.querySelector("#charge-count").textContent = String(robots.filter(item => item.state === "충전 중").length + 2);
+      root.querySelector("#running-count").textContent = String(robots.filter(item => item.state !== "경고").length + 27);
+    }
+
+      root.querySelectorAll(".marker").forEach(btn => {
+        btn.addEventListener("click", () => selectRobot(btn.dataset.id));
+      });
+
+      root.querySelectorAll("[data-floor]").forEach(btn => {
+        btn.addEventListener("click", () => {
+          root.querySelectorAll("[data-floor]").forEach(item => item.classList.remove("active"));
+          btn.classList.add("active");
+          const isB1 = btn.dataset.floor === "B1";
+          root.querySelector("#running-count").textContent = isB1 ? "29" : "32";
+          root.querySelector("#working-count").textContent = btn.dataset.floor === "2F" ? "21" : "24";
+          root.querySelector("#charge-count").textContent = isB1 ? "6" : "4";
+        });
+      });
+
+      root.querySelector("#auto-mode").addEventListener("change", event => {
+        root.querySelector("#auto-label").textContent = event.target.checked ? "자동 최적 경로" : "관리자 승인 필요";
+      });
+
+      root.querySelectorAll(".nav button").forEach(btn => {
+        btn.addEventListener("click", () => {
+          root.querySelectorAll(".nav button").forEach(item => item.classList.remove("active"));
+          btn.classList.add("active");
+        });
+      });
+
+      root.querySelectorAll(".request-actions .mini-btn").forEach(btn => {
+        btn.addEventListener("click", () => {
+          btn.closest(".request-item").querySelector(".small").textContent = btn.textContent === "승인" ? "승인 완료 · 자동 반영 대기" : "상세 검토로 전환";
+        });
+      });
+
+    robots.forEach(syncMarker);
+    selectRobot("HMD-01");
+    setInterval(tickLiveMap, 2600);
+    if (window.lucide) window.lucide.createIcons({ attrs: { width: 16, height: 16 } });
+    }());
+  </script>
+</div>
+
+</body>
+</html>

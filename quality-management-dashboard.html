@@ -1,0 +1,1159 @@
+<div id="jlt-quality-root">
+  <style>
+    @import url("https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700;800&display=swap");
+
+    #jlt-quality-root {
+      --bg: #f7f9fc;
+      --panel: #ffffff;
+      --line: #dfe7f2;
+      --text: #172033;
+      --muted: #657187;
+      --blue: #1677ff;
+      --green: #20b26b;
+      --yellow: #f6b93b;
+      --red: #ff585d;
+      --shadow: 0 12px 30px rgba(20, 36, 64, 0.08);
+      width: 100%;
+      min-height: 100vh;
+      background: var(--bg);
+      color: var(--text);
+      font-family: "Noto Sans KR", system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+      letter-spacing: 0;
+    }
+
+    #jlt-quality-root * {
+      box-sizing: border-box;
+    }
+
+    .jlt-frame {
+      width: min(100vw, 1920px);
+      aspect-ratio: 16 / 9;
+      min-height: 720px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: 260px 1fr;
+      background: var(--bg);
+      overflow: hidden;
+    }
+
+    .sidebar {
+      background: #fff;
+      border-right: 1px solid var(--line);
+      display: flex;
+      flex-direction: column;
+      padding: 34px 0 28px;
+    }
+
+    .brand {
+      height: 58px;
+      margin: 0 34px 56px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .brand-logo {
+      width: 168px;
+      height: auto;
+      max-height: 58px;
+      object-fit: contain;
+      display: block;
+    }
+
+    .nav-group {
+      margin-bottom: 42px;
+    }
+
+    .nav-title {
+      padding: 0 40px;
+      margin-bottom: 18px;
+      font-size: 21px;
+      font-weight: 800;
+      color: #41506a;
+    }
+
+    .nav-item {
+      min-height: 50px;
+      display: flex;
+      align-items: center;
+      padding: 0 36px 0 58px;
+      color: #41506a;
+      font-size: 18px;
+      font-weight: 700;
+      border-left: 0 solid transparent;
+    }
+
+    .nav-item.active-primary {
+      min-height: 68px;
+      margin-bottom: 12px;
+      padding-left: 40px;
+      background: linear-gradient(90deg, #1584ff, #0e65ef);
+      color: #fff;
+      font-size: 22px;
+      box-shadow: 0 8px 20px rgba(22, 119, 255, 0.22);
+    }
+
+    .nav-item.active-sub {
+      margin-left: 58px;
+      padding-left: 17px;
+      background: #eaf4ff;
+      color: #1175ff;
+      border-radius: 0;
+    }
+
+    .main {
+      min-width: 0;
+      padding: 22px 28px 24px;
+      display: grid;
+      grid-template-rows: auto auto 1fr;
+      gap: 14px;
+    }
+
+    .topbar {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 20px;
+      align-items: start;
+    }
+
+    .title h1 {
+      margin: 0;
+      font-size: 34px;
+      line-height: 1.18;
+      font-weight: 800;
+      letter-spacing: 0;
+    }
+
+    .title p {
+      margin: 8px 0 0;
+      color: var(--muted);
+      font-size: 16px;
+      font-weight: 500;
+    }
+
+    .actions {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: flex-end;
+      align-items: center;
+      gap: 10px;
+      color: #4d5b72;
+      font-size: 14px;
+      font-weight: 700;
+    }
+
+    .pill, .select-pill {
+      min-height: 38px;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 0 14px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: #fff;
+      box-shadow: 0 5px 18px rgba(26, 42, 70, 0.04);
+    }
+
+    .seg {
+      display: inline-flex;
+      align-items: center;
+      overflow: hidden;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: #fff;
+    }
+
+    .seg span {
+      min-width: 56px;
+      height: 38px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      border-right: 1px solid var(--line);
+      color: #6b768b;
+    }
+
+    .seg span:last-child { border-right: 0; }
+    .seg .on {
+      color: #0b6fff;
+      background: #edf5ff;
+      box-shadow: inset 0 0 0 2px #7db2ff;
+    }
+
+    .icon {
+      width: 16px;
+      height: 16px;
+      display: inline-block;
+    }
+
+    .kpi-row {
+      display: grid;
+      grid-template-columns: repeat(5, minmax(0, 1fr)) 1.28fr;
+      gap: 14px;
+    }
+
+    .card {
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      box-shadow: var(--shadow);
+      min-width: 0;
+    }
+
+    .kpi {
+      min-height: 128px;
+      padding: 16px 18px 14px;
+      display: grid;
+      grid-template-rows: auto 1fr auto;
+    }
+
+    .kpi-title {
+      font-size: 15px;
+      font-weight: 800;
+      color: #344055;
+    }
+
+    .kpi-main {
+      display: flex;
+      align-items: end;
+      gap: 4px;
+      margin-top: 8px;
+    }
+
+    .kpi-main strong {
+      font-size: 35px;
+      line-height: 1;
+      font-weight: 800;
+      letter-spacing: 0;
+    }
+
+    .kpi-main span {
+      padding-bottom: 4px;
+      font-weight: 800;
+      color: #303b50;
+    }
+
+    .kpi-foot {
+      display: grid;
+      grid-template-columns: auto 1fr auto;
+      gap: 10px;
+      align-items: center;
+      color: var(--muted);
+      font-size: 13px;
+      font-weight: 700;
+    }
+
+    .spark {
+      width: 92px;
+      height: 34px;
+    }
+
+    .up { color: var(--blue); }
+    .down { color: var(--green); }
+
+    .filter-card {
+      min-height: 128px;
+      display: grid;
+      grid-template-columns: 1fr 180px;
+      overflow: hidden;
+    }
+
+    .claim {
+      padding: 16px 18px;
+      border-right: 1px solid var(--line);
+    }
+
+    .claim .bars {
+      height: 43px;
+      margin-top: 10px;
+      display: flex;
+      align-items: end;
+      gap: 7px;
+    }
+
+    .claim .bars i {
+      flex: 1;
+      min-width: 5px;
+      border-radius: 3px 3px 0 0;
+      background: linear-gradient(180deg, #1476ff, #9cc5ff);
+      animation: barPulse 2.6s ease-in-out infinite;
+      transform-origin: bottom;
+    }
+
+    .claim .bars i:nth-child(1) { height: 20%; animation-delay: .1s; }
+    .claim .bars i:nth-child(2) { height: 34%; animation-delay: .3s; }
+    .claim .bars i:nth-child(3) { height: 78%; animation-delay: .6s; }
+    .claim .bars i:nth-child(4) { height: 30%; animation-delay: .2s; }
+    .claim .bars i:nth-child(5) { height: 54%; animation-delay: .8s; }
+    .claim .bars i:nth-child(6) { height: 48%; animation-delay: .4s; }
+    .claim .bars i:nth-child(7) { height: 26%; animation-delay: .7s; }
+
+    @keyframes barPulse {
+      0%, 100% { transform: scaleY(.72); opacity: .62; }
+      45% { transform: scaleY(1); opacity: 1; }
+    }
+
+    .filters {
+      padding: 15px 16px;
+      display: grid;
+      gap: 8px;
+      font-size: 13px;
+      font-weight: 700;
+      color: #667187;
+    }
+
+    .filter-line {
+      display: flex;
+      justify-content: space-between;
+      gap: 10px;
+    }
+
+    .dashboard-grid {
+      display: grid;
+      grid-template-columns: 1.05fr 1.05fr 1.1fr 1.28fr;
+      grid-template-rows: 252px 286px 220px;
+      gap: 14px;
+      min-height: 0;
+    }
+
+    .panel {
+      padding: 14px 16px;
+      display: flex;
+      flex-direction: column;
+      min-height: 0;
+    }
+
+    .panel-head {
+      height: 30px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 8px;
+    }
+
+    .panel-title {
+      font-size: 15px;
+      font-weight: 800;
+      color: #263246;
+    }
+
+    .tiny-select {
+      height: 28px;
+      min-width: 64px;
+      border: 1px solid var(--line);
+      border-radius: 7px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      color: #647189;
+      font-size: 12px;
+      font-weight: 800;
+      background: #fbfdff;
+    }
+
+    canvas.chart {
+      width: 100%;
+      height: 100%;
+      min-height: 0;
+      display: block;
+    }
+
+    .genealogy {
+      grid-column: 1 / 4;
+      padding: 16px;
+    }
+
+    .trace-wrap {
+      flex: 1;
+      display: grid;
+      grid-template-columns: 200px 1fr 172px;
+      align-items: center;
+      gap: 14px;
+      min-height: 0;
+    }
+
+    .info-card, .process-card, .result-card {
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: #fbfdff;
+      box-shadow: 0 6px 16px rgba(23, 38, 68, 0.04);
+    }
+
+    .info-card {
+      height: 205px;
+      padding: 14px;
+      display: grid;
+      gap: 8px;
+      font-size: 12px;
+      color: #657187;
+      font-weight: 700;
+    }
+
+    .info-card strong {
+      color: #223044;
+      font-size: 16px;
+      font-weight: 800;
+    }
+
+    .pass {
+      justify-self: end;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-width: 38px;
+      height: 26px;
+      color: #07995e;
+      background: #dff8ec;
+      border-radius: 7px;
+      font-weight: 800;
+    }
+
+    .process-line {
+      display: grid;
+      grid-template-columns: repeat(5, minmax(94px, 1fr));
+      gap: 12px;
+      position: relative;
+    }
+
+    .process-line::before {
+      content: "";
+      position: absolute;
+      left: 2%;
+      right: 2%;
+      top: 50%;
+      height: 2px;
+      background: linear-gradient(90deg, #b9c9df, #7eb3ff, #b9c9df);
+      z-index: 0;
+    }
+
+    .process-card {
+      position: relative;
+      z-index: 1;
+      min-height: 178px;
+      padding: 12px;
+      display: grid;
+      gap: 8px;
+      font-size: 12px;
+      color: #667187;
+      font-weight: 700;
+      overflow: hidden;
+    }
+
+    .process-card::after {
+      content: "";
+      position: absolute;
+      top: 36px;
+      left: -80%;
+      width: 60%;
+      height: 2px;
+      background: linear-gradient(90deg, transparent, rgba(22, 119, 255, .85), transparent);
+      animation: scan 3.8s linear infinite;
+    }
+
+    @keyframes scan {
+      to { left: 130%; }
+    }
+
+    .process-card strong {
+      color: #233045;
+      font-size: 13px;
+      font-weight: 800;
+    }
+
+    .check-dot {
+      position: absolute;
+      right: -9px;
+      top: 39px;
+      width: 18px;
+      height: 18px;
+      border-radius: 999px;
+      background: var(--green);
+      box-shadow: 0 0 0 4px #e5f8ee;
+    }
+
+    .check-dot::before {
+      content: "";
+      position: absolute;
+      left: 5px;
+      top: 4px;
+      width: 7px;
+      height: 4px;
+      border-left: 2px solid #fff;
+      border-bottom: 2px solid #fff;
+      transform: rotate(-45deg);
+    }
+
+    .result-card {
+      height: 205px;
+      padding: 14px;
+      display: grid;
+      gap: 10px;
+      font-size: 12px;
+      color: #667187;
+      font-weight: 700;
+    }
+
+    .result-card strong {
+      color: #223044;
+      font-size: 15px;
+    }
+
+    .perf-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 12px;
+      margin-bottom: 12px;
+    }
+
+    .mini-stat {
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      padding: 13px;
+      min-height: 96px;
+      background: #fbfdff;
+    }
+
+    .mini-stat b {
+      display: block;
+      margin-bottom: 8px;
+      color: #445169;
+      font-size: 13px;
+    }
+
+    .mini-stat strong {
+      display: block;
+      font-size: 25px;
+      line-height: 1;
+      font-weight: 800;
+      color: #162033;
+    }
+
+    .line-stats {
+      margin-top: auto;
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      border-top: 1px solid var(--line);
+    }
+
+    .line-stats div {
+      padding: 12px 9px 0;
+      border-right: 1px solid var(--line);
+      font-size: 12px;
+      color: #667187;
+      font-weight: 700;
+    }
+
+    .line-stats div:last-child { border-right: 0; }
+    .line-stats strong {
+      display: block;
+      margin-top: 6px;
+      color: #172033;
+      font-size: 22px;
+      line-height: 1;
+      font-weight: 800;
+    }
+
+    .health-list, .cause-table {
+      display: grid;
+      gap: 9px;
+      margin-top: 3px;
+      font-size: 13px;
+      font-weight: 700;
+    }
+
+    .health-row {
+      display: grid;
+      grid-template-columns: 116px 1fr 34px 48px;
+      align-items: center;
+      gap: 10px;
+      color: #4a566c;
+    }
+
+    .bar-track {
+      height: 8px;
+      border-radius: 999px;
+      background: #e8eef7;
+      overflow: hidden;
+    }
+
+    .bar-track i {
+      display: block;
+      height: 100%;
+      width: var(--score);
+      border-radius: 999px;
+      background: var(--color, var(--green));
+      animation: fillWave 2.5s ease-in-out infinite alternate;
+      transform-origin: left center;
+    }
+
+    @keyframes fillWave {
+      from { transform: scaleX(.86); }
+      to { transform: scaleX(1); }
+    }
+
+    .status {
+      height: 24px;
+      display: inline-flex;
+      justify-content: center;
+      align-items: center;
+      border-radius: 999px;
+      font-size: 12px;
+      font-weight: 800;
+      background: #e7f8ef;
+      color: #07995e;
+    }
+
+    .status.warn { background: #fff5dc; color: #a86f00; }
+    .status.danger { background: #ffe7e8; color: #d43b3f; }
+
+    .cause-table {
+      grid-template-columns: 1.15fr .55fr .65fr 1fr .7fr;
+      align-items: center;
+      color: #4c586f;
+    }
+
+    .cause-table .head {
+      color: #6b768b;
+      font-size: 12px;
+    }
+
+    .cause-table span {
+      min-width: 0;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .heatmap {
+      display: grid;
+      grid-template-columns: 72px repeat(7, 1fr);
+      grid-template-rows: 30px repeat(3, 44px);
+      gap: 2px;
+      margin-top: 3px;
+      font-size: 13px;
+      font-weight: 800;
+      text-align: center;
+      align-items: stretch;
+    }
+
+    .heatmap div {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .heat-label { color: #354157; }
+    .heat-date { color: #667187; font-size: 12px; }
+    .heat {
+      color: rgba(20, 31, 50, .76);
+      animation: heatGlow 3s ease-in-out infinite alternate;
+    }
+
+    @keyframes heatGlow {
+      from { filter: saturate(.9) brightness(.98); }
+      to { filter: saturate(1.18) brightness(1.04); }
+    }
+
+    .heat.good { background: #bdebcf; }
+    .heat.mid { background: #ffe49a; }
+    .heat.bad { background: #ff9b80; }
+
+    .legend-bar {
+      height: 10px;
+      margin: 16px auto 0;
+      width: 62%;
+      border-radius: 999px;
+      background: linear-gradient(90deg, var(--green), #ffe680, var(--red));
+    }
+
+    .quality-map {
+      flex: 1;
+      display: grid;
+      grid-template-rows: 1fr auto;
+      gap: 12px;
+      min-height: 0;
+    }
+
+    .flow {
+      display: grid;
+      grid-template-columns: repeat(6, 1fr);
+      gap: 12px;
+      align-items: center;
+      position: relative;
+    }
+
+    .flow::before {
+      content: "";
+      position: absolute;
+      left: 6%;
+      right: 6%;
+      top: 34px;
+      height: 2px;
+      background: #c4d0e0;
+    }
+
+    .flow-node {
+      position: relative;
+      z-index: 1;
+      text-align: center;
+      display: grid;
+      gap: 8px;
+    }
+
+    .node-box {
+      min-height: 48px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 6px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: #fbfdff;
+      color: #40506a;
+      font-size: 12px;
+      font-weight: 800;
+    }
+
+    .flow-node:last-child .node-box {
+      border-color: #7fb3ff;
+      box-shadow: 0 0 0 2px #e7f1ff;
+    }
+
+    .loss {
+      font-size: 13px;
+      font-weight: 800;
+      color: var(--green);
+    }
+
+    .loss.hot { color: var(--red); }
+
+    .map-note {
+      min-height: 34px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border: 1px dashed #aebbd0;
+      border-radius: 8px;
+      color: #526179;
+      font-size: 13px;
+      font-weight: 800;
+    }
+
+    @media (max-width: 1280px) {
+      .jlt-frame {
+        width: 1280px;
+        min-height: 720px;
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      #jlt-quality-root *, #jlt-quality-root *::before, #jlt-quality-root *::after {
+        animation-duration: .001ms !important;
+        animation-iteration-count: 1 !important;
+        scroll-behavior: auto !important;
+      }
+    }
+  </style>
+
+  <div class="jlt-frame" role="application" aria-label="JLT MES 품질 관리 대시보드">
+    <aside class="sidebar" aria-label="JLT 메뉴">
+      <div class="brand" aria-label="JLT">
+        <img class="brand-logo" src="assets/jlt-logo-new2.png" alt="JLT">
+      </div>
+      <nav>
+        <section class="nav-group">
+          <div class="nav-title">통합 대시보드</div>
+          <div class="nav-item">작업·자재·미션 관리</div>
+          <div class="nav-item">작업지시 관리</div>
+          <div class="nav-item">자재 추적 관리</div>
+          <div class="nav-item">미션 오케스트레이션</div>
+          <div class="nav-item">설비·자원 관리</div>
+          <div class="nav-item">AMR·로봇 관리</div>
+        </section>
+        <section class="nav-group">
+          <div class="nav-item active-primary">품질 관리</div>
+          <div class="nav-item active-sub">품질 분석 리포트</div>
+        </section>
+        <section class="nav-group">
+          <div class="nav-title">물류 관리</div>
+        </section>
+        <section class="nav-group">
+          <div class="nav-title">알람 관리</div>
+        </section>
+        <section class="nav-group">
+          <div class="nav-title">로봇 관제</div>
+        </section>
+      </nav>
+    </aside>
+
+    <main class="main">
+      <header class="topbar">
+        <div class="title">
+          <h1>JLT MES 품질·추적성·분석 리포트</h1>
+          <p>생산 이력, 품질 지표, 설비 성능을 실시간 분석</p>
+        </div>
+        <div class="actions" aria-label="대시보드 도구">
+          <span class="pill">2025.05.16 (금) 10:24:30</span>
+          <span class="seg" aria-label="기간 선택"><span>오늘</span><span>7일</span><span class="on">30일</span><span>90일</span></span>
+          <span class="select-pill">라인 선택&nbsp;&nbsp;전체</span>
+          <span class="select-pill">내보내기</span>
+        </div>
+      </header>
+
+      <section class="kpi-row" aria-label="품질 주요 지표">
+        <article class="card kpi">
+          <div class="kpi-title">양품률</div>
+          <div class="kpi-main"><strong>98.7</strong><span>%</span></div>
+          <div class="kpi-foot"><span>목표 98.5%</span><canvas class="spark" data-series="blue"></canvas><span class="up">▲ 0.4%p</span></div>
+        </article>
+        <article class="card kpi">
+          <div class="kpi-title">불량률</div>
+          <div class="kpi-main"><strong>1.3</strong><span>%</span></div>
+          <div class="kpi-foot"><span>목표 1.5%</span><canvas class="spark" data-series="green"></canvas><span class="down">▼ 0.2%p</span></div>
+        </article>
+        <article class="card kpi">
+          <div class="kpi-title">FPY (최종)</div>
+          <div class="kpi-main"><strong>96.2</strong><span>%</span></div>
+          <div class="kpi-foot"><span>목표 95.0%</span><canvas class="spark" data-series="blue"></canvas><span class="up">▲ 1.2%p</span></div>
+        </article>
+        <article class="card kpi">
+          <div class="kpi-title">검사 완료율</div>
+          <div class="kpi-main"><strong>99.1</strong><span>%</span></div>
+          <div class="kpi-foot"><span>목표 98.0%</span><canvas class="spark" data-series="blue"></canvas><span class="up">▲ 1.1%p</span></div>
+        </article>
+        <article class="card kpi">
+          <div class="kpi-title">클레임 건수</div>
+          <div class="kpi-main"><strong>6</strong><span>건</span></div>
+          <div class="kpi-foot"><span>전일 대비</span><span></span><span class="up">▼ 14.3%</span></div>
+        </article>
+        <article class="card filter-card">
+          <div class="claim">
+            <div class="kpi-title">품질 요약 필터</div>
+            <div class="bars" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
+          </div>
+          <div class="filters">
+            <div class="filter-line"><span>제품 그룹</span><b>전체</b></div>
+            <div class="filter-line"><span>제품</span><b>전체</b></div>
+            <div class="filter-line"><span>공정</span><b>전체</b></div>
+            <div class="filter-line"><span>고객</span><b>전체</b></div>
+          </div>
+        </article>
+      </section>
+
+      <section class="dashboard-grid">
+        <article class="card panel">
+          <div class="panel-head"><div class="panel-title">SPC / 주요 품질 지표 추이</div><div class="tiny-select">CPK</div></div>
+          <canvas class="chart" data-chart="spc" aria-label="SPC 주요 품질 지표 추이"></canvas>
+        </article>
+        <article class="card panel">
+          <div class="panel-head"><div class="panel-title">불량률 추이</div><div class="tiny-select">실시간</div></div>
+          <canvas class="chart" data-chart="defect" aria-label="불량률 추이"></canvas>
+        </article>
+        <article class="card panel">
+          <div class="panel-head"><div class="panel-title">불량 유형 Pareto (누적)</div><div class="tiny-select">누적 %</div></div>
+          <canvas class="chart" data-chart="pareto" aria-label="불량 유형 파레토 차트"></canvas>
+        </article>
+        <article class="card panel">
+          <div class="panel-head"><div class="panel-title">라인별 품질 히트맵 (불량률 %)</div><div class="tiny-select">30일</div></div>
+          <div class="heatmap" aria-label="라인별 품질 히트맵">
+            <div></div><div class="heat-date">04-17</div><div class="heat-date">04-22</div><div class="heat-date">04-27</div><div class="heat-date">05-02</div><div class="heat-date">05-07</div><div class="heat-date">05-12</div><div class="heat-date">05-16</div>
+            <div class="heat-label">Line A</div><div class="heat good">1.21</div><div class="heat good">1.05</div><div class="heat mid">1.32</div><div class="heat good">1.08</div><div class="heat good">0.96</div><div class="heat good">0.89</div><div class="heat good">0.84</div>
+            <div class="heat-label">Line B</div><div class="heat mid">1.45</div><div class="heat mid">1.38</div><div class="heat mid">1.22</div><div class="heat mid">1.16</div><div class="heat good">1.05</div><div class="heat good">0.97</div><div class="heat good">0.92</div>
+            <div class="heat-label">Line C</div><div class="heat bad">1.75</div><div class="heat bad">1.63</div><div class="heat bad">1.54</div><div class="heat mid">1.42</div><div class="heat mid">1.32</div><div class="heat mid">1.18</div><div class="heat mid">1.09</div>
+          </div>
+          <div class="legend-bar" aria-hidden="true"></div>
+        </article>
+
+        <article class="card panel genealogy">
+          <div class="panel-head"><div class="panel-title">추적성 (Genealogy) - 제품 이력 조회</div></div>
+          <div class="trace-wrap">
+            <div class="info-card">
+              <span>제품ID</span><strong>P-250516-1123</strong><span class="pass">합격</span>
+              <span>제품명&nbsp;&nbsp;<b>BATTERY MODULE ASSY</b></span>
+              <span>LOT&nbsp;&nbsp;<b>LT250515-8A17</b></span>
+              <span>생산일시&nbsp;&nbsp;<b>2025-05-15 11:23:45</b></span>
+              <span>고객사&nbsp;&nbsp;<b>JLT Auto</b></span>
+            </div>
+            <div class="process-line">
+              <div class="process-card"><strong>원자재 LOT</strong><span>MTL-LT250512-91</span><span>양극재</span><span class="pass">합격</span><i class="check-dot"></i></div>
+              <div class="process-card"><strong>공정 10 전극 적층</strong><span>설비 STK-01</span><span>05-15 09:12</span><span>작업자 김태훈</span><i class="check-dot"></i></div>
+              <div class="process-card"><strong>공정 20 조립</strong><span>설비 ASM-02</span><span>05-15 09:38</span><span>UR-05 / 이수연</span><i class="check-dot"></i></div>
+              <div class="process-card"><strong>공정 30 용접</strong><span>설비 WLD-03</span><span>05-15 09:55</span><span>박지훈</span><i class="check-dot"></i></div>
+              <div class="process-card"><strong>공정 50 외관 검사</strong><span>설비 VI-02</span><span>05-15 10:24</span><span>UR-07</span></div>
+            </div>
+            <div class="result-card">
+              <strong>최종 검사 결과</strong><span>종합 판정 <b class="pass">합격</b></span>
+              <span>검사 시간 <b>05-15 10:31</b></span>
+              <span>검사 장비 <b>AOI-01</b></span>
+              <span>검사자 <b>최민수</b></span>
+            </div>
+          </div>
+        </article>
+
+        <article class="card panel">
+          <div class="panel-head"><div class="panel-title">설비 성능 분석 (전체 라인)</div><div class="tiny-select">30일</div></div>
+          <div class="perf-grid">
+            <div class="mini-stat"><b>OEE</b><strong>89.3%</strong><span class="up">▼ 0.7%p</span></div>
+            <div class="mini-stat"><b>가동률</b><strong>92.1%</strong><span class="up">▼ 0.9%p</span></div>
+            <div class="mini-stat"><b>성능률</b><strong>96.9%</strong><span class="up">▼ 0.1%p</span></div>
+            <div class="mini-stat"><b>품질률</b><strong>98.6%</strong><span class="up">▲ 0.1%p</span></div>
+          </div>
+          <div class="line-stats">
+            <div>다운타임<strong>18.6h</strong></div><div>MTBF<strong>124.3h</strong></div><div>MTTR<strong>0.82h</strong></div><div>알람 빈도<strong>2.3회/일</strong></div>
+          </div>
+        </article>
+
+        <article class="card panel">
+          <div class="panel-head"><div class="panel-title">설비 건강도 (Health Score)</div></div>
+          <div class="health-list">
+            <div class="health-row"><span>WLD-03 (용접기)</span><div class="bar-track"><i style="--score:92%;"></i></div><b>92</b><span class="status">양호</span></div>
+            <div class="health-row"><span>ASM-02 (조립기)</span><div class="bar-track"><i style="--score:78%;"></i></div><b>78</b><span class="status warn">주의</span></div>
+            <div class="health-row"><span>ICT-01 (검사기)</span><div class="bar-track"><i style="--score:73%;"></i></div><b>73</b><span class="status warn">주의</span></div>
+            <div class="health-row"><span>STK-01 (적층기)</span><div class="bar-track"><i style="--score:64%; --color: var(--red);"></i></div><b>64</b><span class="status danger">경고</span></div>
+            <div class="health-row"><span>VI-02 (비전검사기)</span><div class="bar-track"><i style="--score:88%;"></i></div><b>88</b><span class="status">양호</span></div>
+          </div>
+        </article>
+        <article class="card panel">
+          <div class="panel-head"><div class="panel-title">알람 원인 분석 (Top 5)</div></div>
+          <div class="cause-table">
+            <span class="head">알람 유형</span><span class="head">건수</span><span class="head">비율</span><span class="head">주요 원인</span><span class="head">조치 상태</span>
+            <span>용접 칩핑</span><span>24</span><span>23.5%</span><span>전극 마모</span><span class="down">조치 완료</span>
+            <span>비전 검사 NG</span><span>18</span><span>17.6%</span><span>조명 편차</span><span class="down">조치 중</span>
+            <span>조립 토크 이상</span><span>15</span><span>14.7%</span><span>토크 설정 불량</span><span class="down">조치 완료</span>
+            <span>센서 통신 오류</span><span>12</span><span>11.8%</span><span>케이블 접촉</span><span class="down">조치 중</span>
+            <span>전원 입력 저하</span><span>9</span><span>8.8%</span><span>누설 전류</span><span class="down">조치 완료</span>
+          </div>
+        </article>
+        <article class="card panel">
+          <div class="panel-head"><div class="panel-title">알람 상관 분석 (타임라인)</div></div>
+          <canvas class="chart" data-chart="scatter" aria-label="알람 상관 분석 타임라인"></canvas>
+        </article>
+        <article class="card panel">
+          <div class="panel-head"><div class="panel-title">공정 품질 맵 (Quality Map)</div><div class="tiny-select">불량률 (%) 0 - 2.0</div></div>
+          <div class="quality-map">
+            <div class="flow">
+              <div class="flow-node"><div class="node-box">원자재<br>LOT</div><div class="loss">0.32%</div></div>
+              <div class="flow-node"><div class="node-box">공정 10<br>적층</div><div class="loss">0.48%</div></div>
+              <div class="flow-node"><div class="node-box">공정 20<br>조립</div><div class="loss">0.91%</div></div>
+              <div class="flow-node"><div class="node-box">공정 30<br>용접</div><div class="loss">0.63%</div></div>
+              <div class="flow-node"><div class="node-box">공정 40<br>검사</div><div class="loss hot">1.23%</div></div>
+              <div class="flow-node"><div class="node-box">최종<br>제품</div><div class="loss hot">1.30%</div></div>
+            </div>
+            <div class="map-note">주요 기여 공정: 공정 40 (검사) / 공정 30 (용접)</div>
+          </div>
+        </article>
+      </section>
+    </main>
+  </div>
+
+  <script>
+    (() => {
+      const root = document.getElementById("jlt-quality-root");
+      if (!root) return;
+
+      const colors = {
+        blue: "#1677ff",
+        green: "#20b26b",
+        yellow: "#f6b93b",
+        red: "#ff585d",
+        grid: "#dfe7f2",
+        text: "#657187",
+        axis: "#9aa8bd"
+      };
+
+      function setupCanvas(canvas) {
+        const dpr = Math.max(1, Math.min(2, window.devicePixelRatio || 1));
+        const rect = canvas.getBoundingClientRect();
+        const w = Math.max(10, Math.floor(rect.width * dpr));
+        const h = Math.max(10, Math.floor(rect.height * dpr));
+        if (canvas.width !== w || canvas.height !== h) {
+          canvas.width = w;
+          canvas.height = h;
+        }
+        const ctx = canvas.getContext("2d");
+        ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+        return { ctx, w: rect.width, h: rect.height };
+      }
+
+      function drawLine(ctx, points, area, color, width = 2, phase = 1) {
+        ctx.save();
+        ctx.strokeStyle = color;
+        ctx.lineWidth = width;
+        ctx.lineJoin = "round";
+        ctx.lineCap = "round";
+        ctx.beginPath();
+        points.forEach((p, i) => {
+          const x = area.x + p.x * area.w;
+          const y = area.y + (1 - p.y) * area.h;
+          if (i === 0) ctx.moveTo(x, y);
+          else ctx.lineTo(x, y);
+        });
+        ctx.setLineDash([Math.max(1, area.w * phase), area.w]);
+        ctx.stroke();
+        ctx.restore();
+      }
+
+      function makeWave(seed, n, low, high, t, speed = 1) {
+        return Array.from({ length: n }, (_, i) => {
+          const x = i / (n - 1);
+          const a = Math.sin((i * 1.7 + seed + t * speed) * 0.9);
+          const b = Math.cos((i * 0.7 + seed * .8 + t * speed * .55));
+          const v = low + (high - low) * (.5 + .32 * a + .18 * b);
+          return { x, y: Math.max(0.04, Math.min(0.96, v)) };
+        });
+      }
+
+      function drawGrid(ctx, area, labelsY, labelsX) {
+        ctx.save();
+        ctx.strokeStyle = colors.grid;
+        ctx.lineWidth = 1;
+        ctx.fillStyle = colors.text;
+        ctx.font = "11px 'Noto Sans KR', sans-serif";
+        ctx.textAlign = "right";
+        ctx.textBaseline = "middle";
+        labelsY.forEach((label, i) => {
+          const y = area.y + area.h * (i / (labelsY.length - 1));
+          ctx.beginPath();
+          ctx.moveTo(area.x, y);
+          ctx.lineTo(area.x + area.w, y);
+          ctx.stroke();
+          ctx.fillText(label, area.x - 8, y);
+        });
+        ctx.textAlign = "center";
+        ctx.textBaseline = "top";
+        labelsX.forEach((label, i) => {
+          const x = area.x + area.w * (i / (labelsX.length - 1));
+          ctx.fillText(label, x, area.y + area.h + 10);
+        });
+        ctx.restore();
+      }
+
+      function animateSpark(canvas, seed, color) {
+        const loop = (ms) => {
+          const { ctx, w, h } = setupCanvas(canvas);
+          const t = ms / 1000;
+          ctx.clearRect(0, 0, w, h);
+          const pts = makeWave(seed, 12, .22, .78, t, .9);
+          drawLine(ctx, pts, { x: 2, y: 5, w: w - 4, h: h - 10 }, color, 2.4, .72 + .28 * Math.sin(t * 1.2 + seed));
+          requestAnimationFrame(loop);
+        };
+        requestAnimationFrame(loop);
+      }
+
+      function drawSpc(canvas, ms) {
+        const { ctx, w, h } = setupCanvas(canvas);
+        const t = ms / 1000;
+        ctx.clearRect(0, 0, w, h);
+        const area = { x: 50, y: 18, w: w - 68, h: h - 58 };
+        drawGrid(ctx, area, ["2.00", "1.33", "0.67", "0.00"], ["04-17", "04-22", "04-27", "05-02", "05-07", "05-12", "05-16"]);
+        ctx.save();
+        ctx.setLineDash([6, 5]);
+        ctx.strokeStyle = colors.red;
+        ctx.beginPath();
+        ctx.moveTo(area.x, area.y + area.h * .28);
+        ctx.lineTo(area.x + area.w, area.y + area.h * .28);
+        ctx.stroke();
+        ctx.strokeStyle = colors.green;
+        ctx.beginPath();
+        ctx.moveTo(area.x, area.y + area.h * .72);
+        ctx.lineTo(area.x + area.w, area.y + area.h * .72);
+        ctx.stroke();
+        ctx.restore();
+        drawLine(ctx, makeWave(1, 27, .37, .67, t, .75), area, colors.blue, 2.2, 1);
+        drawLine(ctx, makeWave(5, 27, .28, .58, t, .9), area, colors.green, 2.2, 1);
+        drawLine(ctx, makeWave(8, 27, .35, .62, t, .7), area, "#54c7a2", 2.2, 1);
+      }
+
+      function drawDefect(canvas, ms) {
+        const { ctx, w, h } = setupCanvas(canvas);
+        const t = ms / 1000;
+        ctx.clearRect(0, 0, w, h);
+        const area = { x: 50, y: 18, w: w - 68, h: h - 58 };
+        drawGrid(ctx, area, ["2.0%", "1.5%", "1.0%", "0.5%", "0%"], ["04-17", "04-22", "04-27", "05-02", "05-07", "05-12", "05-16"]);
+        drawLine(ctx, makeWave(2, 31, .15, .62, t, 1.4), area, colors.blue, 2.1, 1);
+        drawLine(ctx, makeWave(9, 31, .12, .55, t, 1.1), area, colors.green, 2.1, 1);
+        drawLine(ctx, makeWave(14, 31, .24, .72, t, 1.55), area, colors.yellow, 2.1, 1);
+      }
+
+      function drawPareto(canvas, ms) {
+        const { ctx, w, h } = setupCanvas(canvas);
+        const t = ms / 1000;
+        ctx.clearRect(0, 0, w, h);
+        const area = { x: 46, y: 20, w: w - 68, h: h - 58 };
+        const vals = [34.2, 22.4, 16.7, 12.1, 7.6, 7.0];
+        const labels = ["스크래치", "찍힘", "오염", "치수", "변형", "기타"];
+        const max = 38;
+        ctx.fillStyle = colors.text;
+        ctx.font = "11px 'Noto Sans KR', sans-serif";
+        ctx.textAlign = "center";
+        vals.forEach((v, i) => {
+          const bw = area.w / vals.length * .62;
+          const x = area.x + i * area.w / vals.length + area.w / vals.length * .19;
+          const target = area.h * (v / max);
+          const pulse = .94 + .06 * Math.sin(t * 1.8 + i);
+          const bh = target * pulse;
+          const grad = ctx.createLinearGradient(0, area.y + area.h - bh, 0, area.y + area.h);
+          grad.addColorStop(0, "#116dff");
+          grad.addColorStop(1, "#8ab8ff");
+          ctx.fillStyle = grad;
+          ctx.fillRect(x, area.y + area.h - bh, bw, bh);
+          ctx.fillStyle = colors.text;
+          ctx.fillText(v.toFixed(1) + "%", x + bw / 2, area.y + area.h - bh - 10);
+          ctx.fillText(labels[i], x + bw / 2, area.y + area.h + 10);
+        });
+        const cum = [34.2, 56.6, 73.3, 85.4, 93.0, 100];
+        const pts = cum.map((v, i) => ({ x: (i + .5) / vals.length, y: v / 100 }));
+        drawLine(ctx, pts, area, "#62bb91", 2.4, .85 + .15 * Math.sin(t));
+        ctx.fillStyle = colors.text;
+        ctx.textAlign = "right";
+        ["100%", "75%", "50%", "25%", "0%"].forEach((label, i) => ctx.fillText(label, w - 10, area.y + area.h * i / 4));
+      }
+
+      function drawScatter(canvas, ms) {
+        const { ctx, w, h } = setupCanvas(canvas);
+        const t = ms / 1000;
+        ctx.clearRect(0, 0, w, h);
+        const area = { x: 42, y: 18, w: w - 58, h: h - 54 };
+        drawGrid(ctx, area, ["", "", "", ""], ["05-16\n00:00", "05-16\n06:00", "05-16\n12:00", "05-16\n18:00", "05-17\n00:00"]);
+        const series = [colors.blue, colors.green, colors.red, "#24304a"];
+        for (let i = 0; i < 42; i++) {
+          const x = area.x + ((i * 37) % 100) / 100 * area.w;
+          const base = ((i * 19) % 84) / 100;
+          const y = area.y + area.h * (.12 + .78 * base);
+          ctx.beginPath();
+          ctx.fillStyle = series[i % series.length];
+          ctx.globalAlpha = .75 + .25 * Math.sin(t * 2.2 + i);
+          ctx.arc(x, y + Math.sin(t * 1.4 + i) * 2.2, 3.2, 0, Math.PI * 2);
+          ctx.fill();
+        }
+        ctx.globalAlpha = 1;
+        ctx.strokeStyle = colors.red;
+        ctx.lineWidth = 1.5;
+        ctx.beginPath();
+        ctx.moveTo(area.x, area.y + area.h * .62);
+        ctx.lineTo(area.x + area.w, area.y + area.h * .58 + Math.sin(t) * 4);
+        ctx.stroke();
+      }
+
+      const chartDrawers = { spc: drawSpc, defect: drawDefect, pareto: drawPareto, scatter: drawScatter };
+
+      root.querySelectorAll(".spark").forEach((canvas, i) => {
+        animateSpark(canvas, i + 1, canvas.dataset.series === "green" ? colors.green : colors.blue);
+      });
+
+      function animateCharts(ms) {
+        root.querySelectorAll("canvas.chart").forEach((canvas) => {
+          const drawer = chartDrawers[canvas.dataset.chart];
+          if (drawer) drawer(canvas, ms);
+        });
+        requestAnimationFrame(animateCharts);
+      }
+      requestAnimationFrame(animateCharts);
+      window.addEventListener("resize", () => root.querySelectorAll("canvas").forEach((canvas) => {
+        canvas.width = 0;
+        canvas.height = 0;
+      }));
+    })();
+  </script>
+</div>
