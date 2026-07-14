@@ -1,0 +1,1362 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>JLT MES 작업 자재 미션 관리</title>
+  <style>
+    :root {
+      --bg: #f6f9fd;
+      --panel: #ffffff;
+      --line: #dfe7f2;
+      --soft: #eef3f9;
+      --text: #12213a;
+      --muted: #66758a;
+      --blue: #1677ff;
+      --green: #21b86b;
+      --red: #ff4d4f;
+      --orange: #ff8a1f;
+      --shadow: 0 8px 24px rgba(29, 49, 82, .055);
+    }
+
+    * { box-sizing: border-box; }
+
+    html,
+    body {
+      width: 100%;
+      height: 100%;
+      margin: 0;
+      background: var(--bg);
+      color: var(--text);
+      font-family: "Noto Sans KR", "Malgun Gothic", "Apple SD Gothic Neo", "Segoe UI", Arial, sans-serif;
+      letter-spacing: 0;
+    }
+
+    body {
+      overflow-x: auto;
+      overflow-y: auto;
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+    }
+
+    .page {
+      width: min(100vw, calc(100vh * 16 / 9));
+      height: min(100vh, calc(100vw * 9 / 16));
+      aspect-ratio: 16 / 9;
+      min-width: 0;
+      min-height: 0;
+      display: grid;
+      grid-template-columns: 260px minmax(0, 1fr);
+      background: linear-gradient(180deg, #fbfdff 0%, #f6f9fd 100%);
+      overflow: hidden;
+    }
+
+    .sidebar {
+      background: #fff;
+      border-right: 1px solid var(--line);
+      display: grid;
+      grid-template-rows: auto 1fr;
+      gap: 34px;
+      padding: 30px 10px 28px;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 54px;
+      padding: 0 14px;
+    }
+
+    .brand-logo {
+      width: 150px;
+      height: auto;
+      display: block;
+    }
+
+    .nav {
+      display: grid;
+      align-content: start;
+      gap: 11px;
+    }
+
+    .nav-item {
+      min-height: 60px;
+      border: 0;
+      border-radius: 10px;
+      padding: 0 28px;
+      display: flex;
+      align-items: center;
+      justify-content: flex-start;
+      gap: 10px;
+      background: transparent;
+      color: #4b5d75;
+      font-size: 17px;
+      font-weight: 900;
+      text-align: left;
+      cursor: pointer;
+    }
+
+    .nav-left {
+      display: flex;
+      align-items: center;
+      gap: 0;
+      white-space: nowrap;
+    }
+
+    .nav-left .ico,
+    .nav-item > span:last-child:not(.nav-left) {
+      display: none;
+    }
+
+    .ico {
+      width: 18px;
+      height: 18px;
+      border: 1.7px solid currentColor;
+      border-radius: 5px;
+      display: inline-block;
+      position: relative;
+      flex: 0 0 auto;
+    }
+
+    .ico.grid::before,
+    .ico.grid::after {
+      content: "";
+      position: absolute;
+      inset: 4px;
+      border-top: 1.5px solid currentColor;
+      border-bottom: 1.5px solid currentColor;
+    }
+
+    .ico.grid::after {
+      inset: 0 7px;
+      border: 0;
+      border-left: 1.5px solid currentColor;
+    }
+
+    .ico.round {
+      border-radius: 50%;
+    }
+
+    .nav-item.active {
+      background: linear-gradient(135deg, var(--blue), #0966ee);
+      color: #fff;
+      box-shadow: 0 18px 34px rgba(22, 119, 255, .22);
+    }
+
+    .subnav {
+      display: grid;
+      gap: 3px;
+      padding: 0 0 12px 44px;
+    }
+
+    .subnav button {
+      min-height: 35px;
+      border: 0;
+      border-radius: 9px;
+      padding: 0 14px;
+      background: transparent;
+      color: #4b5d75;
+      font-size: 14px;
+      font-weight: 800;
+      text-align: left;
+      cursor: pointer;
+    }
+
+    .subnav button[aria-pressed="true"] {
+      background: #edf6ff;
+      color: var(--blue);
+    }
+
+    .site {
+      align-self: end;
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      background: #fbfdff;
+      padding: 13px;
+      display: grid;
+      gap: 5px;
+      font-size: 12px;
+    }
+
+    .site strong {
+      color: #10213c;
+      font-size: 13px;
+      font-weight: 900;
+    }
+
+    .site-icon {
+      width: 24px;
+      height: 28px;
+      border: 2px solid var(--blue);
+      border-top: 0;
+      position: relative;
+    }
+
+    .site-icon::before {
+      content: "";
+      position: absolute;
+      left: 4px;
+      right: 4px;
+      bottom: 5px;
+      height: 12px;
+      border-left: 2px solid var(--blue);
+      border-right: 2px solid var(--blue);
+    }
+
+    main {
+      min-width: 0;
+      min-height: 0;
+      padding: 22px 28px 26px 26px;
+      display: grid;
+      grid-template-rows: 62px 1fr;
+      gap: 14px;
+      overflow: auto;
+      scrollbar-gutter: stable both-edges;
+    }
+
+    main::-webkit-scrollbar {
+      width: 8px;
+      height: 8px;
+    }
+
+    main::-webkit-scrollbar-thumb {
+      background: #c8d5e6;
+      border-radius: 999px;
+    }
+
+    .top {
+      display: flex;
+      justify-content: space-between;
+      align-items: start;
+      gap: 20px;
+    }
+
+    h1 {
+      margin: 0;
+      font-size: 31px;
+      line-height: 1.05;
+      font-weight: 900;
+      color: #10213c;
+    }
+
+    .subtitle {
+      margin-top: 10px;
+      color: #6b7b91;
+      font-size: 15px;
+      font-weight: 600;
+    }
+
+    .top-tools {
+      display: flex;
+      align-items: center;
+      gap: 18px;
+      color: #263a58;
+      font-size: 12px;
+      font-weight: 800;
+      white-space: nowrap;
+      padding-top: 5px;
+    }
+
+    .tool-icon {
+      width: 22px;
+      height: 22px;
+      border-radius: 50%;
+      display: inline-grid;
+      place-items: center;
+      border: 1px solid transparent;
+      position: relative;
+      color: #36506f;
+    }
+
+    .notif::after {
+      content: "12";
+      position: absolute;
+      top: -8px;
+      right: -9px;
+      min-width: 17px;
+      height: 17px;
+      border-radius: 999px;
+      background: var(--blue);
+      color: #fff;
+      font-size: 10px;
+      line-height: 17px;
+      text-align: center;
+    }
+
+    .avatar {
+      display: grid;
+      gap: 2px;
+      font-size: 11px;
+    }
+
+    .board {
+      min-height: 890px;
+      min-width: 1420px;
+      display: grid;
+      grid-template-columns: 1.42fr 1.36fr 1fr;
+      grid-template-rows: 1.04fr .88fr 1fr;
+      gap: 12px;
+    }
+
+    .panel {
+      min-width: 0;
+      min-height: 0;
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      box-shadow: var(--shadow);
+      overflow: hidden;
+      display: grid;
+      grid-template-rows: 47px 1fr;
+    }
+
+    .panel-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      padding: 0 16px;
+      border-bottom: 1px solid var(--soft);
+    }
+
+    h2 {
+      margin: 0;
+      font-size: 15px;
+      font-weight: 900;
+      color: #172640;
+      white-space: nowrap;
+    }
+
+    .link {
+      color: var(--blue);
+      font-size: 12px;
+      font-weight: 900;
+    }
+
+    .panel-body {
+      min-height: 0;
+      padding: 0 16px 12px;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      table-layout: fixed;
+      font-size: 12px;
+    }
+
+    th,
+    td {
+      height: 36px;
+      border-bottom: 1px solid #e7edf5;
+      text-align: left;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      padding: 0 6px;
+    }
+
+    th {
+      height: 34px;
+      color: #52647b;
+      font-size: 11px;
+      font-weight: 900;
+      background: #fbfdff;
+    }
+
+    .blue { color: var(--blue); font-weight: 900; }
+    .green { color: var(--green); font-weight: 900; }
+    .red { color: var(--red); font-weight: 900; }
+    .orange { color: var(--orange); font-weight: 900; }
+
+    .badge {
+      display: inline-flex;
+      height: 24px;
+      align-items: center;
+      justify-content: center;
+      min-width: 44px;
+      padding: 0 9px;
+      border-radius: 7px;
+      background: #e9f7ef;
+      color: #139051;
+      font-size: 11px;
+      font-weight: 900;
+    }
+
+    .badge.red { background: #ffecec; color: var(--red); }
+    .badge.orange { background: #fff4e6; color: #d76a00; }
+    .badge.blue { background: #edf5ff; color: var(--blue); }
+    .badge.gray { background: #f3f6fa; color: #52647b; }
+
+    .bar {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      min-width: 83px;
+    }
+
+    .track {
+      width: 48px;
+      height: 9px;
+      border-radius: 2px;
+      background: #edf1f6;
+      overflow: hidden;
+      display: inline-block;
+    }
+
+    .fill {
+      display: block;
+      height: 100%;
+      background: linear-gradient(90deg, #11a957, #23c875);
+      transition: width 520ms ease;
+    }
+
+    .gantt .panel-body {
+      padding: 0 14px 10px;
+      display: grid;
+      grid-template-rows: 1fr 22px;
+      gap: 3px;
+    }
+
+    .gantt-grid {
+      min-height: 0;
+      display: grid;
+      grid-template-columns: 92px 1fr;
+      font-size: 11px;
+    }
+
+    .g-labels {
+      display: grid;
+      grid-template-rows: 34px repeat(6, 1fr);
+      border-right: 1px solid #e2e9f2;
+    }
+
+    .g-labels div {
+      border-bottom: 1px solid #e7edf5;
+      display: grid;
+      grid-template-columns: 1fr 28px;
+      align-items: center;
+      padding: 0 8px;
+      font-weight: 800;
+      color: #1d2e4b;
+    }
+
+    .g-labels small {
+      display: block;
+      color: #64748b;
+      font-size: 10px;
+      margin-top: 2px;
+    }
+
+    .time {
+      position: relative;
+      display: grid;
+      grid-template-rows: 34px repeat(6, 1fr);
+      background:
+        repeating-linear-gradient(90deg, transparent 0, transparent calc(100% / 9 - 1px), #e4ebf4 calc(100% / 9 - 1px), #e4ebf4 calc(100% / 9)),
+        #fff;
+    }
+
+    .time-head {
+      display: grid;
+      grid-template-columns: repeat(10, 1fr);
+      align-items: center;
+      color: #344763;
+      font-size: 10px;
+      font-weight: 800;
+      border-bottom: 1px solid #e7edf5;
+    }
+
+    .time-head span {
+      text-align: center;
+    }
+
+    .g-row {
+      border-bottom: 1px solid #e7edf5;
+      position: relative;
+    }
+
+    .task-bg,
+    .task {
+      position: absolute;
+      top: 10px;
+      height: 26px;
+      border-radius: 3px;
+    }
+
+    .task-bg {
+      background: #e2e8f1;
+    }
+
+    .task {
+      color: #fff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 11px;
+      font-weight: 900;
+      box-shadow: 0 6px 12px rgba(22, 119, 255, .16);
+    }
+
+    .task.green { background: linear-gradient(90deg, #11a957, #29c876); }
+    .task.blue { background: linear-gradient(90deg, #1677ff, #2b85ff); }
+
+    .now-line {
+      position: absolute;
+      top: 31px;
+      bottom: 0;
+      left: 30%;
+      width: 2px;
+      background: var(--red);
+      z-index: 3;
+    }
+
+    .now-line::before {
+      content: "";
+      position: absolute;
+      top: -4px;
+      left: -4px;
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: var(--red);
+    }
+
+    .legend {
+      display: flex;
+      justify-content: center;
+      gap: 23px;
+      color: #5d6d83;
+      font-size: 10px;
+      font-weight: 800;
+    }
+
+    .dot {
+      width: 8px;
+      height: 8px;
+      display: inline-block;
+      border-radius: 2px;
+      margin-right: 5px;
+      background: #9aa8ba;
+      vertical-align: middle;
+    }
+
+    .dot.green { background: var(--green); }
+    .dot.blue { background: #9aa8ba; }
+    .dot.red { background: var(--red); }
+    .dot.orange { background: var(--orange); }
+
+    .workflow .panel-body {
+      padding: 13px 18px 14px;
+      display: grid;
+      grid-template-rows: 85px 1fr;
+      gap: 10px;
+    }
+
+    .flow {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      align-items: start;
+      gap: 12px;
+    }
+
+    .step {
+      position: relative;
+      display: grid;
+      justify-items: center;
+      gap: 7px;
+      color: #293c59;
+      text-align: center;
+      font-size: 11px;
+      font-weight: 800;
+      line-height: 1.35;
+    }
+
+    .step:not(:last-child)::after {
+      content: "";
+      position: absolute;
+      top: 22px;
+      left: calc(50% + 25px);
+      right: -34px;
+      height: 2px;
+      background: linear-gradient(90deg, #75859a, #20b86b);
+    }
+
+    .circle {
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      color: #fff;
+      display: grid;
+      place-items: center;
+      font-size: 19px;
+      background: #3d4d66;
+      box-shadow: 0 8px 18px rgba(20, 38, 62, .15);
+    }
+
+    .circle.green { background: var(--green); }
+    .circle.blue { background: var(--blue); }
+
+    .mission-detail {
+      border-top: 1px solid #e7edf5;
+      padding-top: 5px;
+      display: grid;
+      gap: 7px;
+      font-size: 12px;
+    }
+
+    .mission-title {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 15px;
+      font-weight: 900;
+      padding-bottom: 4px;
+    }
+
+    .kv {
+      min-height: 26px;
+      display: grid;
+      grid-template-columns: 90px 1fr 90px 1fr;
+      gap: 7px;
+      align-items: center;
+      border-bottom: 1px solid #e7edf5;
+    }
+
+    .kv span:nth-child(odd) {
+      color: #66758a;
+      font-weight: 800;
+    }
+
+    .actions {
+      display: flex;
+      justify-content: flex-end;
+      gap: 8px;
+      padding-top: 4px;
+    }
+
+    .pill-btn,
+    .chip {
+      height: 28px;
+      border: 1px solid #dce6f2;
+      border-radius: 6px;
+      background: #fff;
+      padding: 0 12px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      color: #3b4f6b;
+      font-size: 11px;
+      font-weight: 900;
+    }
+
+    .pill-btn.primary,
+    .chip.active {
+      color: var(--blue);
+      border-color: #b7d4ff;
+      background: #f2f8ff;
+    }
+
+    .chips {
+      display: flex;
+      gap: 8px;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+
+    .orchestration {
+      grid-column: span 2;
+    }
+
+    .orchestration .panel-body {
+      padding: 0 16px 12px;
+    }
+
+    .tabs {
+      height: 36px;
+      display: flex;
+      align-items: end;
+      gap: 24px;
+      border-bottom: 1px solid #e7edf5;
+      color: #3d506d;
+      font-size: 12px;
+      font-weight: 900;
+      margin-bottom: 0;
+    }
+
+    .tabs span {
+      height: 31px;
+      display: inline-flex;
+      align-items: center;
+    }
+
+    .tabs .active {
+      color: var(--blue);
+      border-bottom: 3px solid var(--blue);
+    }
+
+    .robot .panel-body {
+      padding: 0 12px 12px;
+      display: grid;
+      grid-template-columns: minmax(260px, .76fr) minmax(0, 1fr);
+      gap: 12px;
+    }
+
+    .amr-list {
+      min-height: 0;
+      border-right: 1px solid #e7edf5;
+      padding: 8px 10px 0 0;
+      display: grid;
+      align-content: start;
+      gap: 8px;
+    }
+
+    .amr-row {
+      min-height: 50px;
+      border: 1px solid #e7edf5;
+      border-radius: 8px;
+      background: #fbfdff;
+      padding: 7px 9px;
+      display: grid;
+      grid-template-columns: 28px minmax(0, 1fr) minmax(34px, auto) minmax(42px, auto);
+      align-items: center;
+      gap: 7px;
+      font-size: clamp(9px, .67vw, 11px);
+    }
+
+    .amr-row > span:nth-child(2),
+    .amr-row strong,
+    .amr-row .muted,
+    .detail-kv,
+    .detail-kv span {
+      min-width: 0;
+    }
+
+    .amr-row strong,
+    .amr-row .muted,
+    .detail-kv span {
+      display: block;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    .amr-avatar {
+      width: 25px;
+      height: 25px;
+      border-radius: 50%;
+      background:
+        radial-gradient(circle at 50% 42%, #fff 0 3px, transparent 4px),
+        linear-gradient(#2e3f58, #8796aa);
+      box-shadow: inset 0 -3px 0 rgba(0,0,0,.12);
+    }
+
+    .battery {
+      display: grid;
+      gap: 4px;
+      font-weight: 900;
+      color: #203551;
+      white-space: nowrap;
+    }
+
+    .mini-bar {
+      width: 24px;
+      height: 5px;
+      border-radius: 2px;
+      background: #e5ebf3;
+      overflow: hidden;
+    }
+
+    .mini-bar i {
+      display: block;
+      height: 100%;
+      background: var(--green);
+    }
+
+    .amr-detail {
+      padding-top: 8px;
+      display: grid;
+      grid-template-columns: minmax(104px, 34%) minmax(0, 1fr);
+      gap: 14px;
+      align-items: center;
+    }
+
+    .amr-visual {
+      width: min(150px, 100%);
+      height: 98px;
+      border-radius: 24px 24px 20px 20px;
+      background:
+        radial-gradient(circle at 50% 24%, #1c2634 0 15px, #69798b 16px 20px, transparent 21px),
+        linear-gradient(180deg, #f8fafc, #ccd8e5 72%, #202b38 73% 80%, #eef3f8 81%);
+      border: 1px solid #b7c5d4;
+      box-shadow: inset 0 -10px 18px rgba(7, 28, 52, .14), 0 16px 23px rgba(11, 42, 79, .15);
+      transform: perspective(240px) rotateX(14deg) rotateZ(-4deg);
+      position: relative;
+    }
+
+    .amr-visual::before,
+    .amr-visual::after {
+      content: "";
+      position: absolute;
+      bottom: 13px;
+      width: 22px;
+      height: 10px;
+      border-radius: 999px;
+      background: #101827;
+    }
+
+    .amr-visual::before { left: 18px; }
+    .amr-visual::after { right: 18px; }
+
+    .detail-kv {
+      display: grid;
+      gap: 8px;
+      font-size: 12px;
+    }
+
+    .detail-kv div {
+      display: grid;
+      grid-template-columns: minmax(58px, .45fr) minmax(0, 1fr);
+      border-bottom: 1px solid #e7edf5;
+      min-height: 25px;
+      align-items: center;
+    }
+
+    .detail-kv span:first-child {
+      color: #66758a;
+      font-weight: 800;
+    }
+
+    .alarm .panel-body {
+      padding: 0 14px 12px;
+      display: grid;
+      grid-template-rows: 38px 1fr;
+    }
+
+    .alarm-filter {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      border-bottom: 1px solid #e7edf5;
+      font-size: 11px;
+      font-weight: 900;
+    }
+
+    .alarm-row {
+      min-height: 35px;
+      display: grid;
+      grid-template-columns: 1.2fr .85fr .78fr .88fr;
+      align-items: center;
+      gap: 8px;
+      border-bottom: 1px solid #e7edf5;
+      font-size: 12px;
+      color: #3d506d;
+    }
+
+    .alarm-row strong {
+      color: #172640;
+      font-size: 12px;
+    }
+
+    .map .panel-body {
+      padding: 10px 14px 13px;
+    }
+
+    .map-area {
+      position: relative;
+      height: 100%;
+      min-height: 208px;
+      border-radius: 6px;
+      overflow: hidden;
+      background:
+        linear-gradient(rgba(255,255,255,.72), rgba(255,255,255,.72)),
+        linear-gradient(90deg, rgba(48, 70, 102, .15) 1px, transparent 1px),
+        linear-gradient(rgba(48, 70, 102, .15) 1px, transparent 1px),
+        linear-gradient(180deg, #e8eff7, #f9fbfe);
+      background-size: auto, 56px 56px, 56px 56px, auto;
+      border: 1px solid #e2e9f2;
+    }
+
+    .map-area::before {
+      content: "";
+      position: absolute;
+      inset: 16px;
+      opacity: .58;
+      background:
+        linear-gradient(90deg, transparent 0 9%, #c5d0df 9% 10%, transparent 10% 23%, #c5d0df 23% 24%, transparent 24% 42%, #c5d0df 42% 43%, transparent 43% 61%, #c5d0df 61% 62%, transparent 62% 78%, #c5d0df 78% 79%, transparent 79%),
+        linear-gradient(0deg, transparent 0 16%, #c5d0df 16% 17%, transparent 17% 34%, #c5d0df 34% 35%, transparent 35% 56%, #c5d0df 56% 57%, transparent 57% 75%, #c5d0df 75% 76%, transparent 76%);
+    }
+
+    .map-area svg {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 2;
+    }
+
+    .map-area svg path {
+      stroke-dasharray: 18 11;
+      animation: map-route-dash 1.25s linear infinite;
+    }
+
+    .map-agent {
+      position: absolute;
+      z-index: 4;
+      width: 20px;
+      height: 20px;
+      margin: -10px 0 0 -10px;
+      border-radius: 50%;
+      display: grid;
+      place-items: center;
+      color: #fff;
+      background: var(--blue);
+      border: 3px solid #fff;
+      box-shadow: 0 0 0 8px rgba(22, 119, 255, .13), 0 8px 18px rgba(14, 44, 82, .18);
+      font-size: 9px;
+      font-weight: 900;
+      transform: translate(var(--x, 0), var(--y, 0));
+      pointer-events: none;
+    }
+
+    .map-agent.green {
+      background: var(--green);
+      box-shadow: 0 0 0 8px rgba(34, 184, 107, .14), 0 8px 18px rgba(14, 44, 82, .18);
+    }
+
+    .map-agent.mint {
+      background: #15c7a7;
+      box-shadow: 0 0 0 8px rgba(21, 199, 167, .14), 0 8px 18px rgba(14, 44, 82, .18);
+    }
+
+    .map-pin {
+      position: absolute;
+      z-index: 3;
+      height: 30px;
+      min-width: 60px;
+      padding: 0 10px;
+      border-radius: 5px;
+      background: var(--blue);
+      color: #fff;
+      display: grid;
+      place-items: center;
+      font-size: 12px;
+      font-weight: 900;
+      box-shadow: 0 8px 16px rgba(22, 119, 255, .18);
+    }
+
+    .map-pin.gray { background: #f4f7fb; color: #263a58; border: 1px solid #d8e2ef; }
+    .map-pin.red { background: var(--red); min-width: 28px; width: 28px; border-radius: 50%; }
+    .map-pin.green { background: var(--green); min-width: 26px; width: 26px; border-radius: 50%; }
+
+    .live-flash {
+      animation: live-flash 620ms ease;
+    }
+
+    @keyframes map-route-dash {
+      to { stroke-dashoffset: -29; }
+    }
+
+    @keyframes live-flash {
+      0% { background: #eaf5ff; }
+      100% { background: transparent; }
+    }
+    .zoom {
+      position: absolute;
+      right: 12px;
+      top: 38px;
+      z-index: 4;
+      display: grid;
+      gap: 10px;
+    }
+
+    .zoom span {
+      width: 30px;
+      height: 30px;
+      border-radius: 50%;
+      background: #fff;
+      border: 1px solid #d9e3ef;
+      display: grid;
+      place-items: center;
+      color: #506780;
+      font-size: 20px;
+      font-weight: 600;
+    }
+
+    .wide { grid-column: span 2; }
+    .workflow { grid-row: span 2; }
+
+    @media (max-width: 1400px), (max-height: 790px) {
+      .sidebar { padding-top: 22px; gap: 22px; }
+      .brand-logo { width: 138px; }
+      .nav-item { min-height: 50px; font-size: 15px; padding: 0 26px; }
+      .subnav { padding-left: 43px; padding-bottom: 8px; }
+      .subnav button { min-height: 29px; font-size: 12px; }
+      main { padding: 18px 22px 20px; gap: 10px; }
+      h1 { font-size: 27px; }
+      .subtitle { margin-top: 7px; font-size: 13px; }
+      .panel-head { min-height: 40px; }
+      .panel-head h2 { font-size: 14px; }
+      table { font-size: 10px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="page">
+    <aside class="sidebar">
+      <div class="brand"><img class="brand-logo" src="jlt-logo-new2.png" alt="JLT"></div>
+      <nav class="nav" aria-label="주 메뉴">
+        <button class="nav-item" type="button" data-menu="통합 대시보드" aria-pressed="false"><span class="nav-left">통합 대시보드</span></button>
+        <button class="nav-item active" type="button" data-menu="생산 관리" aria-pressed="true"><span class="nav-left">작업·자재·미션 관리</span></button>
+        <div class="subnav" data-prod-subnav data-open="true">
+          <button type="button" data-prod-tab="mission" aria-pressed="true">작업지시 관리</button>
+          <button type="button" data-prod-tab="material" aria-pressed="false">자재 추적 관리</button>
+          <button type="button" data-prod-tab="orchestration" aria-pressed="false">미션 오케스트레이션</button>
+          <button type="button" data-prod-tab="facility" aria-pressed="false">설비·자원 관리</button>
+          <button type="button" data-prod-tab="robot" aria-pressed="false">AMR·로봇 관리</button>
+        </div>
+        <button class="nav-item" type="button" data-menu="품질 관리" aria-pressed="false"><span class="nav-left">품질 관리</span></button>
+        <button class="nav-item" type="button" data-menu="물류 관리" aria-pressed="false"><span class="nav-left">물류 관리</span></button>
+        <button class="nav-item" type="button" data-menu="알람 관리" aria-pressed="false"><span class="nav-left">알람 관리</span></button>
+        <button class="nav-item" type="button" data-menu="로봇 관제" aria-pressed="false"><span class="nav-left">로봇 관제</span></button>
+      </nav>
+    </aside>
+
+    <main>
+      <header class="top">
+        <div>
+          <h1>JLT MES 작업·자재·미션 관리</h1>
+          <div class="subtitle">작업지시, 자재 흐름, Tray/Magazine 교체 미션을 통합 관리</div>
+        </div>
+        <div class="top-tools">
+          <span>◴&nbsp; 2025.05.16 (금) 10:24:30</span>
+          <span class="tool-icon">☼</span>
+          <span class="tool-icon notif">♧</span>
+          <span class="avatar"><strong>관리자</strong><span>JLT 관리자 ▾</span></span>
+        </div>
+      </header>
+
+      <section class="board">
+        <section class="panel work-order">
+          <div class="panel-head"><h2>작업지시 관리</h2><span class="link">전체 보기</span></div>
+          <div class="panel-body">
+            <table>
+              <thead><tr><th>작업지시번호</th><th>품목</th><th>계획수량</th><th>진행률</th><th>시작시간</th><th>완료예정</th><th>우선순위</th></tr></thead>
+              <tbody>
+                <tr><td class="blue">WO-250516-001</td><td>JLT-PRO-001</td><td>10,000</td><td><span class="bar"><span class="track"><i class="fill" style="width:72%"></i></span>72%</span></td><td>05-16 06:00</td><td>05-16 14:00</td><td><span class="badge red">높음</span></td></tr>
+                <tr><td class="blue">WO-250516-002</td><td>JLT-BAT-002</td><td>8,000</td><td><span class="bar"><span class="track"><i class="fill" style="width:48%"></i></span>48%</span></td><td>05-16 07:30</td><td>05-16 16:30</td><td><span class="badge orange">보통</span></td></tr>
+                <tr><td class="blue">WO-250516-003</td><td>JLT-MTR-003</td><td>6,000</td><td><span class="bar"><span class="track"><i class="fill" style="width:18%"></i></span>18%</span></td><td>05-16 08:00</td><td>05-16 17:30</td><td><span class="badge red">높음</span></td></tr>
+                <tr><td class="blue">WO-250516-004</td><td>JLT-SEN-004</td><td>4,000</td><td><span class="bar"><span class="track"><i class="fill" style="width:95%"></i></span>95%</span></td><td>05-16 05:30</td><td>05-16 11:30</td><td><span class="badge">낮음</span></td></tr>
+                <tr><td class="blue">WO-250516-005</td><td>JLT-ASM-005</td><td>3,000</td><td><span class="bar"><span class="track"><i class="fill" style="width:32%"></i></span>32%</span></td><td>05-16 09:00</td><td>05-16 18:00</td><td><span class="badge orange">보통</span></td></tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
+
+        <section class="panel gantt">
+          <div class="panel-head"><h2>라인 / 교대별 스케줄 (Gantt)</h2><div class="chips"><span class="chip">일간</span><span class="chip">주간</span><span class="chip">‹</span><span class="chip">2025-05-16 (금)</span><span class="chip">›</span><span class="chip">지금</span></div></div>
+          <div class="panel-body">
+            <div class="gantt-grid">
+              <div class="g-labels">
+                <div><span>라인</span><span>교대</span></div>
+                <div><span>Line A<small>(조립)</small></span><span>1조</span></div>
+                <div><span></span><span>2조</span></div>
+                <div><span>Line B<small>(검사)</small></span><span>1조</span></div>
+                <div><span></span><span>2조</span></div>
+                <div><span>Line C<small>(포장)</small></span><span>1조</span></div>
+                <div><span></span><span>2조</span></div>
+              </div>
+              <div class="time">
+                <div class="time-head"><span>06:00</span><span>08:00</span><span>10:00</span><span>12:00</span><span>14:00</span><span>16:00</span><span>18:00</span><span>20:00</span><span>22:00</span><span>24:00</span></div>
+                <div class="g-row"><span class="task-bg" style="left:13%;width:54%"></span><span class="task green" style="left:16%;width:34%">WO-250516-001</span></div>
+                <div class="g-row"><span class="task-bg" style="left:25%;width:62%"></span><span class="task blue" style="left:25%;width:38%">WO-250516-002</span></div>
+                <div class="g-row"><span class="task-bg" style="left:14%;width:59%"></span><span class="task blue" style="left:14%;width:34%">WO-250516-003</span></div>
+                <div class="g-row"><span class="task-bg" style="left:26%;width:61%"></span><span class="task green" style="left:25%;width:39%">WO-250516-004</span></div>
+                <div class="g-row"><span class="task-bg" style="left:22%;width:57%"></span><span class="task blue" style="left:25%;width:25%">WO-250516-005</span></div>
+                <div class="g-row"><span class="task-bg" style="left:58%;width:36%"></span></div>
+                <span class="now-line"></span>
+              </div>
+            </div>
+            <div class="legend"><span><i class="dot green"></i>진행중</span><span><i class="dot blue"></i>대기</span><span><i class="dot"></i>완료</span><span><i class="dot red"></i>지연</span><span><i class="dot"></i>계획</span></div>
+          </div>
+        </section>
+
+        <section class="panel workflow">
+          <div class="panel-head"><h2>작업 흐름 워크플로우</h2></div>
+          <div class="panel-body">
+            <div class="flow">
+              <div class="step"><span class="circle">□</span><span>PLC Empty/Full<br>감지</span></div>
+              <div class="step"><span class="circle green">▣</span><span>H-MOS 배정</span></div>
+              <div class="step"><span class="circle blue">◎</span><span>휴머노이드/AMR<br>교체</span></div>
+              <div class="step"><span class="circle green">▤</span><span>완료 회신</span></div>
+            </div>
+            <div class="mission-detail">
+              <div class="mission-title"><span>미션 상세 카드</span><span class="badge">진행중</span></div>
+              <strong>Tray 교체 (Line A - M/C 15)</strong>
+              <div class="kv"><span>미션ID</span><span>MIS-250516-1287</span><span>유형</span><span>우선순위 <span class="badge red">높음</span></span></div>
+              <div class="kv"><span>요청시간</span><span>05-16 10:22:15</span><span>요청원인</span><span>PLC (M/C 15)</span></div>
+              <div class="kv"><span>현재상태</span><span class="blue">AMR 이동중</span><span>할당 자원</span><span class="blue">AMR-03</span></div>
+              <div class="kv"><span>대상 위치</span><span>A동 1F &gt; Line A &gt; M/C 15</span><span></span><span></span></div>
+              <div class="kv"><span>예상 완료</span><span>05-16 10:26</span><span></span><span></span></div>
+              <div class="actions"><span class="pill-btn">미션 추적</span><span class="pill-btn">일시정지</span><span class="pill-btn">취소</span></div>
+            </div>
+          </div>
+        </section>
+
+        <section class="panel">
+          <div class="panel-head"><h2>자재 / LOT 추적</h2></div>
+          <div class="panel-body">
+            <table>
+              <thead><tr><th>LOT</th><th>자재ID</th><th>입고</th><th>투입</th><th>사용 현황</th></tr></thead>
+              <tbody>
+                <tr><td class="blue">LOT-250516-A01</td><td>MAT-TRAY-001</td><td>120</td><td>96</td><td><span class="bar"><span class="track"><i class="fill" style="width:80%"></i></span>80%</span></td></tr>
+                <tr><td class="blue">LOT-250516-A02</td><td>MAT-TRAY-002</td><td>100</td><td>60</td><td><span class="bar"><span class="track"><i class="fill" style="width:60%"></i></span>60%</span></td></tr>
+                <tr><td class="blue">LOT-250516-B01</td><td>MAT-MAG-001</td><td>80</td><td>48</td><td><span class="bar"><span class="track"><i class="fill" style="width:60%"></i></span>60%</span></td></tr>
+                <tr><td class="blue">LOT-250516-B02</td><td>MAT-MAG-002</td><td>60</td><td>15</td><td><span class="bar"><span class="track"><i class="fill" style="width:25%"></i></span>25%</span></td></tr>
+                <tr><td class="blue">LOT-250516-C01</td><td>MAT-CART-001</td><td>40</td><td>5</td><td><span class="bar"><span class="track"><i class="fill" style="width:12%"></i></span>12%</span></td></tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
+
+        <section class="panel">
+          <div class="panel-head"><h2>Tray / Magazine / Cart 현황</h2><span class="link">전체 보기</span></div>
+          <div class="panel-body">
+            <div class="chips" style="height:39px;border-bottom:1px solid #e7edf5"><span class="chip active">전체 128</span><span class="chip">Empty 31</span><span class="chip">In Use 74</span><span class="chip" style="color:var(--red)">Full 23</span></div>
+            <table>
+              <thead><tr><th>자재유형</th><th>ID(바코드)</th><th>상태</th><th>보관위치</th><th>연결 라인</th></tr></thead>
+              <tbody>
+                <tr><td>Tray</td><td class="blue">TRAY-250516-023</td><td><span class="badge blue">Empty</span></td><td>A동 1F-Rack 03</td><td>Line A</td></tr>
+                <tr><td>Tray</td><td class="blue">TRAY-250516-045</td><td><span class="badge">In Use</span></td><td>Line A - M/C 15</td><td>Line A</td></tr>
+                <tr><td>Tray</td><td class="blue">TRAY-250516-067</td><td><span class="badge red">Full</span></td><td>A동 1F-OUT 02</td><td>-</td></tr>
+                <tr><td>Magazine</td><td class="blue">MAG-250516-010</td><td><span class="badge">In Use</span></td><td>Line B - M/C 07</td><td>Line B</td></tr>
+                <tr><td>Cart</td><td class="blue">CART-250516-003</td><td><span class="badge blue">Empty</span></td><td>A동 1F-AGV Zone</td><td>-</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
+
+        <section class="panel orchestration">
+          <div class="panel-head"><h2>미션 오케스트레이션</h2></div>
+          <div class="panel-body">
+            <div class="tabs"><span class="active">H-MOS 작업 큐</span><span>PLC 이벤트</span><span>로봇 교체 미션</span></div>
+            <table>
+              <thead><tr><th>미션ID</th><th>유형</th><th>대상</th><th>상태</th><th>SLA</th></tr></thead>
+              <tbody>
+                <tr><td class="blue">MIS-250516-1287</td><td>Tray 교체</td><td>Line A - M/C 15</td><td><span class="badge">진행중</span></td><td>03:45</td></tr>
+                <tr><td class="blue">MIS-250516-1286</td><td>Magazine 교체</td><td>Line B - M/C 07</td><td><span class="badge gray">대기</span></td><td>05:12</td></tr>
+                <tr><td class="blue">MIS-250516-1285</td><td>Tray 교체</td><td>Line C - M/C 03</td><td><span class="badge">진행중</span></td><td>04:20</td></tr>
+                <tr><td class="blue">MIS-250516-1284</td><td>Cart 보충</td><td>Line B - Buffer</td><td><span class="badge">완료</span></td><td>00:00</td></tr>
+                <tr><td class="blue">MIS-250516-1283</td><td>Tray 회수</td><td>Line B - OUT</td><td><span class="badge gray">대기</span></td><td>06:30</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
+
+        <section class="panel robot">
+          <div class="panel-head"><h2>AMR / 휴머노이드 상태</h2><div class="chips"><span class="chip active">AMR</span><span class="chip">휴머노이드</span><span class="link">미션 큐 링크 보기</span></div></div>
+          <div class="panel-body">
+            <div class="amr-list">
+              <strong>AMR 목록</strong>
+              <div class="amr-row"><span class="amr-avatar"></span><span><strong>AMR-01</strong><br><span class="muted">Line B → M/C 07</span></span><span class="battery">82%<span class="mini-bar"><i style="width:82%"></i></span></span><span class="badge">작업중</span></div>
+              <div class="amr-row"><span class="amr-avatar"></span><span><strong>AMR-02</strong><br><span class="muted">대기 위치</span></span><span class="battery">56%<span class="mini-bar"><i style="width:56%"></i></span></span><span class="badge blue">대기중</span></div>
+              <div class="amr-row"><span class="amr-avatar"></span><span><strong>AMR-03</strong><br><span class="muted">Line A → M/C 15</span></span><span class="battery">76%<span class="mini-bar"><i style="width:76%"></i></span></span><span class="badge">작업중</span></div>
+              <div class="amr-row"><span class="amr-avatar"></span><span><strong>AMR-04</strong><br><span class="muted">충전 스테이션</span></span><span class="battery">23%<span class="mini-bar"><i style="width:23%;background:#9aa8ba"></i></span></span><span class="badge orange">충전중</span></div>
+            </div>
+            <div class="amr-detail">
+              <div class="amr-visual"></div>
+              <div class="detail-kv">
+                <strong>선택 장비 상세 (AMR-03)</strong>
+                <div><span>현재 작업</span><span>Tray 교체</span></div>
+                <div><span>출발지</span><span>A동 1F - Rack 03</span></div>
+                <div><span>목적지</span><span>Line A - M/C 15</span></div>
+                <div><span>예상 도착</span><span>10:25</span></div>
+                <div><span>배터리</span><span><span class="bar"><span class="track" style="width:62px"><i class="fill" style="width:76%"></i></span>76%</span></span></div>
+                <div class="actions" style="display:flex"><span class="pill-btn primary">경로 추적</span><span class="pill-btn">작업 취소</span></div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section class="panel alarm">
+          <div class="panel-head"><h2>알람 / 예외</h2><span class="link">전체 알람 보기</span></div>
+          <div class="panel-body">
+            <div class="alarm-filter"><span class="chip active">전체 7</span><span>지연 <b class="red">3</b></span><span>자재 <b class="green">2</b></span><span>설비 <b class="orange">1</b></span><span>기타 1</span></div>
+            <div>
+              <div class="alarm-row"><strong><i class="dot red"></i>자재 공급 지연</strong><span>Line B - M/C 07</span><span>05-16 10:21</span><span>지연 00:07:32</span></div>
+              <div class="alarm-row"><strong><i class="dot orange"></i>LOT 검증 오류</strong><span>Line A - M/C 15</span><span>05-16 10:18</span><span>지연 00:05:12</span></div>
+              <div class="alarm-row"><strong><i class="dot orange"></i>Tray 부족</strong><span>Line C - Buffer</span><span>05-16 10:12</span><span>지연 00:11:05</span></div>
+              <div class="alarm-row"><strong><i class="dot orange"></i>AMR 충돌 위험</strong><span>A동 1F 교차로</span><span>05-16 10:10</span><span>주의</span></div>
+              <div class="alarm-row"><strong><i class="dot"></i>휴머노이드 배터리 낮음</strong><span>HUM-02</span><span>05-16 10:08</span><span>정보</span></div>
+            </div>
+          </div>
+        </section>
+
+        <section class="panel map">
+          <div class="panel-head"><h2>공장 맵 / 경로 추적</h2><div class="chips"><span class="chip">A동 1F</span><span><i class="dot blue"></i>AMR 경로</span><span><i class="dot green"></i>목적지</span><span><i class="dot red"></i>장애물</span></div></div>
+          <div class="panel-body">
+            <div class="map-area">
+              <svg viewBox="0 0 520 232" aria-hidden="true">
+                <path d="M66 142 L166 142 Q196 142 196 106 L196 62 Q196 34 232 34 L286 34 Q316 34 316 72 L316 134 Q316 166 356 166 L454 166" fill="none" stroke="#1677ff" stroke-width="9" stroke-linecap="round"/>
+                <path d="M66 142 L166 142 Q196 142 196 106" fill="none" stroke="#22b86b" stroke-width="4" stroke-linecap="round"/>
+                <circle cx="196" cy="106" r="10" fill="#22b86b"/>
+                <circle cx="316" cy="134" r="10" fill="#1677ff"/>
+                <circle cx="454" cy="166" r="10" fill="#ff4d4f"/>
+              </svg>
+              <span class="map-pin" style="left:28px;top:116px">Line A</span>
+              <span class="map-pin green" style="left:177px;top:95px"></span>
+              <span class="map-pin gray" style="left:255px;top:102px">Line B</span>
+              <span class="map-pin gray" style="right:86px;top:91px">Line C</span>
+              <span class="map-pin" style="right:111px;bottom:30px">OUT 02</span>
+              <span class="map-pin red" style="right:69px;bottom:72px">△</span>
+              <div class="zoom"><span>+</span><span>−</span></div>
+            </div>
+          </div>
+        </section>
+      </section>
+    </main>
+  </div>
+  <script>
+    (() => {
+      const lotPanel = [...document.querySelectorAll('.panel')].find(panel => panel.querySelector('h2')?.textContent.includes('자재 / LOT'));
+      const assetPanel = [...document.querySelectorAll('.panel')].find(panel => panel.querySelector('h2')?.textContent.includes('Tray / Magazine / Cart'));
+      const robotPanel = document.querySelector('.panel.robot');
+      const mapArea = document.querySelector('.map-area');
+      const routePath = [
+        [66, 142], [166, 142], [196, 106], [196, 62], [232, 34], [286, 34], [316, 72], [316, 134], [356, 166], [454, 166]
+      ];
+      const statuses = [
+        { text: 'Empty', cls: 'badge blue' },
+        { text: 'In Use', cls: 'badge' },
+        { text: 'Full', cls: 'badge red' },
+        { text: 'Reserved', cls: 'badge orange' }
+      ];
+      const locations = ['A동 1F-Rack 03', 'Line A - M/C 15', 'Line B - M/C 07', 'Line C - Buffer', 'A동 1F-AGV Zone', 'A동 1F-OUT 02'];
+      const lines = ['Line A', 'Line B', 'Line C', '-'];
+
+      function flash(el) {
+        if (!el) return;
+        el.classList.remove('live-flash');
+        void el.offsetWidth;
+        el.classList.add('live-flash');
+      }
+
+      function updateLotRows() {
+        lotPanel?.querySelectorAll('tbody tr').forEach((row, index) => {
+          const cells = row.children;
+          const inbound = Number(cells[2].textContent.replace(/,/g, ''));
+          let used = Number(cells[3].textContent.replace(/,/g, ''));
+          const delta = ((index % 2 === 0) ? 1 : -1) * (1 + Math.floor(Math.random() * 4));
+          used = Math.max(0, Math.min(inbound, used + delta));
+          const rate = Math.round((used / inbound) * 100);
+          const bar = row.querySelector('.fill');
+          const label = row.querySelector('.bar');
+          cells[3].textContent = used.toLocaleString('ko-KR');
+          if (bar) bar.style.width = `${rate}%`;
+          if (label) label.lastChild.textContent = `${rate}%`;
+          flash(row);
+        });
+      }
+
+      function updateAssetRows() {
+        const counts = { Empty: 0, 'In Use': 0, Full: 0, Reserved: 0 };
+        assetPanel?.querySelectorAll('tbody tr').forEach((row, index) => {
+          const cells = row.children;
+          const status = statuses[(Math.floor(Date.now() / 2400) + index) % statuses.length];
+          const badge = row.querySelector('.badge');
+          if (badge) {
+            badge.className = status.cls;
+            badge.textContent = status.text;
+          }
+          cells[3].textContent = locations[(Math.floor(Date.now() / 1800) + index * 2) % locations.length];
+          cells[4].textContent = lines[(Math.floor(Date.now() / 2600) + index) % lines.length];
+          counts[status.text] += 1;
+          flash(row);
+        });
+        const chips = assetPanel?.querySelectorAll('.chip') || [];
+        if (chips.length >= 4) {
+          chips[0].textContent = `전체 ${128 + Math.round(Math.sin(Date.now() / 2800) * 3)}`;
+          chips[1].textContent = `Empty ${31 + counts.Empty}`;
+          chips[2].textContent = `In Use ${74 + counts['In Use']}`;
+          chips[3].textContent = `Full ${23 + counts.Full}`;
+        }
+      }
+
+      function updateRobotRows() {
+        const bases = [82, 56, 76, 23];
+        robotPanel?.querySelectorAll('.amr-row').forEach((row, index) => {
+          const value = Math.max(12, Math.min(98, Math.round((bases[index] || 60) + Math.sin(Date.now() / (1200 + index * 280)) * 7)));
+          const battery = row.querySelector('.battery');
+          const mini = row.querySelector('.mini-bar i');
+          if (battery) battery.firstChild.textContent = `${value}%`;
+          if (mini) mini.style.width = `${value}%`;
+        });
+        const detailBattery = robotPanel?.querySelector('.detail-kv .bar');
+        if (detailBattery) {
+          const value = Math.max(20, Math.min(95, Math.round(76 + Math.sin(Date.now() / 1500) * 9)));
+          const fill = detailBattery.querySelector('.fill');
+          if (fill) fill.style.width = `${value}%`;
+          detailBattery.lastChild.textContent = `${value}%`;
+        }
+      }
+
+      function pointOnRoute(points, progress) {
+        const segments = [];
+        let total = 0;
+        for (let i = 0; i < points.length - 1; i += 1) {
+          const a = points[i];
+          const b = points[i + 1];
+          const len = Math.hypot(b[0] - a[0], b[1] - a[1]);
+          segments.push({ a, b, len });
+          total += len;
+        }
+        let dist = ((progress % 1) + 1) % 1 * total;
+        for (const segment of segments) {
+          if (dist <= segment.len) {
+            const k = dist / segment.len;
+            return [segment.a[0] + (segment.b[0] - segment.a[0]) * k, segment.a[1] + (segment.b[1] - segment.a[1]) * k];
+          }
+          dist -= segment.len;
+        }
+        return points[0];
+      }
+
+      if (mapArea && !mapArea.querySelector('.map-agent')) {
+        [
+          ['A', 'green', 0],
+          ['H', 'mint', .35],
+          ['A', '', .68]
+        ].forEach(([label, cls, offset]) => {
+          const agent = document.createElement('span');
+          agent.className = `map-agent ${cls}`;
+          agent.dataset.offset = offset;
+          agent.textContent = label;
+          mapArea.appendChild(agent);
+        });
+      }
+
+      function animateMap(time) {
+        if (mapArea) {
+          const rect = mapArea.getBoundingClientRect();
+          mapArea.querySelectorAll('.map-agent').forEach((agent, index) => {
+            const [x, y] = pointOnRoute(routePath, time * (0.000065 + index * 0.000012) + Number(agent.dataset.offset || 0));
+            agent.style.setProperty('--x', `${(x / 520) * rect.width}px`);
+            agent.style.setProperty('--y', `${(y / 232) * rect.height}px`);
+          });
+        }
+        requestAnimationFrame(animateMap);
+      }
+
+      updateLotRows();
+      updateAssetRows();
+      updateRobotRows();
+      setInterval(updateLotRows, 1800);
+      setInterval(updateAssetRows, 2400);
+      setInterval(updateRobotRows, 1200);
+      requestAnimationFrame(animateMap);
+    })();
+  </script>
+</body>
+</html>
