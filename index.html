@@ -1,0 +1,1161 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>JLT Integrated Dashboard</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <div class="app-shell">
+    <aside class="app-sidebar" aria-label="공통 사이드바">
+      <a class="app-brand" href="#command" aria-label="JLT 통합 관제 홈">
+        <img src="assets/jlt-logo-new2.png" alt="JLT">
+      </a>
+      <nav class="app-nav" aria-label="페이지 이동">
+
+        <button class="app-nav__item is-active" type="button" data-route="command" aria-pressed="true">
+          <span>통합 관제</span>
+        </button>
+        <button class="app-nav__item" type="button" data-route="mes" aria-pressed="false">
+          <span>MES 생산 관리</span>
+        </button>
+        <button class="app-nav__item" type="button" data-route="quality" aria-pressed="false">
+          <span>품질 관리</span>
+        </button>
+        <button class="app-nav__item" type="button" data-route="wms" aria-pressed="false">
+          <span>WMS 물류 관제</span>
+        </button>
+        <button class="app-nav__item" type="button" data-route="robot" aria-pressed="false">
+          <span>로봇 관제</span>
+        </button>
+      </nav>
+      <div class="app-sidebar__meta">
+        <strong>JLT Smart Factory</strong>
+        <span>H MOS 관제 시스템</span>
+      </div>
+    </aside>
+
+    <div class="app-main">
+      <header class="app-header">
+        <div>
+          <p class="app-kicker">Integrated Control Center</p>
+          <h1 id="route-title">통합 관제</h1>
+          <p id="route-subtitle">공장, 물류, 설비 상태를 한 화면에서 모니터링</p>
+        </div>
+        <div class="app-header__tools">
+          <span id="clock">--:--:--</span>
+          <span class="app-status">LIVE</span>
+        </div>
+      </header>
+
+      <main class="app-content" id="app-content">
+
+      <section class="legacy-page is-active" data-page="command" data-title="통합 관제" data-subtitle="공장, 물류, 설비 상태를 한 화면에서 모니터링" >
+<div id="jlt16-root" class="jlt16">
+  
+
+  <div class="screen">
+    <aside class="side">
+      <div class="brand"><img src="assets/command-embedded-1.png" alt="JLT"></div>
+      <nav class="nav" aria-label="주 메뉴">
+        <button type="button" data-menu="통합 대시보드" aria-pressed="false"><span><i data-lucide="layout-dashboard" aria-hidden="true"></i>통합 대시보드</span><i data-lucide="chevron-right" aria-hidden="true"></i></button>
+        <button type="button" data-menu="생산 관리" aria-pressed="true"><span><i data-lucide="factory" aria-hidden="true"></i>작업·자재·미션 관리</span><i data-lucide="chevron-down" aria-hidden="true"></i></button>
+        <div class="subnav" data-prod-subnav data-open="true">
+          <button type="button" data-prod-tab="mission" aria-pressed="true">작업지시 관리</button>
+          <button type="button" data-prod-tab="material" aria-pressed="false">자재 추적 관리</button>
+          <button type="button" data-prod-tab="orchestration" aria-pressed="false">미션 오케스트레이션</button>
+          <button type="button" data-prod-tab="facility" aria-pressed="false">설비·자원 관리</button>
+          <button type="button" data-prod-tab="robot" aria-pressed="false">AMR·로봇 관리</button>
+        </div>
+        <button type="button" data-menu="품질 관리" aria-pressed="false"><span><i data-lucide="shield-check" aria-hidden="true"></i>품질 관리</span><i data-lucide="chevron-right" aria-hidden="true"></i></button>
+        <button type="button" data-menu="물류 관리" aria-pressed="false"><span><i data-lucide="truck" aria-hidden="true"></i>물류 관리</span><i data-lucide="chevron-right" aria-hidden="true"></i></button>
+        <button type="button" data-menu="알람 관리" aria-pressed="false"><span><i data-lucide="bell" aria-hidden="true"></i>알람 관리</span><i data-lucide="chevron-right" aria-hidden="true"></i></button>
+        <button type="button" data-menu="로봇 관제" aria-pressed="false"><span><i data-lucide="bot" aria-hidden="true"></i>로봇 관제</span><i data-lucide="chevron-right" aria-hidden="true"></i></button>
+      </nav>
+      <div class="site">
+        <span class="muted">JLT 스마트팩토리</span>
+        <strong>A동 1F</strong>
+        <span class="muted">물류자동화 통합관제</span>
+      </div>
+    </aside>
+
+    <main class="main" data-view="production">
+      <header class="top">
+        <div>
+          <h1 id="page-title">JLT MES 작업 · 자재 · 미션 관리</h1>
+          <p id="page-sub" class="muted">작업지시, 자재 흐름, Tray/Magazine 교체 미션을 통합 관리</p>
+        </div>
+        <div class="tools">
+          <span class="muted">2025.05.16 (금) 10:24:30</span>
+          <button class="icon" type="button" data-toggle aria-pressed="false" aria-label="밝기"><i data-lucide="sun" aria-hidden="true"></i></button>
+          <button class="icon" type="button" data-toggle aria-pressed="true" aria-label="알림"><i data-lucide="bell" aria-hidden="true"></i><span class="sub">12</span></button>
+          <button class="icon" type="button" data-toggle aria-pressed="false" aria-label="관리자"><i data-lucide="user" aria-hidden="true"></i></button>
+        </div>
+      </header>
+
+      <section class="kpis dashboard-view" aria-label="핵심 지표" hidden>
+        <div class="kpi">
+          <div class="k-head"><h2>공장 개요</h2><span class="badge">정상 운영 중</span></div>
+          <button type="button" data-select="공장 종합 가동률 89%"><span class="value">89%</span></button>
+          <div class="bar"><span style="width:89%"></span></div>
+          <span class="sub">종합 가동률 / 안전 무재해 27일째</span>
+        </div>
+        <div class="kpi"><div class="k-head"><h2>생산량</h2><i data-lucide="bar-chart-3" aria-hidden="true"></i></div><button type="button" data-select="생산량 23,456 EA"><span class="value">23,456</span></button><span class="sub">목표 26,300 EA <span class="good">89%</span></span></div>
+        <div class="kpi"><div class="k-head"><h2>가동률(OEE)</h2><i data-lucide="activity" aria-hidden="true"></i></div><button type="button" data-select="OEE 89.3%"><span class="value">89.3%</span></button><span class="sub">목표 90.0%</span></div>
+        <div class="kpi"><div class="k-head"><h2>양품률</h2><i data-lucide="trending-up" aria-hidden="true"></i></div><button type="button" data-select="양품률 98.7%"><span class="value">98.7%</span></button><span class="sub">목표 98.5% <span class="good">+0.2%</span></span></div>
+        <div class="kpi"><div class="k-head"><h2>작업지시</h2><i data-lucide="clipboard-list" aria-hidden="true"></i></div><button type="button" data-select="작업지시 128건"><span class="value">128</span></button><span class="sub">진행 중 48건</span></div>
+        <div class="kpi"><div class="k-head"><h2>휴머노이드</h2><i data-lucide="bot" aria-hidden="true"></i></div><button type="button" data-select="휴머노이드 6대"><span class="value">6대</span></button><span class="sub">가동 5 / 대기 1</span></div>
+      </section>
+
+      <section class="mid dashboard-view" hidden>
+        <div class="left">
+          <section class="panel">
+            <div class="panel-head"><h2>라인 상태</h2><span class="muted">실시간</span></div>
+            <div class="list">
+              <button class="row-click line" type="button" data-select="Line A 생산량 9,876 EA" aria-pressed="true"><span class="with-dot"><span class="dot"></span><strong>Line A</strong></span><span class="sub">9,876 / 10,800 EA</span><strong>92%</strong></button>
+              <button class="row-click line" type="button" data-select="Line B 생산량 7,654 EA" aria-pressed="false"><span class="with-dot"><span class="dot blue"></span><strong>Line B</strong></span><span class="sub">7,654 / 8,900 EA</span><strong>86%</strong></button>
+              <button class="row-click line" type="button" data-select="Line C 일시정지 확인" aria-pressed="false"><span class="with-dot"><span class="dot amber"></span><strong>Line C</strong></span><span class="sub">5,926 / 6,600 EA</span><strong>65%</strong></button>
+            </div>
+          </section>
+
+          <section class="panel">
+            <div class="panel-head"><h2>설비 상태</h2><span class="muted">전체 90</span></div>
+            <div class="gauge-block">
+              <div class="gauge"><strong>90</strong></div>
+              <div class="list">
+                <button class="row-click line" type="button" data-select="RUN 설비 68대" aria-pressed="false"><span class="with-dot"><span class="dot"></span>RUN</span><strong>68</strong></button>
+                <button class="row-click line" type="button" data-select="IDLE 설비 14대" aria-pressed="false"><span class="with-dot"><span class="dot blue"></span>IDLE</span><strong>14</strong></button>
+                <button class="row-click line" type="button" data-select="ALARM 설비 3대" aria-pressed="false"><span class="with-dot"><span class="dot red"></span>ALARM</span><strong>3</strong></button>
+              </div>
+            </div>
+          </section>
+        </div>
+
+        <section class="panel factory-panel">
+          <div class="panel-head">
+            <h2>공장 레이아웃</h2>
+            <div class="seg">
+              <button type="button" data-mode aria-pressed="false">2D</button>
+              <button type="button" data-mode aria-pressed="true">3D</button>
+              <button type="button" data-mode aria-pressed="true">레이어</button>
+            </div>
+          </div>
+          <div class="factory" aria-label="클릭 가능한 공장 레이아웃">
+            <img class="factory-photo" src="assets/command-embedded-2.jpg" alt="실사형 물류자동화 공장 레이아웃">
+            <canvas id="factory3d" aria-label="실시간 3D 공장 레이아웃"></canvas>
+            <div class="live-layer" aria-hidden="true">
+              <div class="live-amr amr-one"><span>A5</span></div>
+              <div class="live-amr amr-two"><span>A11</span></div>
+              <div class="live-amr amr-three"><span>A7</span></div>
+              <div class="live-humanoid hmd-one">
+                <span class="head"></span><span class="body"></span>
+                <span class="arm left"></span><span class="arm right"></span>
+                <span class="leg left"></span><span class="leg right"></span>
+              </div>
+              <div class="live-humanoid hmd-two">
+                <span class="head"></span><span class="body"></span>
+                <span class="arm left"></span><span class="arm right"></span>
+                <span class="leg left"></span><span class="leg right"></span>
+              </div>
+              <span class="parcel one"></span>
+              <span class="parcel two"></span>
+              <span class="parcel three"></span>
+              <span class="scan-pulse"></span>
+            </div>            <div class="lane a"><span class="tag">Line A</span></div>
+            <div class="lane b"><span class="tag">Line B</span></div>
+            <div class="lane c"><span class="tag">Line C</span></div>
+            <span class="machine" style="left:14%;top:60px"></span><span class="machine" style="left:24%;top:60px"></span><span class="machine" style="left:34%;top:60px"></span><span class="machine" style="left:44%;top:60px"></span><span class="machine" style="left:54%;top:60px"></span>
+            <span class="machine" style="left:16%;top:179px"></span><span class="machine" style="left:27%;top:179px"></span><span class="machine" style="left:38%;top:179px"></span><span class="machine" style="left:49%;top:179px"></span><span class="machine" style="left:60%;top:179px"></span>
+            <span class="machine" style="left:19%;top:298px"></span><span class="machine" style="left:31%;top:298px"></span><span class="machine" style="left:43%;top:298px"></span><span class="machine" style="left:55%;top:298px"></span>
+            <button class="hot amr" type="button" data-asset="AMR-05" aria-pressed="false" style="left:10%;top:128px">A</button>
+            <button class="hot hmd" type="button" data-asset="HMD-02" aria-pressed="true" style="left:30%;top:142px">H</button>
+            <button class="hot hmd" type="button" data-asset="HMD-04" aria-pressed="false" style="left:64%;top:264px">H</button>
+            <button class="hot amr" type="button" data-asset="AMR-11" aria-pressed="false" style="left:77%;top:214px">A</button>
+            <button class="hot risk" type="button" data-asset="SAFE-01" aria-pressed="false" style="left:82%;top:316px">!</button>
+            <div class="legend">
+              <span class="with-dot"><span class="dot blue"></span>컨베이어</span>
+              <span class="with-dot"><span class="dot"></span>AMR</span>
+              <span class="with-dot"><span class="dot mint"></span>휴머노이드</span>
+              <span class="with-dot"><span class="dot red"></span>위험</span>
+            </div>
+          </div>
+          <div class="detail" id="detail"><strong>HMD-02 선택됨</strong><span class="muted">피킹 셀 B에서 키팅 작업 중. 배터리 72%, 다음 작업 WO-260713-001.</span></div>
+        </section>
+
+        <div class="right">
+          <section class="panel">
+            <div class="panel-head"><h2>알람 / 이벤트</h2><button class="badge blue" type="button" data-select="알람 상세">더보기</button></div>
+            <div class="list">
+              <button class="event" type="button" data-select="PLC 통신 이상" aria-pressed="false"><span class="with-dot"><span class="dot red"></span>PLC 통신 이상</span><span class="badge">Line B</span></button>
+              <button class="event" type="button" data-select="휴머노이드 안전거리 경고" aria-pressed="true"><span class="with-dot"><span class="dot red"></span>휴머노이드 안전거리 경고</span><span class="badge warn">SAFE</span></button>
+              <button class="event" type="button" data-select="자재 부족 알림" aria-pressed="false"><span class="with-dot"><span class="dot amber"></span>자재 부족 알림</span><span class="badge warn">TRAY</span></button>
+              <button class="event" type="button" data-select="AMR 경로 충돌 회피" aria-pressed="false"><span class="with-dot"><span class="dot blue"></span>AMR 경로 충돌 회피</span><span class="badge blue">INFO</span></button>
+            </div>
+          </section>
+
+          <section class="panel">
+            <div class="panel-head"><h2>로봇 / AMR / 휴머노이드</h2><span class="muted">실시간</span></div>
+            <div class="resources">
+              <button class="mini row-click" type="button" data-select="산업용 로봇 24대" aria-pressed="false"><span class="blue">산업용</span><strong>24대</strong><span class="sub">가동 22</span></button>
+              <button class="mini row-click" type="button" data-select="AMR 18대" aria-pressed="false"><span class="good">AMR</span><strong>18대</strong><span class="sub">가동 16</span></button>
+              <button class="mini row-click" type="button" data-select="휴머노이드 6대" aria-pressed="true"><span class="blue">휴머노이드</span><strong>6대</strong><span class="sub">가동 5</span></button>
+            </div>
+            <div class="resources">
+              <div class="mini"><span class="blue">Empty</span><strong>312</strong><span class="sub">26%</span></div>
+              <div class="mini"><span class="good">In Use</span><strong>652</strong><span class="sub">54%</span></div>
+              <div class="mini"><span style="color:var(--red);font-weight:800">Full</span><strong>246</strong><span class="sub">20%</span></div>
+            </div>
+          </section>
+        </div>
+      </section>
+
+      <section class="bottom dashboard-view" hidden>
+        <section class="panel">
+          <div class="panel-head"><h2>가동률(OEE) 추이</h2><span class="badge blue">금일</span></div>
+          <svg class="chart" viewBox="0 0 360 118" role="img" aria-label="가동률 추이">
+            <line class="grid" x1="36" y1="20" x2="338" y2="20"></line><line class="grid" x1="36" y1="58" x2="338" y2="58"></line><line class="grid" x1="36" y1="96" x2="338" y2="96"></line><line class="axis" x1="36" y1="100" x2="338" y2="100"></line>
+            <path class="green" d="M36 82 L76 58 L116 59 L156 70 L196 52 L236 63 L276 42 L338 34"></path><circle cx="338" cy="34" r="4" fill="var(--green)"></circle><text x="260" y="26">현재 89.3%</text>
+          </svg>
+        </section>
+        <section class="panel">
+          <div class="panel-head"><h2>작업지시 / 생산 일정</h2><span class="badge blue">더보기</span></div>
+          <div class="work-list">
+            <button class="work" type="button" data-select="WO-260713-001 진행률 76.5%" aria-pressed="true"><strong>WO-260713-001</strong><div class="bar"><span style="width:76%"></span></div><strong>76.5%</strong></button>
+            <button class="work" type="button" data-select="WO-260713-002 진행률 52.9%" aria-pressed="false"><strong>WO-260713-002</strong><div class="bar"><span style="width:53%"></span></div><strong>52.9%</strong></button>
+            <button class="work" type="button" data-select="WO-260713-003 휴머노이드 키팅" aria-pressed="false"><strong>HMD-KIT-003</strong><div class="bar"><span style="width:36%"></span></div><strong>35.8%</strong></button>
+          </div>
+        </section>
+        <section class="panel">
+          <div class="panel-head"><h2>생산량 추이</h2><span class="badge blue">금일</span></div>
+          <svg class="chart" viewBox="0 0 360 118" role="img" aria-label="생산량 추이">
+            <line class="grid" x1="36" y1="20" x2="338" y2="20"></line><line class="grid" x1="36" y1="58" x2="338" y2="58"></line><line class="grid" x1="36" y1="96" x2="338" y2="96"></line><line class="axis" x1="36" y1="100" x2="338" y2="100"></line>
+            <path class="plan" d="M36 98 L80 78 L124 66 L168 54 L212 38 L256 28 L302 22 L338 24"></path><path class="actual" d="M36 98 L80 82 L124 76 L168 58 L212 55 L256 42 L302 36"></path><circle cx="302" cy="36" r="4" fill="var(--blue)"></circle><text x="226" y="26">실적 23,456 EA</text>
+          </svg>
+        </section>
+      </section>
+
+      <section class="prod-view" data-prod-view>
+        <div class="prod-tabs" aria-label="생산관리 세부 카테고리">
+          <button type="button" data-prod-tab="mission" aria-pressed="true">미션</button>
+          <button type="button" data-prod-tab="material" aria-pressed="false">자재</button>
+          <button type="button" data-prod-tab="facility" aria-pressed="false">설비관리</button>
+        </div>
+        <section class="prod-board">
+          <section class="panel prod-panel" data-prod-panel="mission">
+            <div class="panel-head"><h2>작업지시 관리</h2><span class="badge blue">전체 보기</span></div>
+            <table class="prod-table" aria-label="작업지시 관리"><thead><tr><th>작업지시번호</th><th>품목</th><th>계획수량</th><th>진행률</th><th>시작시간</th><th>완료예정</th><th>우선순위</th></tr></thead><tbody>
+              <tr><td class="blue">WO-250516-001</td><td>JLT-PRO-001</td><td>10,000</td><td><span class="progress"><i><b style="width:72%"></b></i>72%</span></td><td>05-16 06:00</td><td>05-16 14:00</td><td><span class="badge danger">높음</span></td></tr>
+              <tr><td class="blue">WO-250516-002</td><td>JLT-BAT-002</td><td>8,000</td><td><span class="progress"><i><b style="width:48%"></b></i>48%</span></td><td>05-16 07:30</td><td>05-16 16:30</td><td><span class="badge warn">보통</span></td></tr>
+              <tr><td class="blue">WO-250516-003</td><td>JLT-MTR-003</td><td>6,000</td><td><span class="progress"><i><b style="width:18%"></b></i>18%</span></td><td>05-16 08:00</td><td>05-16 17:30</td><td><span class="badge danger">높음</span></td></tr>
+              <tr><td class="blue">WO-250516-004</td><td>JLT-SEN-004</td><td>4,000</td><td><span class="progress"><i><b style="width:95%"></b></i>95%</span></td><td>05-16 05:30</td><td>05-16 11:30</td><td><span class="badge good">낮음</span></td></tr>
+              <tr><td class="blue">WO-250516-005</td><td>JLT-ASM-005</td><td>3,000</td><td><span class="progress"><i><b style="width:32%"></b></i>32%</span></td><td>05-16 09:00</td><td>05-16 18:00</td><td><span class="badge warn">보통</span></td></tr>
+            </tbody></table>
+          </section>
+          <section class="panel prod-panel" data-prod-panel="mission">
+            <div class="panel-head"><h2>라인 / 교대별 스케줄</h2><span class="badge blue">Gantt</span></div>
+            <div class="gantt" aria-label="라인 교대 스케줄">
+              <div class="labels"><span></span><span>Line A 1조</span><span>Line A 2조</span><span>Line B 1조</span><span>Line B 2조</span><span>Line C 1조</span><span>Line C 2조</span></div>
+              <div class="timeline"><div class="time-head"><span>06:00</span><span>09:00</span><span>12:00</span><span>15:00</span><span>18:00</span><span>21:00</span></div><span class="task green" style="left:16%;top:36px;width:34%">WO-001</span><span class="task blue" style="left:27%;top:62px;width:37%">WO-002</span><span class="task blue" style="left:18%;top:88px;width:33%">WO-003</span><span class="task green" style="left:32%;top:114px;width:38%">WO-004</span><span class="task blue" style="left:39%;top:140px;width:26%">WO-005</span><span class="now-line"></span></div>
+            </div>
+          </section>
+          <section class="panel prod-panel" data-prod-panel="mission">
+            <div class="panel-head"><h2>작업 흐름 워크플로우</h2><span class="badge good">진행중</span></div>
+            <div class="workflow"><div class="flow-step"><i data-lucide="clipboard-list" aria-hidden="true"></i><span>PLC Empty/Full<br>감지</span></div><div class="flow-step"><i data-lucide="calendar-check" aria-hidden="true"></i><span>H-MOS<br>배정</span></div><div class="flow-step"><i data-lucide="bot" aria-hidden="true"></i><span>휴머노이드/AMR<br>교체</span></div><div class="flow-step"><i data-lucide="badge-check" aria-hidden="true"></i><span>완료<br>확인</span></div></div>
+            <div class="mission-card"><div class="kv"><span>미션 상세</span><strong>Tray 교체 (Line A - M/C 15)</strong></div><div class="kv"><span>미션ID</span><span class="blue">MIS-260714-1287</span></div><div class="kv"><span>요청시간</span><span>10:22:15 / PLC(M/C 15)</span></div><div class="kv"><span>현재상태</span><span class="blue">AMR 이동중</span></div><div class="kv"><span>할당 자원</span><span>AMR-03 / HMD-02</span></div><div class="kv"><span>예상 완료</span><span>10:26</span></div></div>
+          </section>
+          <section class="panel prod-panel" data-prod-panel="material">
+            <div class="panel-head"><h2>자재 / LOT 추적</h2><span class="badge blue">실시간</span></div>
+            <table class="prod-table" aria-label="자재 LOT 추적"><thead><tr><th>LOT</th><th>자재ID</th><th>입고</th><th>투입</th><th>사용</th></tr></thead><tbody>
+              <tr><td class="blue">LOT-260714-A01</td><td>MAT-TRAY-001</td><td>120</td><td>96</td><td><span class="progress"><i><b style="width:80%"></b></i>80%</span></td></tr>
+              <tr><td class="blue">LOT-260714-A02</td><td>MAT-TRAY-002</td><td>100</td><td>60</td><td><span class="progress"><i><b style="width:60%"></b></i>60%</span></td></tr>
+              <tr><td class="blue">LOT-260714-B01</td><td>MAT-MAG-001</td><td>80</td><td>48</td><td><span class="progress"><i><b style="width:60%"></b></i>60%</span></td></tr>
+              <tr><td class="blue">LOT-260714-B02</td><td>MAT-MAG-002</td><td>60</td><td>15</td><td><span class="progress"><i><b style="width:25%"></b></i>25%</span></td></tr>
+            </tbody></table>
+          </section>
+          <section class="panel prod-panel" data-prod-panel="material">
+            <div class="panel-head"><h2>Tray / Magazine / Cart 현황</h2><span class="badge blue">전체 128</span></div>
+            <table class="prod-table" aria-label="Tray Magazine Cart 현황"><thead><tr><th>유형</th><th>ID</th><th>상태</th><th>보관위치</th><th>라인</th></tr></thead><tbody>
+              <tr><td>Tray</td><td class="blue">TRAY-023</td><td><span class="badge blue">Empty</span></td><td>A동 1F-Rack 03</td><td>Line A</td></tr>
+              <tr><td>Tray</td><td class="blue">TRAY-045</td><td><span class="badge good">In Use</span></td><td>Line A - M/C 15</td><td>Line A</td></tr>
+              <tr><td>Tray</td><td class="blue">TRAY-067</td><td><span class="badge danger">Full</span></td><td>A동 1F-OUT 02</td><td>-</td></tr>
+              <tr><td>Magazine</td><td class="blue">MAG-010</td><td><span class="badge good">In Use</span></td><td>Line B - M/C 07</td><td>Line B</td></tr>
+            </tbody></table>
+          </section>
+          <section class="panel prod-panel" data-prod-panel="mission">
+            <div class="panel-head"><h2>미션 오케스트레이션</h2><span class="badge blue">H-MOS</span></div>
+            <table class="prod-table" aria-label="미션 오케스트레이션"><thead><tr><th>미션ID</th><th>유형</th><th>대상</th><th>상태</th><th>SLA</th></tr></thead><tbody>
+              <tr><td class="blue">MIS-1287</td><td>Tray 교체</td><td>Line A - M/C 15</td><td><span class="badge good">진행중</span></td><td>03:45</td></tr>
+              <tr><td class="blue">MIS-1286</td><td>Magazine 교체</td><td>Line B - M/C 07</td><td><span class="badge">대기</span></td><td>05:12</td></tr>
+              <tr><td class="blue">MIS-1285</td><td>Tray 교체</td><td>Line C - M/C 03</td><td><span class="badge good">진행중</span></td><td>04:20</td></tr>
+              <tr><td class="blue">MIS-1284</td><td>Cart 보충</td><td>Line B - Buffer</td><td><span class="badge good">완료</span></td><td>00:00</td></tr>
+            </tbody></table>
+          </section>
+          <section class="panel prod-panel" data-prod-panel="facility">
+            <div class="panel-head"><h2>AMR / 휴머노이드 상태</h2><span class="badge blue">AMR</span></div>
+            <div class="fleet"><div class="fleet-list"><div class="fleet-item"><span><strong>AMR-01</strong><br><span class="muted">Line B → M/C 07</span></span><span class="good">82%</span></div><div class="fleet-item"><span><strong>AMR-02</strong><br><span class="muted">대기 위치</span></span><span class="blue">56%</span></div><div class="fleet-item"><span><strong>AMR-03</strong><br><span class="muted">Line A → M/C 15</span></span><span class="good">76%</span></div><div class="fleet-item"><span><strong>HMD-02</strong><br><span class="muted">키팅 보조</span></span><span class="warn">72%</span></div></div><div class="amr-card"><div class="amr-visual" aria-hidden="true"></div><div class="mission-card"><div class="kv"><span>현재 작업</span><span>Tray 교체</span></div><div class="kv"><span>출발지</span><span>A동 1F - Rack 03</span></div><div class="kv"><span>목적지</span><span>Line A - M/C 15</span></div><div class="kv"><span>배터리</span><span class="progress"><i><b style="width:76%"></b></i>76%</span></div></div></div></div>
+          </section>
+          <section class="panel prod-panel" data-prod-panel="facility">
+            <div class="panel-head"><h2>알람 / 예외</h2><span class="badge blue">전체 알람</span></div>
+            <div class="list"><button class="event" type="button" data-select="자재 공급 지연" aria-pressed="true"><span class="with-dot"><span class="dot red"></span>자재 공급 지연</span><span>Line B</span></button><button class="event" type="button" data-select="LOT 검증 오류" aria-pressed="false"><span class="with-dot"><span class="dot amber"></span>LOT 검증 오류</span><span>Line A</span></button><button class="event" type="button" data-select="Tray 부족" aria-pressed="false"><span class="with-dot"><span class="dot amber"></span>Tray 부족</span><span>Line C</span></button><button class="event" type="button" data-select="AMR 충돌 위험" aria-pressed="false"><span class="with-dot"><span class="dot blue"></span>AMR 충돌 위험</span><span>A동 1F</span></button></div>
+          </section>
+          <section class="panel prod-panel" data-prod-panel="facility">
+            <div class="panel-head"><h2>공장 맵 / 경로 추적</h2><span class="badge blue">A동 1F</span></div>
+            <div class="route-map" aria-label="공장 맵 경로 추적"><svg viewBox="0 0 420 168" aria-hidden="true"><path d="M44 118 L128 118 Q154 118 154 92 L154 52 Q154 28 182 28 L226 28 Q254 28 254 56 L254 106 Q254 130 282 130 L358 130" fill="none" stroke="#1677ff" stroke-width="7" stroke-linecap="round"></path><path d="M44 118 L128 118 Q154 118 154 92 L154 52 Q154 28 182 28" fill="none" stroke="#22b86a" stroke-width="3" stroke-linecap="round"></path><circle cx="154" cy="92" r="8" fill="#22b86a"></circle><circle cx="254" cy="106" r="8" fill="#1677ff"></circle><circle cx="358" cy="130" r="8" fill="#ef4444"></circle></svg><span class="route-pin" style="left:20px;top:100px">Line A</span><span class="route-pin green" style="left:132px;top:64px">AMR-03</span><span class="route-pin" style="left:214px;top:92px">Line B</span><span class="route-pin red" style="right:24px;bottom:22px">OUT 02</span></div>
+          </section>
+        </section>
+      </section>
+    </main>
+  </div>
+
+  
+</div>
+      </section>
+
+      <section class="legacy-page" data-page="mes" data-title="MES 생산 관리" data-subtitle="작업 지시, 자재 흐름, 생산 미션 관리" hidden>
+<div class="page">
+    <aside class="sidebar">
+      <div class="brand"><img class="brand-logo" src="assets/jlt-logo-new2.png" alt="JLT"></div>
+      <nav class="nav" aria-label="주 메뉴">
+        <button class="nav-item" type="button" data-menu="통합 대시보드" aria-pressed="false"><span class="nav-left">통합 대시보드</span></button>
+        <button class="nav-item active" type="button" data-menu="생산 관리" aria-pressed="true"><span class="nav-left">작업·자재·미션 관리</span></button>
+        <div class="subnav" data-prod-subnav data-open="true">
+          <button type="button" data-prod-tab="mission" aria-pressed="true">작업지시 관리</button>
+          <button type="button" data-prod-tab="material" aria-pressed="false">자재 추적 관리</button>
+          <button type="button" data-prod-tab="orchestration" aria-pressed="false">미션 오케스트레이션</button>
+          <button type="button" data-prod-tab="facility" aria-pressed="false">설비·자원 관리</button>
+          <button type="button" data-prod-tab="robot" aria-pressed="false">AMR·로봇 관리</button>
+        </div>
+        <button class="nav-item" type="button" data-menu="품질 관리" aria-pressed="false"><span class="nav-left">품질 관리</span></button>
+        <button class="nav-item" type="button" data-menu="물류 관리" aria-pressed="false"><span class="nav-left">물류 관리</span></button>
+        <button class="nav-item" type="button" data-menu="알람 관리" aria-pressed="false"><span class="nav-left">알람 관리</span></button>
+        <button class="nav-item" type="button" data-menu="로봇 관제" aria-pressed="false"><span class="nav-left">로봇 관제</span></button>
+      </nav>
+    </aside>
+
+    <main>
+      <header class="top">
+        <div>
+          <h1>JLT MES 작업·자재·미션 관리</h1>
+          <div class="subtitle">작업지시, 자재 흐름, Tray/Magazine 교체 미션을 통합 관리</div>
+        </div>
+        <div class="top-tools">
+          <span>◴&nbsp; 2025.05.16 (금) 10:24:30</span>
+          <span class="tool-icon">☼</span>
+          <span class="tool-icon notif">♧</span>
+          <span class="avatar"><strong>관리자</strong><span>JLT 관리자 ▾</span></span>
+        </div>
+      </header>
+
+      <section class="board">
+        <section class="panel work-order">
+          <div class="panel-head"><h2>작업지시 관리</h2><span class="link">전체 보기</span></div>
+          <div class="panel-body">
+            <table>
+              <thead><tr><th>작업지시번호</th><th>품목</th><th>계획수량</th><th>진행률</th><th>시작시간</th><th>완료예정</th><th>우선순위</th></tr></thead>
+              <tbody>
+                <tr><td class="blue">WO-250516-001</td><td>JLT-PRO-001</td><td>10,000</td><td><span class="bar"><span class="track"><i class="fill" style="width:72%"></i></span>72%</span></td><td>05-16 06:00</td><td>05-16 14:00</td><td><span class="badge red">높음</span></td></tr>
+                <tr><td class="blue">WO-250516-002</td><td>JLT-BAT-002</td><td>8,000</td><td><span class="bar"><span class="track"><i class="fill" style="width:48%"></i></span>48%</span></td><td>05-16 07:30</td><td>05-16 16:30</td><td><span class="badge orange">보통</span></td></tr>
+                <tr><td class="blue">WO-250516-003</td><td>JLT-MTR-003</td><td>6,000</td><td><span class="bar"><span class="track"><i class="fill" style="width:18%"></i></span>18%</span></td><td>05-16 08:00</td><td>05-16 17:30</td><td><span class="badge red">높음</span></td></tr>
+                <tr><td class="blue">WO-250516-004</td><td>JLT-SEN-004</td><td>4,000</td><td><span class="bar"><span class="track"><i class="fill" style="width:95%"></i></span>95%</span></td><td>05-16 05:30</td><td>05-16 11:30</td><td><span class="badge">낮음</span></td></tr>
+                <tr><td class="blue">WO-250516-005</td><td>JLT-ASM-005</td><td>3,000</td><td><span class="bar"><span class="track"><i class="fill" style="width:32%"></i></span>32%</span></td><td>05-16 09:00</td><td>05-16 18:00</td><td><span class="badge orange">보통</span></td></tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
+
+        <section class="panel gantt">
+          <div class="panel-head"><h2>라인 / 교대별 스케줄 (Gantt)</h2><div class="chips"><span class="chip">일간</span><span class="chip">주간</span><span class="chip">‹</span><span class="chip">2025-05-16 (금)</span><span class="chip">›</span><span class="chip">지금</span></div></div>
+          <div class="panel-body">
+            <div class="gantt-grid">
+              <div class="g-labels">
+                <div><span>라인</span><span>교대</span></div>
+                <div><span>Line A<small>(조립)</small></span><span>1조</span></div>
+                <div><span></span><span>2조</span></div>
+                <div><span>Line B<small>(검사)</small></span><span>1조</span></div>
+                <div><span></span><span>2조</span></div>
+                <div><span>Line C<small>(포장)</small></span><span>1조</span></div>
+                <div><span></span><span>2조</span></div>
+              </div>
+              <div class="time">
+                <div class="time-head"><span>06:00</span><span>08:00</span><span>10:00</span><span>12:00</span><span>14:00</span><span>16:00</span><span>18:00</span><span>20:00</span><span>22:00</span><span>24:00</span></div>
+                <div class="g-row"><span class="task-bg" style="left:13%;width:54%"></span><span class="task green" style="left:16%;width:34%">WO-250516-001</span></div>
+                <div class="g-row"><span class="task-bg" style="left:25%;width:62%"></span><span class="task blue" style="left:25%;width:38%">WO-250516-002</span></div>
+                <div class="g-row"><span class="task-bg" style="left:14%;width:59%"></span><span class="task blue" style="left:14%;width:34%">WO-250516-003</span></div>
+                <div class="g-row"><span class="task-bg" style="left:26%;width:61%"></span><span class="task green" style="left:25%;width:39%">WO-250516-004</span></div>
+                <div class="g-row"><span class="task-bg" style="left:22%;width:57%"></span><span class="task blue" style="left:25%;width:25%">WO-250516-005</span></div>
+                <div class="g-row"><span class="task-bg" style="left:58%;width:36%"></span></div>
+                <span class="now-line"></span>
+              </div>
+            </div>
+            <div class="legend"><span><i class="dot green"></i>진행중</span><span><i class="dot blue"></i>대기</span><span><i class="dot"></i>완료</span><span><i class="dot red"></i>지연</span><span><i class="dot"></i>계획</span></div>
+          </div>
+        </section>
+
+        <section class="panel workflow">
+          <div class="panel-head"><h2>작업 흐름 워크플로우</h2></div>
+          <div class="panel-body">
+            <div class="flow">
+              <div class="step"><span class="circle">□</span><span>PLC Empty/Full<br>감지</span></div>
+              <div class="step"><span class="circle green">▣</span><span>H-MOS 배정</span></div>
+              <div class="step"><span class="circle blue">◎</span><span>휴머노이드/AMR<br>교체</span></div>
+              <div class="step"><span class="circle green">▤</span><span>완료 회신</span></div>
+            </div>
+            <div class="mission-detail">
+              <div class="mission-title"><span>미션 상세 카드</span><span class="badge">진행중</span></div>
+              <strong>Tray 교체 (Line A - M/C 15)</strong>
+              <div class="kv"><span>미션ID</span><span>MIS-250516-1287</span><span>유형</span><span>우선순위 <span class="badge red">높음</span></span></div>
+              <div class="kv"><span>요청시간</span><span>05-16 10:22:15</span><span>요청원인</span><span>PLC (M/C 15)</span></div>
+              <div class="kv"><span>현재상태</span><span class="blue">AMR 이동중</span><span>할당 자원</span><span class="blue">AMR-03</span></div>
+              <div class="kv"><span>대상 위치</span><span>A동 1F &gt; Line A &gt; M/C 15</span><span></span><span></span></div>
+              <div class="kv"><span>예상 완료</span><span>05-16 10:26</span><span></span><span></span></div>
+              <div class="actions"><span class="pill-btn">미션 추적</span><span class="pill-btn">일시정지</span><span class="pill-btn">취소</span></div>
+            </div>
+          </div>
+        </section>
+
+        <section class="panel">
+          <div class="panel-head"><h2>자재 / LOT 추적</h2></div>
+          <div class="panel-body">
+            <table>
+              <thead><tr><th>LOT</th><th>자재ID</th><th>입고</th><th>투입</th><th>사용 현황</th></tr></thead>
+              <tbody>
+                <tr><td class="blue">LOT-250516-A01</td><td>MAT-TRAY-001</td><td>120</td><td>96</td><td><span class="bar"><span class="track"><i class="fill" style="width:80%"></i></span>80%</span></td></tr>
+                <tr><td class="blue">LOT-250516-A02</td><td>MAT-TRAY-002</td><td>100</td><td>60</td><td><span class="bar"><span class="track"><i class="fill" style="width:60%"></i></span>60%</span></td></tr>
+                <tr><td class="blue">LOT-250516-B01</td><td>MAT-MAG-001</td><td>80</td><td>48</td><td><span class="bar"><span class="track"><i class="fill" style="width:60%"></i></span>60%</span></td></tr>
+                <tr><td class="blue">LOT-250516-B02</td><td>MAT-MAG-002</td><td>60</td><td>15</td><td><span class="bar"><span class="track"><i class="fill" style="width:25%"></i></span>25%</span></td></tr>
+                <tr><td class="blue">LOT-250516-C01</td><td>MAT-CART-001</td><td>40</td><td>5</td><td><span class="bar"><span class="track"><i class="fill" style="width:12%"></i></span>12%</span></td></tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
+
+        <section class="panel">
+          <div class="panel-head"><h2>Tray / Magazine / Cart 현황</h2><span class="link">전체 보기</span></div>
+          <div class="panel-body">
+            <div class="chips" style="height:39px;border-bottom:1px solid #e7edf5"><span class="chip active">전체 128</span><span class="chip">Empty 31</span><span class="chip">In Use 74</span><span class="chip" style="color:var(--red)">Full 23</span></div>
+            <table>
+              <thead><tr><th>자재유형</th><th>ID(바코드)</th><th>상태</th><th>보관위치</th><th>연결 라인</th></tr></thead>
+              <tbody>
+                <tr><td>Tray</td><td class="blue">TRAY-250516-023</td><td><span class="badge blue">Empty</span></td><td>A동 1F-Rack 03</td><td>Line A</td></tr>
+                <tr><td>Tray</td><td class="blue">TRAY-250516-045</td><td><span class="badge">In Use</span></td><td>Line A - M/C 15</td><td>Line A</td></tr>
+                <tr><td>Tray</td><td class="blue">TRAY-250516-067</td><td><span class="badge red">Full</span></td><td>A동 1F-OUT 02</td><td>-</td></tr>
+                <tr><td>Magazine</td><td class="blue">MAG-250516-010</td><td><span class="badge">In Use</span></td><td>Line B - M/C 07</td><td>Line B</td></tr>
+                <tr><td>Cart</td><td class="blue">CART-250516-003</td><td><span class="badge blue">Empty</span></td><td>A동 1F-AGV Zone</td><td>-</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
+
+        <section class="panel orchestration">
+          <div class="panel-head"><h2>미션 오케스트레이션</h2></div>
+          <div class="panel-body">
+            <div class="tabs"><span class="active">H-MOS 작업 큐</span><span>PLC 이벤트</span><span>로봇 교체 미션</span></div>
+            <table>
+              <thead><tr><th>미션ID</th><th>유형</th><th>대상</th><th>상태</th><th>SLA</th></tr></thead>
+              <tbody>
+                <tr><td class="blue">MIS-250516-1287</td><td>Tray 교체</td><td>Line A - M/C 15</td><td><span class="badge">진행중</span></td><td>03:45</td></tr>
+                <tr><td class="blue">MIS-250516-1286</td><td>Magazine 교체</td><td>Line B - M/C 07</td><td><span class="badge gray">대기</span></td><td>05:12</td></tr>
+                <tr><td class="blue">MIS-250516-1285</td><td>Tray 교체</td><td>Line C - M/C 03</td><td><span class="badge">진행중</span></td><td>04:20</td></tr>
+                <tr><td class="blue">MIS-250516-1284</td><td>Cart 보충</td><td>Line B - Buffer</td><td><span class="badge">완료</span></td><td>00:00</td></tr>
+                <tr><td class="blue">MIS-250516-1283</td><td>Tray 회수</td><td>Line B - OUT</td><td><span class="badge gray">대기</span></td><td>06:30</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
+
+        <section class="panel robot">
+          <div class="panel-head"><h2>AMR / 휴머노이드 상태</h2><div class="chips"><span class="chip active">AMR</span><span class="chip">휴머노이드</span><span class="link">미션 큐 링크 보기</span></div></div>
+          <div class="panel-body">
+            <div class="amr-list">
+              <strong>AMR 목록</strong>
+              <div class="amr-row"><span class="amr-avatar"></span><span><strong>AMR-01</strong><br><span class="muted">Line B → M/C 07</span></span><span class="battery">82%<span class="mini-bar"><i style="width:82%"></i></span></span><span class="badge">작업중</span></div>
+              <div class="amr-row"><span class="amr-avatar"></span><span><strong>AMR-02</strong><br><span class="muted">대기 위치</span></span><span class="battery">56%<span class="mini-bar"><i style="width:56%"></i></span></span><span class="badge blue">대기중</span></div>
+              <div class="amr-row"><span class="amr-avatar"></span><span><strong>AMR-03</strong><br><span class="muted">Line A → M/C 15</span></span><span class="battery">76%<span class="mini-bar"><i style="width:76%"></i></span></span><span class="badge">작업중</span></div>
+              <div class="amr-row"><span class="amr-avatar"></span><span><strong>AMR-04</strong><br><span class="muted">충전 스테이션</span></span><span class="battery">23%<span class="mini-bar"><i style="width:23%;background:#9aa8ba"></i></span></span><span class="badge orange">충전중</span></div>
+            </div>
+            <div class="amr-detail">
+              <div class="amr-visual"></div>
+              <div class="detail-kv">
+                <strong>선택 장비 상세 (AMR-03)</strong>
+                <div><span>현재 작업</span><span>Tray 교체</span></div>
+                <div><span>출발지</span><span>A동 1F - Rack 03</span></div>
+                <div><span>목적지</span><span>Line A - M/C 15</span></div>
+                <div><span>예상 도착</span><span>10:25</span></div>
+                <div><span>배터리</span><span><span class="bar"><span class="track" style="width:62px"><i class="fill" style="width:76%"></i></span>76%</span></span></div>
+                <div class="actions" style="display:flex"><span class="pill-btn primary">경로 추적</span><span class="pill-btn">작업 취소</span></div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section class="panel alarm">
+          <div class="panel-head"><h2>알람 / 예외</h2><span class="link">전체 알람 보기</span></div>
+          <div class="panel-body">
+            <div class="alarm-filter"><span class="chip active">전체 7</span><span>지연 <b class="red">3</b></span><span>자재 <b class="green">2</b></span><span>설비 <b class="orange">1</b></span><span>기타 1</span></div>
+            <div>
+              <div class="alarm-row"><strong><i class="dot red"></i>자재 공급 지연</strong><span>Line B - M/C 07</span><span>05-16 10:21</span><span>지연 00:07:32</span></div>
+              <div class="alarm-row"><strong><i class="dot orange"></i>LOT 검증 오류</strong><span>Line A - M/C 15</span><span>05-16 10:18</span><span>지연 00:05:12</span></div>
+              <div class="alarm-row"><strong><i class="dot orange"></i>Tray 부족</strong><span>Line C - Buffer</span><span>05-16 10:12</span><span>지연 00:11:05</span></div>
+              <div class="alarm-row"><strong><i class="dot orange"></i>AMR 충돌 위험</strong><span>A동 1F 교차로</span><span>05-16 10:10</span><span>주의</span></div>
+              <div class="alarm-row"><strong><i class="dot"></i>휴머노이드 배터리 낮음</strong><span>HUM-02</span><span>05-16 10:08</span><span>정보</span></div>
+            </div>
+          </div>
+        </section>
+
+        <section class="panel map">
+          <div class="panel-head"><h2>공장 맵 / 경로 추적</h2><div class="chips"><span class="chip">A동 1F</span><span><i class="dot blue"></i>AMR 경로</span><span><i class="dot green"></i>목적지</span><span><i class="dot red"></i>장애물</span></div></div>
+          <div class="panel-body">
+            <div class="map-area">
+              <svg viewBox="0 0 520 232" aria-hidden="true">
+                <path d="M66 142 L166 142 Q196 142 196 106 L196 62 Q196 34 232 34 L286 34 Q316 34 316 72 L316 134 Q316 166 356 166 L454 166" fill="none" stroke="#1677ff" stroke-width="9" stroke-linecap="round"/>
+                <path d="M66 142 L166 142 Q196 142 196 106" fill="none" stroke="#22b86b" stroke-width="4" stroke-linecap="round"/>
+                <circle cx="196" cy="106" r="10" fill="#22b86b"/>
+                <circle cx="316" cy="134" r="10" fill="#1677ff"/>
+                <circle cx="454" cy="166" r="10" fill="#ff4d4f"/>
+              </svg>
+              <span class="map-pin" style="left:28px;top:116px">Line A</span>
+              <span class="map-pin green" style="left:177px;top:95px"></span>
+              <span class="map-pin gray" style="left:255px;top:102px">Line B</span>
+              <span class="map-pin gray" style="right:86px;top:91px">Line C</span>
+              <span class="map-pin" style="right:111px;bottom:30px">OUT 02</span>
+              <span class="map-pin red" style="right:69px;bottom:72px">△</span>
+              <div class="zoom"><span>+</span><span>−</span></div>
+            </div>
+          </div>
+        </section>
+      </section>
+    </main>
+  </div>
+      </section>
+
+      <section class="legacy-page" data-page="quality" data-title="품질 관리" data-subtitle="검사 현황, 불량 분석, 품질 지표 관리" hidden>
+<div id="jlt-quality-root">
+  
+
+  <div class="jlt-frame" role="application" aria-label="JLT MES 품질 관리 대시보드">
+    <aside class="sidebar" aria-label="JLT 메뉴">
+      <div class="brand" aria-label="JLT">
+        <img class="brand-logo" src="assets/jlt-logo-new2.png" alt="JLT">
+      </div>
+      <nav>
+        <section class="nav-group">
+          <div class="nav-title">통합 대시보드</div>
+          <div class="nav-item">작업·자재·미션 관리</div>
+          <div class="nav-item">작업지시 관리</div>
+          <div class="nav-item">자재 추적 관리</div>
+          <div class="nav-item">미션 오케스트레이션</div>
+          <div class="nav-item">설비·자원 관리</div>
+          <div class="nav-item">AMR·로봇 관리</div>
+        </section>
+        <section class="nav-group">
+          <div class="nav-item active-primary">품질 관리</div>
+          <div class="nav-item active-sub">품질 분석 리포트</div>
+        </section>
+        <section class="nav-group">
+          <div class="nav-title">물류 관리</div>
+        </section>
+        <section class="nav-group">
+          <div class="nav-title">알람 관리</div>
+        </section>
+        <section class="nav-group">
+          <div class="nav-title">로봇 관제</div>
+        </section>
+      </nav>
+    </aside>
+
+    <main class="main">
+      <header class="topbar">
+        <div class="title">
+          <h1>JLT MES 품질·추적성·분석 리포트</h1>
+          <p>생산 이력, 품질 지표, 설비 성능을 실시간 분석</p>
+        </div>
+        <div class="actions" aria-label="대시보드 도구">
+          <span class="pill">2025.05.16 (금) 10:24:30</span>
+          <span class="seg" aria-label="기간 선택"><span>오늘</span><span>7일</span><span class="on">30일</span><span>90일</span></span>
+          <span class="select-pill">라인 선택&nbsp;&nbsp;전체</span>
+          <span class="select-pill">내보내기</span>
+        </div>
+      </header>
+
+      <section class="kpi-row" aria-label="품질 주요 지표">
+        <article class="card kpi">
+          <div class="kpi-title">양품률</div>
+          <div class="kpi-main"><strong>98.7</strong><span>%</span></div>
+          <div class="kpi-foot"><span>목표 98.5%</span><canvas class="spark" data-series="blue"></canvas><span class="up">▲ 0.4%p</span></div>
+        </article>
+        <article class="card kpi">
+          <div class="kpi-title">불량률</div>
+          <div class="kpi-main"><strong>1.3</strong><span>%</span></div>
+          <div class="kpi-foot"><span>목표 1.5%</span><canvas class="spark" data-series="green"></canvas><span class="down">▼ 0.2%p</span></div>
+        </article>
+        <article class="card kpi">
+          <div class="kpi-title">FPY (최종)</div>
+          <div class="kpi-main"><strong>96.2</strong><span>%</span></div>
+          <div class="kpi-foot"><span>목표 95.0%</span><canvas class="spark" data-series="blue"></canvas><span class="up">▲ 1.2%p</span></div>
+        </article>
+        <article class="card kpi">
+          <div class="kpi-title">검사 완료율</div>
+          <div class="kpi-main"><strong>99.1</strong><span>%</span></div>
+          <div class="kpi-foot"><span>목표 98.0%</span><canvas class="spark" data-series="blue"></canvas><span class="up">▲ 1.1%p</span></div>
+        </article>
+        <article class="card kpi">
+          <div class="kpi-title">클레임 건수</div>
+          <div class="kpi-main"><strong>6</strong><span>건</span></div>
+          <div class="kpi-foot"><span>전일 대비</span><span></span><span class="up">▼ 14.3%</span></div>
+        </article>
+        <article class="card filter-card">
+          <div class="claim">
+            <div class="kpi-title">품질 요약 필터</div>
+            <div class="bars" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
+          </div>
+          <div class="filters">
+            <div class="filter-line"><span>제품 그룹</span><b>전체</b></div>
+            <div class="filter-line"><span>제품</span><b>전체</b></div>
+            <div class="filter-line"><span>공정</span><b>전체</b></div>
+            <div class="filter-line"><span>고객</span><b>전체</b></div>
+          </div>
+        </article>
+      </section>
+
+      <section class="dashboard-grid">
+        <article class="card panel">
+          <div class="panel-head"><div class="panel-title">SPC / 주요 품질 지표 추이</div><div class="tiny-select">CPK</div></div>
+          <canvas class="chart" data-chart="spc" aria-label="SPC 주요 품질 지표 추이"></canvas>
+        </article>
+        <article class="card panel">
+          <div class="panel-head"><div class="panel-title">불량률 추이</div><div class="tiny-select">실시간</div></div>
+          <canvas class="chart" data-chart="defect" aria-label="불량률 추이"></canvas>
+        </article>
+        <article class="card panel">
+          <div class="panel-head"><div class="panel-title">불량 유형 Pareto (누적)</div><div class="tiny-select">누적 %</div></div>
+          <canvas class="chart" data-chart="pareto" aria-label="불량 유형 파레토 차트"></canvas>
+        </article>
+        <article class="card panel">
+          <div class="panel-head"><div class="panel-title">라인별 품질 히트맵 (불량률 %)</div><div class="tiny-select">30일</div></div>
+          <div class="heatmap" aria-label="라인별 품질 히트맵">
+            <div></div><div class="heat-date">04-17</div><div class="heat-date">04-22</div><div class="heat-date">04-27</div><div class="heat-date">05-02</div><div class="heat-date">05-07</div><div class="heat-date">05-12</div><div class="heat-date">05-16</div>
+            <div class="heat-label">Line A</div><div class="heat good">1.21</div><div class="heat good">1.05</div><div class="heat mid">1.32</div><div class="heat good">1.08</div><div class="heat good">0.96</div><div class="heat good">0.89</div><div class="heat good">0.84</div>
+            <div class="heat-label">Line B</div><div class="heat mid">1.45</div><div class="heat mid">1.38</div><div class="heat mid">1.22</div><div class="heat mid">1.16</div><div class="heat good">1.05</div><div class="heat good">0.97</div><div class="heat good">0.92</div>
+            <div class="heat-label">Line C</div><div class="heat bad">1.75</div><div class="heat bad">1.63</div><div class="heat bad">1.54</div><div class="heat mid">1.42</div><div class="heat mid">1.32</div><div class="heat mid">1.18</div><div class="heat mid">1.09</div>
+          </div>
+          <div class="legend-bar" aria-hidden="true"></div>
+        </article>
+
+        <article class="card panel genealogy">
+          <div class="panel-head"><div class="panel-title">추적성 (Genealogy) - 제품 이력 조회</div></div>
+          <div class="trace-wrap">
+            <div class="info-card">
+              <span>제품ID</span><strong>P-250516-1123</strong><span class="pass">합격</span>
+              <span>제품명&nbsp;&nbsp;<b>BATTERY MODULE ASSY</b></span>
+              <span>LOT&nbsp;&nbsp;<b>LT250515-8A17</b></span>
+              <span>생산일시&nbsp;&nbsp;<b>2025-05-15 11:23:45</b></span>
+              <span>고객사&nbsp;&nbsp;<b>JLT Auto</b></span>
+            </div>
+            <div class="process-line">
+              <div class="process-card"><strong>원자재 LOT</strong><span>MTL-LT250512-91</span><span>양극재</span><span class="pass">합격</span><i class="check-dot"></i></div>
+              <div class="process-card"><strong>공정 10 전극 적층</strong><span>설비 STK-01</span><span>05-15 09:12</span><span>작업자 김태훈</span><i class="check-dot"></i></div>
+              <div class="process-card"><strong>공정 20 조립</strong><span>설비 ASM-02</span><span>05-15 09:38</span><span>UR-05 / 이수연</span><i class="check-dot"></i></div>
+              <div class="process-card"><strong>공정 30 용접</strong><span>설비 WLD-03</span><span>05-15 09:55</span><span>박지훈</span><i class="check-dot"></i></div>
+              <div class="process-card"><strong>공정 50 외관 검사</strong><span>설비 VI-02</span><span>05-15 10:24</span><span>UR-07</span></div>
+            </div>
+            <div class="result-card">
+              <strong>최종 검사 결과</strong><span>종합 판정 <b class="pass">합격</b></span>
+              <span>검사 시간 <b>05-15 10:31</b></span>
+              <span>검사 장비 <b>AOI-01</b></span>
+              <span>검사자 <b>최민수</b></span>
+            </div>
+          </div>
+        </article>
+
+        <article class="card panel">
+          <div class="panel-head"><div class="panel-title">설비 성능 분석 (전체 라인)</div><div class="tiny-select">30일</div></div>
+          <div class="perf-grid">
+            <div class="mini-stat"><b>OEE</b><strong>89.3%</strong><span class="up">▼ 0.7%p</span></div>
+            <div class="mini-stat"><b>가동률</b><strong>92.1%</strong><span class="up">▼ 0.9%p</span></div>
+            <div class="mini-stat"><b>성능률</b><strong>96.9%</strong><span class="up">▼ 0.1%p</span></div>
+            <div class="mini-stat"><b>품질률</b><strong>98.6%</strong><span class="up">▲ 0.1%p</span></div>
+          </div>
+          <div class="line-stats">
+            <div>다운타임<strong>18.6h</strong></div><div>MTBF<strong>124.3h</strong></div><div>MTTR<strong>0.82h</strong></div><div>알람 빈도<strong>2.3회/일</strong></div>
+          </div>
+        </article>
+
+        <article class="card panel">
+          <div class="panel-head"><div class="panel-title">설비 건강도 (Health Score)</div></div>
+          <div class="health-list">
+            <div class="health-row"><span>WLD-03 (용접기)</span><div class="bar-track"><i style="--score:92%;"></i></div><b>92</b><span class="status">양호</span></div>
+            <div class="health-row"><span>ASM-02 (조립기)</span><div class="bar-track"><i style="--score:78%;"></i></div><b>78</b><span class="status warn">주의</span></div>
+            <div class="health-row"><span>ICT-01 (검사기)</span><div class="bar-track"><i style="--score:73%;"></i></div><b>73</b><span class="status warn">주의</span></div>
+            <div class="health-row"><span>STK-01 (적층기)</span><div class="bar-track"><i style="--score:64%; --color: var(--red);"></i></div><b>64</b><span class="status danger">경고</span></div>
+            <div class="health-row"><span>VI-02 (비전검사기)</span><div class="bar-track"><i style="--score:88%;"></i></div><b>88</b><span class="status">양호</span></div>
+          </div>
+        </article>
+        <article class="card panel">
+          <div class="panel-head"><div class="panel-title">알람 원인 분석 (Top 5)</div></div>
+          <div class="cause-table">
+            <span class="head">알람 유형</span><span class="head">건수</span><span class="head">비율</span><span class="head">주요 원인</span><span class="head">조치 상태</span>
+            <span>용접 칩핑</span><span>24</span><span>23.5%</span><span>전극 마모</span><span class="down">조치 완료</span>
+            <span>비전 검사 NG</span><span>18</span><span>17.6%</span><span>조명 편차</span><span class="down">조치 중</span>
+            <span>조립 토크 이상</span><span>15</span><span>14.7%</span><span>토크 설정 불량</span><span class="down">조치 완료</span>
+            <span>센서 통신 오류</span><span>12</span><span>11.8%</span><span>케이블 접촉</span><span class="down">조치 중</span>
+            <span>전원 입력 저하</span><span>9</span><span>8.8%</span><span>누설 전류</span><span class="down">조치 완료</span>
+          </div>
+        </article>
+        <article class="card panel">
+          <div class="panel-head"><div class="panel-title">알람 상관 분석 (타임라인)</div></div>
+          <canvas class="chart" data-chart="scatter" aria-label="알람 상관 분석 타임라인"></canvas>
+        </article>
+        <article class="card panel">
+          <div class="panel-head"><div class="panel-title">공정 품질 맵 (Quality Map)</div><div class="tiny-select">불량률 (%) 0 - 2.0</div></div>
+          <div class="quality-map">
+            <div class="flow">
+              <div class="flow-node"><div class="node-box">원자재<br>LOT</div><div class="loss">0.32%</div></div>
+              <div class="flow-node"><div class="node-box">공정 10<br>적층</div><div class="loss">0.48%</div></div>
+              <div class="flow-node"><div class="node-box">공정 20<br>조립</div><div class="loss">0.91%</div></div>
+              <div class="flow-node"><div class="node-box">공정 30<br>용접</div><div class="loss">0.63%</div></div>
+              <div class="flow-node"><div class="node-box">공정 40<br>검사</div><div class="loss hot">1.23%</div></div>
+              <div class="flow-node"><div class="node-box">최종<br>제품</div><div class="loss hot">1.30%</div></div>
+            </div>
+            <div class="map-note">주요 기여 공정: 공정 40 (검사) / 공정 30 (용접)</div>
+          </div>
+        </article>
+      </section>
+    </main>
+  </div>
+
+  
+</div>
+      </section>
+
+      <section class="legacy-page" data-page="wms" data-title="WMS 물류 관제" data-subtitle="입출고, 재고, 물류 이동 상태 관리" hidden>
+<div id="jlt-wms-board" class="jlt-wms" aria-label="JLT WMS 통합 물류 관제 대시보드">
+  
+
+  <div class="shell">
+    <aside class="sidebar" aria-label="통합관제 메뉴">
+      <div class="logo"><img src="assets/jlt-logo.png" alt="JLT"></div>
+      <nav class="nav" aria-label="플랫폼 메뉴">
+        <button type="button" data-tab="dashboard">통합 대시보드</button>
+        <button type="button" data-tab="work">작업·자재·미션 관리</button>
+        <button class="sub" type="button" data-tab="work-order">작업지시 관리</button>
+        <button type="button" data-tab="trace">자재 추적 관리</button>
+        <button type="button" data-tab="mission">미션 오케스트레이션</button>
+        <button type="button" data-tab="resource">설비·자원 관리</button>
+        <button type="button" data-tab="amr">AMR·로봇 관리</button>
+        <button class="section section-spacer" type="button" data-tab="quality">품질 관리</button>
+        <button class="section is-linked" type="button" data-tab="logistics" aria-current="page">물류 관리</button>
+        <button class="section" type="button" data-tab="alarm">알람 관리</button>
+        <button class="section" type="button" data-tab="robot-control">로봇 관제</button>
+      </nav>
+    </aside>
+
+    <main class="main">
+      <section class="topbar" aria-label="헤더">
+        <div>
+          <h1>JLT WMS 통합 물류 관제 대시보드</h1>
+          <div class="subtitle">디스플레이 공장 물류자동화 운영 현황을 한 화면에서 모니터링</div>
+        </div>
+        <div class="operator">
+          <span><i data-lucide="clock-3" aria-hidden="true"></i> <span id="wms-clock">2026.07.14 (화) 10:24:30</span></span>
+          <span><i data-lucide="sun" aria-hidden="true"></i></span>
+          <span><i data-lucide="bell" aria-hidden="true"></i></span>
+          <span><strong>관리자</strong><br><span class="muted">JLT Admin</span></span>
+        </div>
+      </section>
+
+      <section class="grid-kpi" aria-label="핵심 물류 지표">
+        <article class="panel kpi">
+          <div class="kpi-head"><span>물류 처리율</span><span class="status-pill">정상 운영 중</span></div>
+          <div class="donut-wrap">
+            <svg class="donut" viewBox="0 0 44 44" aria-label="물류 처리율">
+              <circle cx="22" cy="22" r="17" fill="none" stroke="#e5edf8" stroke-width="5"></circle>
+              <circle id="rate-donut" cx="22" cy="22" r="17" fill="none" stroke="#0ea75a" stroke-width="5" stroke-linecap="round" stroke-dasharray="106.8" stroke-dashoffset="4"></circle>
+            </svg>
+            <div class="donut-label"><span class="big" id="rate">96</span><span class="muted">오늘 기준</span></div>
+          </div>
+        </article>
+        <article class="panel kpi">
+          <div class="kpi-head"><span>입고 처리</span><i data-lucide="download" aria-hidden="true"></i></div>
+          <div><span class="big" id="inbound">1,248</span><span class="unit">LOT</span></div>
+          <div class="bar"><span id="inbound-bar"></span></div>
+          <span class="muted">목표 1,300 LOT</span>
+        </article>
+        <article class="panel kpi">
+          <div class="kpi-head"><span>출고 처리</span><i data-lucide="upload" aria-hidden="true"></i></div>
+          <div><span class="big" id="outbound">1,186</span><span class="unit">LOT</span></div>
+          <div class="bar"><span id="outbound-bar"></span></div>
+          <span class="muted">목표 1,200 LOT</span>
+        </article>
+        <article class="panel kpi">
+          <div class="kpi-head"><span>재고 정확도</span><i data-lucide="target" aria-hidden="true"></i></div>
+          <div><span class="big" id="accuracy">99.2</span><span class="unit">%</span></div>
+          <svg class="spark" viewBox="0 0 120 36" aria-label="재고 정확도 추이"><path id="accuracy-spark" fill="none" stroke="#0ea75a" stroke-width="2" d=""></path></svg>
+          <span class="muted">목표 99.0%</span>
+        </article>
+        <article class="panel kpi">
+          <div class="kpi-head"><span>라인 공급 지시</span><i data-lucide="clipboard-list" aria-hidden="true"></i></div>
+          <div><span class="big" id="orders">156</span><span class="unit">건</span></div>
+          <span class="muted">금일 신규 <span id="new-orders">42</span>건</span>
+          <span class="muted">전일 148건</span>
+        </article>
+        <article class="panel kpi">
+          <div class="kpi-head"><span>창고 점유율</span><i data-lucide="boxes" aria-hidden="true"></i></div>
+          <div><span class="big" id="occupancy">78.3</span><span class="unit">%</span></div>
+          <svg class="spark" viewBox="0 0 120 36" aria-label="창고 점유율 추이"><path id="occupancy-spark" fill="none" stroke="#0ea75a" stroke-width="2" d=""></path></svg>
+          <span class="muted">목표 85% 이하</span>
+        </article>
+      </section>
+
+      <section class="content">
+        <div class="left-stack">
+          <article class="panel">
+            <div class="panel-head"><span>라인 공급 현황</span><span class="muted">실시간</span></div>
+            <div id="line-supply"></div>
+          </article>
+          <article class="panel">
+            <div class="panel-head"><span>설비 / 물류 상태</span><span class="muted">172대</span></div>
+            <div style="display:grid;grid-template-columns:118px 1fr;gap:12px;align-items:center;margin-top:8px">
+              <div class="donut-wrap">
+                <svg class="donut" viewBox="0 0 44 44" aria-label="설비 상태 분포">
+                  <circle cx="22" cy="22" r="17" fill="none" stroke="#e5edf8" stroke-width="6"></circle>
+                  <circle id="equip-run" cx="22" cy="22" r="17" fill="none" stroke="#0ea75a" stroke-width="6" stroke-dasharray="106.8" stroke-dashoffset="37"></circle>
+                  <circle id="equip-idle" cx="22" cy="22" r="17" fill="none" stroke="#0b63f6" stroke-width="6" stroke-dasharray="106.8" stroke-dashoffset="80"></circle>
+                  <circle id="equip-alarm" cx="22" cy="22" r="17" fill="none" stroke="#f59e0b" stroke-width="6" stroke-dasharray="106.8" stroke-dashoffset="99"></circle>
+                </svg>
+                <div class="donut-label"><span class="big" id="equip-total">172</span><span class="muted">전체 설비</span></div>
+              </div>
+              <div class="state-list" id="equip-list"></div>
+            </div>
+          </article>
+        </div>
+
+        <article class="panel map-panel">
+          <div class="panel-head map-title"><span>공장 물류 레이아웃</span><span class="muted">실시간</span></div>
+          <div class="map-wrap">
+            <svg class="floor" viewBox="0 0 900 500" role="img" aria-labelledby="floor-title floor-desc">
+              <title id="floor-title">공장 물류 흐름 레이아웃</title>
+              <desc id="floor-desc">입고 도크에서 창고, 셀 라인, 모듈 라인, 검사 공정, 출하 도크까지의 물류 경로와 이동 설비를 나타낸다.</desc>
+              <defs>
+                <linearGradient id="zoneGrad" x1="0" x2="0" y1="0" y2="1">
+                  <stop offset="0%" stop-color="#ffffff"></stop>
+                  <stop offset="100%" stop-color="#dce8f8"></stop>
+                </linearGradient>
+              </defs>
+              <polygon class="zone" points="60,72 812,72 842,430 92,430"></polygon>
+              <rect class="zone" x="120" y="100" width="185" height="118"></rect>
+              <rect class="zone" x="340" y="98" width="180" height="124"></rect>
+              <rect class="zone" x="555" y="98" width="185" height="122"></rect>
+              <rect class="zone" x="178" y="254" width="214" height="112"></rect>
+              <rect class="zone" x="438" y="254" width="238" height="112"></rect>
+              <rect class="zone" x="315" y="388" width="258" height="42"></rect>
+              <rect x="18" y="168" width="58" height="190" rx="8" fill="#dbe6f4" stroke="#8fa2bd"></rect>
+              <rect x="807" y="178" width="58" height="176" rx="8" fill="#dbe6f4" stroke="#8fa2bd"></rect>
+
+              <g id="racks"></g>
+              <g id="machines"></g>
+
+              <path id="route-a" class="road-a" d="M76 220 C146 220 126 86 214 86 L740 86 C808 86 804 178 798 220 L706 220 C618 220 636 238 556 238 L260 238 C156 238 168 360 90 360"></path>
+              <path id="route-b" class="road-b" d="M76 305 L184 305 C258 305 250 245 332 245 L746 245 C810 245 796 345 724 345 L494 345 C418 345 418 305 338 305 L178 305"></path>
+              <path id="route-c" class="road-c" d="M90 376 C174 382 205 392 300 376 L680 376 C744 376 762 312 700 292 L468 292 C392 292 382 346 314 346 L164 346"></path>
+
+              <circle class="flow flow-a"><animateMotion dur="7s" repeatCount="indefinite" rotate="auto"><mpath href="#route-a"></mpath></animateMotion></circle>
+              <circle class="flow flow-b"><animateMotion dur="6.5s" repeatCount="indefinite" rotate="auto"><mpath href="#route-b"></mpath></animateMotion></circle>
+              <circle class="flow flow-c"><animateMotion dur="8s" repeatCount="indefinite" rotate="auto"><mpath href="#route-c"></mpath></animateMotion></circle>
+
+              <g id="veh-amr" class="vehicle" transform="translate(160 238)">
+                <rect class="veh-body" x="-12" y="-9" width="24" height="18" rx="4"></rect>
+                <rect class="veh-load" x="-7" y="-15" width="14" height="8" rx="2"></rect>
+                <circle cx="-7" cy="9" r="2.4" fill="#17345d"></circle><circle cx="7" cy="9" r="2.4" fill="#17345d"></circle>
+              </g>
+              <g id="veh-oht" class="vehicle" transform="translate(565 86)">
+                <rect class="veh-body" x="-15" y="-7" width="30" height="14" rx="3"></rect>
+                <path d="M-9 -7 L-3 -17 H8 L14 -7" fill="#93c5fd" stroke="#1d4ed8" stroke-width="1"></path>
+              </g>
+              <g id="veh-agv" class="vehicle" transform="translate(612 346)">
+                <rect class="veh-load" x="-14" y="-12" width="28" height="13" rx="2"></rect>
+                <rect class="veh-body" x="-16" y="0" width="32" height="13" rx="4"></rect>
+                <circle cx="-9" cy="13" r="2.4" fill="#17345d"></circle><circle cx="9" cy="13" r="2.4" fill="#17345d"></circle>
+              </g>
+
+              <g>
+                <rect class="label-box" x="142" y="72" width="82" height="24"></rect><text class="zone-label" x="183" y="89" text-anchor="middle">원자재 창고</text>
+                <rect class="label-box" x="432" y="70" width="68" height="24"></rect><text class="zone-label" x="466" y="87" text-anchor="middle">스토커</text>
+                <rect class="label-box" x="616" y="72" width="82" height="24"></rect><text class="zone-label" x="657" y="89" text-anchor="middle">검사공정</text>
+                <rect class="label-box" x="26" y="180" width="76" height="24"></rect><text class="zone-label" x="64" y="197" text-anchor="middle">입고 도크</text>
+                <rect class="label-box" x="784" y="190" width="76" height="24"></rect><text class="zone-label" x="822" y="207" text-anchor="middle">출하 도크</text>
+                <rect fill="#0ea75a" rx="4" x="394" y="222" width="88" height="24"></rect><text class="zone-label" x="438" y="239" text-anchor="middle">Cell Line</text>
+                <rect fill="#0b63f6" rx="4" x="520" y="286" width="82" height="24"></rect><text class="zone-label" x="561" y="303" text-anchor="middle">Route B</text>
+                <rect fill="#f59e0b" rx="4" x="525" y="354" width="82" height="24"></rect><text class="zone-label" x="566" y="371" text-anchor="middle">Route C</text>
+                <rect fill="#0ea75a" rx="4" x="358" y="354" width="102" height="24"></rect><text class="zone-label" x="409" y="371" text-anchor="middle">Module Line</text>
+                <rect fill="#0b63f6" rx="4" x="372" y="392" width="92" height="24"></rect><text class="zone-label" x="418" y="409" text-anchor="middle">완제품 창고</text>
+              </g>
+            </svg>
+            <div class="legend">
+              <strong>범례</strong>
+              <span><span class="dot" style="--dot:#0ea75a"></span> Route A 정상 공급</span>
+              <span><span class="dot" style="--dot:#0b63f6"></span> Route B 생산 연계</span>
+              <span><span class="dot" style="--dot:#f59e0b"></span> Route C 우회 공급</span>
+            </div>
+            <div class="zoom-tools" aria-label="지도 도구">
+              <button type="button" aria-label="확대"><i data-lucide="zoom-in" aria-hidden="true"></i></button>
+              <button type="button" aria-label="축소"><i data-lucide="zoom-out" aria-hidden="true"></i></button>
+              <button type="button" aria-label="새로고침"><i data-lucide="rotate-cw" aria-hidden="true"></i></button>
+              <button type="button" aria-label="전체화면"><i data-lucide="maximize" aria-hidden="true"></i></button>
+            </div>
+          </div>
+        </article>
+
+        <div class="right-stack">
+          <article class="panel">
+            <div class="panel-head"><span>알람 / 이벤트</span><span class="muted">최근</span></div>
+            <div id="events"></div>
+          </article>
+          <article class="panel">
+            <div class="panel-head"><span>AMR / OHT / AGV 현황</span><span class="muted">실시간</span></div>
+            <div class="fleet" id="fleet"></div>
+          </article>
+          <article class="panel">
+            <div class="panel-head"><span>랙 / 카세트 / 트레이 현황</span><span class="muted">실시간</span></div>
+            <div class="tray-grid" id="tray"></div>
+          </article>
+        </div>
+      </section>
+
+      <section class="bottom">
+        <article class="panel">
+          <div class="panel-head"><span>물류 처리량 추이</span><span class="muted">오늘</span></div>
+          <svg class="chart" id="chart-flow" viewBox="0 0 260 138" aria-label="물류 처리량 추이"></svg>
+        </article>
+        <article class="panel">
+          <div class="panel-head"><span>재고 정확도 / 공급 SLA</span><span class="muted">금일</span></div>
+          <div style="display:grid;grid-template-columns:116px 1fr;gap:14px;align-items:center;margin-top:10px">
+            <div class="donut-wrap">
+              <svg class="donut" viewBox="0 0 44 44" aria-label="재고 정확도">
+                <circle cx="22" cy="22" r="17" fill="none" stroke="#e5edf8" stroke-width="6"></circle>
+                <circle id="sla-donut" cx="22" cy="22" r="17" fill="none" stroke="#0ea75a" stroke-width="6" stroke-linecap="round" stroke-dasharray="106.8" stroke-dashoffset="1"></circle>
+              </svg>
+              <div class="donut-label"><span class="big" id="sla-acc">99.2</span><span class="muted">정확도</span></div>
+            </div>
+            <div>
+              <div class="sla-box">
+                <span class="muted">공급 SLA</span><br><span class="big" id="sla">98.6</span><span class="unit">%</span>
+              </div>
+              <div class="state-list" style="margin-top:8px">
+                <span><span class="dot" style="--dot:#0ea75a"></span> 정확 <span id="ok-ratio">99.2%</span></span>
+                <span><span class="dot" style="--dot:#f59e0b"></span> 오차 0.6%</span>
+                <span><span class="dot" style="--dot:#ef4444"></span> 미스 0.2%</span>
+              </div>
+            </div>
+          </div>
+        </article>
+        <article class="panel">
+          <div class="panel-head"><span>작업지시 / 출하 일정</span><span class="muted">더보기</span></div>
+          <table class="table" aria-label="작업지시 목록">
+            <thead><tr><th>작업지시 No.</th><th>품목명</th><th>계획 수량</th><th>진행률</th><th>ETA</th></tr></thead>
+            <tbody id="work-table"></tbody>
+          </table>
+        </article>
+        <article class="panel">
+          <div class="panel-head"><span>입고 / 출고 추이</span><span class="muted">오늘</span></div>
+          <svg class="chart" id="chart-io" viewBox="0 0 260 138" aria-label="입고 출고 추이"></svg>
+        </article>
+      </section>
+    </main>
+  </div>
+
+  
+</div>
+      </section>
+
+      <section class="legacy-page" data-page="robot" data-title="로봇 관제" data-subtitle="AMR 및 휴머노이드 로봇 운영 현황" hidden>
+<div id="robot-control-page" class="robot-page" aria-label="AMR 휴머노이드 로봇 관제 인터랙티브 페이지">
+  
+
+  <div class="shell">
+    <aside class="sidebar" aria-label="통합관제 메뉴">
+      <div class="logo"><img src="assets/jlt-logo.png" alt="JLT"></div>
+      <nav class="nav">
+        <button type="button"><i data-lucide="layout-dashboard" aria-hidden="true"></i>통합 대시보드</button>
+        <button type="button"><i data-lucide="route" aria-hidden="true"></i>작업·자재·미션 관리</button>
+        <button type="button"><i data-lucide="shield-check" aria-hidden="true"></i>품질 관리</button>
+        <button type="button"><i data-lucide="package-check" aria-hidden="true"></i>물류 관리</button>
+        <button type="button"><i data-lucide="bell-ring" aria-hidden="true"></i>알람 관리</button>
+        <button class="active" type="button"><i data-lucide="bot" aria-hidden="true"></i>로봇 관제</button>
+      </nav>
+      <div class="side-status">
+        <span class="small">관제 네트워크</span>
+        <strong>정상 동기화</strong>
+        <span class="small">AMR 28 · Humanoid 8 · Latency 12ms</span>
+      </div>
+    </aside>
+
+    <main class="main">
+      <header class="topbar">
+        <h1>AMR / Humanoid 관제센터</h1>
+        <div class="top-actions">
+          <span>2026.07.14 10:24:30</span>
+          <button class="icon-btn" type="button" aria-label="알림"><i data-lucide="bell" aria-hidden="true"></i></button>
+          <span>관리자 · JLT</span>
+        </div>
+      </header>
+
+      <section class="kpis" aria-label="로봇 운영 지표">
+        <div class="kpi"><i data-lucide="bot" aria-hidden="true"></i><div><span>전체 자산 수</span><strong id="total-count">36</strong><span>AMR 28 / Humanoid 8</span></div></div>
+        <div class="kpi"><i data-lucide="gauge" aria-hidden="true"></i><div><span>가동 중</span><strong id="running-count">32</strong><span>가동률 88.9%</span></div></div>
+        <div class="kpi"><i data-lucide="briefcase-business" aria-hidden="true"></i><div><span>작업 중</span><strong id="working-count">24</strong><span>작업 완료율 96.2%</span></div></div>
+        <div class="kpi"><i data-lucide="triangle-alert" aria-hidden="true"></i><div><span>이상 발생</span><strong id="alert-count">2</strong><span>주의 1 / 경고 1</span></div></div>
+        <div class="kpi"><i data-lucide="battery-charging" aria-hidden="true"></i><div><span>충전 중</span><strong id="charge-count">4</strong><span>평균 배터리 72%</span></div></div>
+        <div class="kpi"><i data-lucide="clock-3" aria-hidden="true"></i><div><span>대기 중</span><strong>6</strong><span>주요 대기·자재 대응</span></div></div>
+      </section>
+
+      <section class="workspace">
+        <article class="panel map-panel">
+          <div class="panel-title">
+            <h2>실시간 공장 맵</h2>
+            <div class="seg" aria-label="층 선택">
+              <button type="button" class="active" data-floor="1F">A동 1F</button>
+              <button type="button" data-floor="2F">A동 2F</button>
+              <button type="button" data-floor="B1">B동 B1</button>
+            </div>
+          </div>
+          <div class="factory-map" aria-label="3D 공장 내 로봇 위치">
+            <div class="plant-3d" aria-hidden="true">
+              <div class="floor-plate"></div>
+              <div class="zone tall" style="left:5%;top:8%;width:21%;height:26%;">입고<br>게이트</div>
+              <div class="zone tall" style="left:35%;top:8%;width:25%;height:20%;">조립<br>라인 A</div>
+              <div class="zone" style="left:66%;top:10%;width:24%;height:22%;">비전<br>검사</div>
+              <div class="zone" style="left:9%;top:52%;width:23%;height:30%;">자재<br>버퍼</div>
+              <div class="zone tall" style="left:40%;top:57%;width:22%;height:25%;">Line 3<br>셀</div>
+              <div class="dock" style="left:73%;top:59%;"></div>
+              <div class="zone" style="left:70%;top:55%;width:23%;height:29%;">충전<br>스테이션</div>
+              <div class="conveyor" style="left:22%;top:41%;width:54%;"></div>
+              <div class="conveyor" style="left:36%;top:72%;width:31%;transform:translateZ(34px) rotate(90deg);"></div>
+              <svg class="route" viewBox="0 0 520 300" aria-hidden="true">
+                <path d="M35 70 H245 C290 70 310 95 310 125 H455 C490 125 500 150 480 170 L355 250 C330 266 300 255 292 226 L270 150 H105 C65 150 44 126 48 95 Z"></path>
+              </svg>
+            </div>
+            <div class="map-hud" aria-hidden="true">
+              <span>3D 설비 레이어</span><span>실시간 좌표 추적</span><span>상태등 자동 갱신</span>
+            </div>
+            <button class="marker humanoid work active" type="button" data-id="HMD-01" style="--x:17%;--y:55%;"><span class="unit-icon"></span><span>HMD-01</span></button>
+            <button class="marker humanoid alert" type="button" data-id="HMD-02" style="--x:73%;--y:53%;"><span class="unit-icon"></span><span>HMD-02</span></button>
+            <button class="marker amr charge" type="button" data-id="AMR-03" style="--x:42%;--y:39%;"><span class="unit-icon"></span><span>AMR-03</span></button>
+            <button class="marker humanoid" type="button" data-id="HMD-03" style="--x:58%;--y:72%;"><span class="unit-icon"></span><span>HMD-03</span></button>
+            <button class="marker amr work" type="button" data-id="AMR-12" style="--x:76%;--y:24%;"><span class="unit-icon"></span><span>AMR-12</span></button>
+          </div>
+        </article>
+
+        <article class="panel robot-panel">
+          <div class="panel-title">
+            <h2>휴머노이드 상태 요약</h2>
+            <span class="badge green" id="robot-state">작업 중</span>
+          </div>
+          <div class="robot-visual">
+            <div class="robot-copy">
+              <span class="small">선택 로봇</span>
+              <strong id="robot-id">HMD-01</strong>
+              <span id="robot-task">조립 작업 · Line 3</span>
+              <div class="battery" aria-label="배터리"><span id="battery-bar"></span></div>
+              <span class="small" id="robot-meta">배터리 86% · ETA 12분 · LiDAR 정상</span>
+            </div>
+            <div class="robot-img" id="robot-img" aria-hidden="true"></div>
+          </div>
+          <table aria-label="개체 상태 요약">
+            <thead><tr><th>개체 ID</th><th>유형</th><th>상태</th><th>배터리</th><th>위치</th></tr></thead>
+            <tbody id="robot-table"></tbody>
+          </table>
+        </article>
+
+        <aside class="right-rail">
+          <article class="panel">
+            <div class="panel-title"><h2>이상/알람 현황</h2><span class="badge red" id="alarm-pill">2건</span></div>
+            <div class="alert-item">
+              <div class="alert-line"><strong>AMR-05 · 경로 이탈</strong><span class="badge orange">주의</span></div>
+              <span class="small">A동 1F-04 · 자동 복귀 중</span>
+            </div>
+            <div class="alert-item">
+              <div class="alert-line"><strong>HMD-02 · 배터리 부족</strong><span class="badge red">경고</span></div>
+              <span class="small">A동 1F-08 · 충전 필요</span>
+            </div>
+          </article>
+
+          <article class="panel">
+            <div class="panel-title"><h2>의사결정 요청</h2><span class="badge">실시간</span></div>
+            <div class="request-item">
+              <div class="request-head"><strong>AMR-12 경로 재계획</strong><span class="small">10:24:10</span></div>
+              <span class="small">자재 경로 변경 요청</span>
+              <div class="request-actions"><button class="mini-btn primary" type="button">승인</button><button class="mini-btn" type="button">보류</button></div>
+            </div>
+            <div class="request-item">
+              <div class="request-head"><strong>HMD-01 작업 우선순위</strong><span class="small">10:23:30</span></div>
+              <span class="small">긴급 작업 발생(Line B)</span>
+              <div class="request-actions"><button class="mini-btn primary" type="button">승인</button><button class="mini-btn" type="button">상세</button></div>
+            </div>
+          </article>
+
+          <article class="panel">
+            <div class="panel-title"><h2>주요 의사결정 제어</h2></div>
+            <label class="switch"><input id="auto-mode" type="checkbox" checked> 자율 의사결정 적용</label>
+            <div class="control-item"><strong>작업 우선순위 조정</strong><span class="small">작업 처리 순서 변경</span></div>
+            <div class="control-item"><strong>경로 선택 옵션</strong><span class="small" id="auto-label">자동 최적 경로</span></div>
+            <div class="control-item"><strong>충전 임계 설정</strong><span class="small">배터리 임계 변경</span></div>
+          </article>
+        </aside>
+
+        <article class="panel detail-panel">
+          <div class="detail-card">
+            <div class="panel-title"><h2>개체 상세 정보</h2><span class="badge" id="detail-zone">A동 1F-07</span></div>
+            <table aria-label="선택 로봇 센서 정보">
+              <tbody>
+                <tr><th>유형</th><td id="detail-type">Humanoid</td></tr>
+                <tr><th>현재 작업</th><td id="detail-job">조립 작업</td></tr>
+                <tr><th>센서</th><td>LiDAR · 비전 · IMU</td></tr>
+                <tr><th>이상 작업</th><td id="detail-risk">없음</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <div>
+            <div class="metrics">
+              <div class="metric"><span class="small">생산성 향상</span><strong>+12.5%</strong><span class="small">전일 대비</span></div>
+              <div class="metric"><span class="small">지연 시간 감소</span><strong>-8.3분</strong><span class="small">전일 대비</span></div>
+              <div class="metric"><span class="small">에너지 절감</span><strong>+15.2%</strong><span class="small">전일 대비</span></div>
+              <div class="metric"><span class="small">안전성 개선</span><strong>+23.1%</strong><span class="small">전일 대비</span></div>
+            </div>
+            <svg class="chart" viewBox="0 0 640 150" role="img" aria-label="시간별 시스템 영향 선 그래프">
+              <line x1="34" y1="112" x2="610" y2="112" stroke="#d9e2ee"/>
+              <line x1="34" y1="76" x2="610" y2="76" stroke="#e7edf5"/>
+              <line x1="34" y1="40" x2="610" y2="40" stroke="#e7edf5"/>
+              <path d="M36 110 C90 72,115 48,160 62 S235 25,292 42 S376 81,430 59 S502 20,610 33" fill="none" stroke="#1274f4" stroke-width="3"/>
+              <path d="M36 116 C102 92,130 100,176 76 S260 76,312 58 S418 39,470 52 S548 92,610 66" fill="none" stroke="#15b86f" stroke-width="3"/>
+              <path d="M36 120 C116 128,150 102,216 108 S310 90,374 105 S492 76,610 96" fill="none" stroke="#f59e0b" stroke-width="3"/>
+              <text x="34" y="140">00:00</text><text x="184" y="140">08:00</text><text x="344" y="140">16:00</text><text x="548" y="140">24:00</text>
+            </svg>
+          </div>
+        </article>
+
+        <article class="panel log-panel">
+          <div class="panel-title"><h2>자율 의사결정 로그</h2><span class="small">최근 5건</span></div>
+          <table aria-label="자율 의사결정 로그">
+            <thead><tr><th>시간</th><th>개체</th><th>내용</th><th>결과</th></tr></thead>
+            <tbody>
+              <tr><td>10:23:45</td><td>AMR-05</td><td>경로 변경 결정</td><td><span class="badge green">성공</span></td></tr>
+              <tr><td>10:22:13</td><td>AMR-12</td><td>작업 순서 변경</td><td><span class="badge green">성공</span></td></tr>
+              <tr><td>10:21:33</td><td>AMR-01</td><td>속도 조절</td><td><span class="badge green">성공</span></td></tr>
+              <tr><td>10:20:15</td><td>HMD-01</td><td>작업 방법 변경</td><td><span class="badge green">성공</span></td></tr>
+            </tbody>
+          </table>
+        </article>
+      </section>
+    </main>
+  </div>
+
+  
+</div>
+      </section>
+      </main>
+    </div>
+  </div>
+  <script src="js/app.js"></script>
+</body>
+</html>
